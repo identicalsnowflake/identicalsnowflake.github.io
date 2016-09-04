@@ -1,0 +1,3726 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Overview</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><style>
+body {
+  background-color:#2d3335;
+}
+
+body * {
+  font-family:"Droid Sans Mono" !important;
+}
+
+*:focus {
+    outline: 0;
+}
+
+/* Aspects. */
+.Comment       { color: #62cd19 }
+.Keyword       { color: #a9a9a9 }
+.String        { color: #B22222 }
+.Number        { color: #da70d6 }
+.Symbol        { color: #bfbfbf }
+.PrimitiveType { color: #00bfff }
+.Operator      { }
+
+/* NameKinds. */
+.Bound                  { color: #ffa500   }
+.InductiveConstructor   { color: #da70d6 }
+.CoinductiveConstructor { color: #8B7500 }
+.Datatype               { color: #00bfff }
+.Field                  { color: #EE1289 }
+.Function               { color: #90ee90 }
+.Module                 { color: #66cdaa }
+.Postulate              { color: #ff1493 }
+.Primitive              { color: #90ee90 }
+.Record                 { color: #00ffff }
+
+/* OtherAspects. */
+.DottedPattern      {}
+.UnsolvedMeta       { color: black; background: yellow         }
+.UnsolvedConstraint { color: black; background: yellow         }
+.TerminationProblem { color: black; background: #FFA07A        }
+.IncompletePattern  { color: black; background: #F5DEB3        }
+.Error              { color: red;   text-decoration: underline }
+.TypeChecks         { color: black; background: #ADD8E6        }
+
+/* Standard attributes. */
+a { text-decoration: none }
+a[href]:hover { background-color: #3d4345 }
+     </style></head
+  ><body
+  ><pre
+    ><a name="1" class="Keyword"
+      >open</a
+      ><a name="5"
+      > </a
+      ><a name="6" class="Keyword"
+      >import</a
+      ><a name="12"
+      > </a
+      ><a name="13" href="#" class="Module"
+      >Prelude</a
+      ><a name="28"
+      >
+
+</a
+      ><span name="30" class="Comment"
+      >{- Modeling Redis
+
+   Redis is an in-memory key-value datastore. It is essentially a hash
+   table with several built-in primitive value types.
+
+   From Redis's perspective, we're given access to some low-level
+   commands to store and retrieve data. The full list is documented
+   at <a href="http://redis.io/commands" target="_blank" class="Function">http://redis.io/commands</a>.
+
+   In this article, I will demonstrate how to construct a high-level,
+   type-safe abstraction over Redis's low-level commands via the Free
+   monad.
+
+   So without further ado, here are some of Redis's low-level commands:
+
+-}</a
+      ><a name="583"
+      >
+
+</a
+      ><a name="585" href="#" class="Function"
+      >RedisPrimitiveCommand</a
+      ><a name="606"
+      > </a
+      ><a name="607" class="Symbol"
+      >=</a
+      ><a name="608"
+      > </a
+      ><a name="609" href="#" class="Postulate"
+      >IO</a
+      ><a name="611"
+      >
+
+</a
+      ><a name="613" class="Keyword"
+      >postulate</a
+      ><a name="622"
+      >
+  </a
+      ><a name="625" class="Comment"
+      >-- simple key-value access commands</a
+      ><a name="660"
+      >
+  </a
+      ><a name="663" href="#" class="Postulate"
+      >GET</a
+      ><a name="666"
+      > </a
+      ><a name="667" class="Symbol"
+      >:</a
+      ><a name="668"
+      > </a
+      ><a name="669" class="Symbol"
+      >(</a
+      ><a name="670" href="#" class="Bound"
+      >key</a
+      ><a name="673"
+      > </a
+      ><a name="674" class="Symbol"
+      >:</a
+      ><a name="675"
+      > </a
+      ><a name="676" href="#" class="Postulate"
+      >String</a
+      ><a name="682" class="Symbol"
+      >)</a
+      ><a name="683"
+      > </a
+      ><a name="684" class="Symbol"
+      >&#8594;</a
+      ><a name="685"
+      > </a
+      ><a name="686" href="#" class="Function"
+      >RedisPrimitiveCommand</a
+      ><a name="707"
+      > </a
+      ><a name="708" class="Symbol"
+      >(</a
+      ><a name="709" href="#" class="Datatype"
+      >Maybe</a
+      ><a name="714"
+      > </a
+      ><a name="715" href="#" class="Postulate"
+      >String</a
+      ><a name="721" class="Symbol"
+      >)</a
+      ><a name="722"
+      >
+  </a
+      ><a name="725" href="#" class="Postulate"
+      >SET</a
+      ><a name="728"
+      > </a
+      ><a name="729" class="Symbol"
+      >:</a
+      ><a name="730"
+      > </a
+      ><a name="731" class="Symbol"
+      >(</a
+      ><a name="732" href="#" class="Bound"
+      >key</a
+      ><a name="735"
+      > </a
+      ><a name="736" href="#" class="Bound"
+      >value</a
+      ><a name="741"
+      > </a
+      ><a name="742" class="Symbol"
+      >:</a
+      ><a name="743"
+      > </a
+      ><a name="744" href="#" class="Postulate"
+      >String</a
+      ><a name="750" class="Symbol"
+      >)</a
+      ><a name="751"
+      > </a
+      ><a name="752" class="Symbol"
+      >&#8594;</a
+      ><a name="753"
+      > </a
+      ><a name="754" href="#" class="Function"
+      >RedisPrimitiveCommand</a
+      ><a name="775"
+      > </a
+      ><a name="776" href="#" class="Record"
+      >&#8868;</a
+      ><a name="777"
+      >
+  </a
+      ><a name="780" href="#" class="Postulate"
+      >DELETE</a
+      ><a name="786"
+      > </a
+      ><a name="787" class="Symbol"
+      >:</a
+      ><a name="788"
+      > </a
+      ><a name="789" class="Symbol"
+      >(</a
+      ><a name="790" href="#" class="Bound"
+      >key</a
+      ><a name="793"
+      > </a
+      ><a name="794" class="Symbol"
+      >:</a
+      ><a name="795"
+      > </a
+      ><a name="796" href="#" class="Postulate"
+      >String</a
+      ><a name="802" class="Symbol"
+      >)</a
+      ><a name="803"
+      > </a
+      ><a name="804" class="Symbol"
+      >&#8594;</a
+      ><a name="805"
+      > </a
+      ><a name="806" href="#" class="Function"
+      >RedisPrimitiveCommand</a
+      ><a name="827"
+      > </a
+      ><a name="828" href="#" class="Record"
+      >&#8868;</a
+      ><a name="829"
+      >
+
+  </a
+      ><a name="835" class="Comment"
+      >-- access commands for values in a built-in Redis list</a
+      ><a name="889"
+      >
+  </a
+      ><a name="892" href="#" class="Postulate"
+      >GETLIST</a
+      ><a name="899"
+      > </a
+      ><a name="900" class="Symbol"
+      >:</a
+      ><a name="901"
+      > </a
+      ><a name="902" class="Symbol"
+      >(</a
+      ><a name="903" href="#" class="Bound"
+      >key</a
+      ><a name="906"
+      > </a
+      ><a name="907" class="Symbol"
+      >:</a
+      ><a name="908"
+      > </a
+      ><a name="909" href="#" class="Postulate"
+      >String</a
+      ><a name="915" class="Symbol"
+      >)</a
+      ><a name="916"
+      > </a
+      ><a name="917" class="Symbol"
+      >&#8594;</a
+      ><a name="918"
+      > </a
+      ><a name="919" href="#" class="Function"
+      >RedisPrimitiveCommand</a
+      ><a name="940"
+      > </a
+      ><a name="941" class="Symbol"
+      >(</a
+      ><a name="942" href="#" class="Datatype"
+      >List</a
+      ><a name="946"
+      > </a
+      ><a name="947" href="#" class="Postulate"
+      >String</a
+      ><a name="953" class="Symbol"
+      >)</a
+      ><a name="954"
+      >
+  </a
+      ><a name="957" href="#" class="Postulate"
+      >PREPEND</a
+      ><a name="964"
+      > </a
+      ><a name="965" class="Symbol"
+      >:</a
+      ><a name="966"
+      > </a
+      ><a name="967" class="Symbol"
+      >(</a
+      ><a name="968" href="#" class="Bound"
+      >key</a
+      ><a name="971"
+      > </a
+      ><a name="972" href="#" class="Bound"
+      >value</a
+      ><a name="977"
+      > </a
+      ><a name="978" class="Symbol"
+      >:</a
+      ><a name="979"
+      > </a
+      ><a name="980" href="#" class="Postulate"
+      >String</a
+      ><a name="986" class="Symbol"
+      >)</a
+      ><a name="987"
+      > </a
+      ><a name="988" class="Symbol"
+      >&#8594;</a
+      ><a name="989"
+      > </a
+      ><a name="990" href="#" class="Function"
+      >RedisPrimitiveCommand</a
+      ><a name="1011"
+      > </a
+      ><a name="1012" href="#" class="Record"
+      >&#8868;</a
+      ><a name="1013"
+      >
+
+</a
+      ><a name="1015" class="Comment"
+      >-- example usage</a
+      ><a name="1031"
+      >
+
+</a
+      ><a name="1033" href="#" class="Function"
+      >setHelloWorld</a
+      ><a name="1046"
+      > </a
+      ><a name="1047" class="Symbol"
+      >:</a
+      ><a name="1048"
+      > </a
+      ><a name="1049" href="#" class="Function"
+      >RedisPrimitiveCommand</a
+      ><a name="1070"
+      > </a
+      ><a name="1071" href="#" class="Record"
+      >&#8868;</a
+      ><a name="1072"
+      >
+</a
+      ><a name="1073" href="#" class="Function"
+      >setHelloWorld</a
+      ><a name="1086"
+      > </a
+      ><a name="1087" class="Symbol"
+      >=</a
+      ><a name="1088"
+      > </a
+      ><a name="1089" href="#" class="Postulate"
+      >SET</a
+      ><a name="1092"
+      > </a
+      ><a name="1093" class="String"
+      >&quot;hello&quot;</a
+      ><a name="1100"
+      > </a
+      ><a name="1101" class="String"
+      >&quot;world&quot;</a
+      ><a name="1108"
+      >
+
+</a
+      ><a name="1110" href="#" class="Function"
+      >addLanguageToFavorites</a
+      ><a name="1132"
+      > </a
+      ><a name="1133" class="Symbol"
+      >:</a
+      ><a name="1134"
+      > </a
+      ><a name="1135" href="#" class="Postulate"
+      >String</a
+      ><a name="1141"
+      > </a
+      ><a name="1142" class="Symbol"
+      >&#8594;</a
+      ><a name="1143"
+      > </a
+      ><a name="1144" href="#" class="Function"
+      >RedisPrimitiveCommand</a
+      ><a name="1165"
+      > </a
+      ><a name="1166" href="#" class="Record"
+      >&#8868;</a
+      ><a name="1167"
+      >
+</a
+      ><a name="1168" href="#" class="Function"
+      >addLanguageToFavorites</a
+      ><a name="1190"
+      > </a
+      ><a name="1191" class="Symbol"
+      >=</a
+      ><a name="1192"
+      > </a
+      ><a name="1193" href="#" class="Postulate"
+      >PREPEND</a
+      ><a name="1200"
+      > </a
+      ><a name="1201" class="String"
+      >&quot;favoriteLanguages&quot;</a
+      ><a name="1220"
+      >
+
+</a
+      ><a name="1222" class="Comment"
+      >{-
+   Ok! Now let's define our abstractions. I like to think of relations
+   between data types as paths, so for example, in a social network we
+   would have a path from UserId to Profile, a path from PostId to Post, etc.
+
+   Note that as in a category, there may be multiple paths between two types! For
+   example, `userPosts` and `userReposts` would be two distinct paths from
+   UserId to List PostId.
+
+   To distinguish between paths, I'll simply name them with a String.
+-}</a
+      ><a name="1707"
+      >
+
+</a
+      ><a name="1709" class="Keyword"
+      >record</a
+      ><a name="1715"
+      > </a
+      ><a name="1716" href="#" class="Record"
+      >Path</a
+      ><a name="1720"
+      > </a
+      ><a name="1721" class="Symbol"
+      >(</a
+      ><a name="1722" href="#" class="Bound"
+      >a</a
+      ><a name="1723"
+      > </a
+      ><a name="1724" href="#" class="Bound"
+      >b</a
+      ><a name="1725"
+      > </a
+      ><a name="1726" class="Symbol"
+      >:</a
+      ><a name="1727"
+      > </a
+      ><a name="1728" class="PrimitiveType"
+      >Set</a
+      ><a name="1731" class="Symbol"
+      >)</a
+      ><a name="1732"
+      > </a
+      ><a name="1733" class="Symbol"
+      >{{</a
+      ><a name="1735" href="#" class="Bound"
+      >_</a
+      ><a name="1736"
+      > </a
+      ><a name="1737" class="Symbol"
+      >:</a
+      ><a name="1738"
+      > </a
+      ><a name="1739" href="#" class="Record"
+      >Serializable</a
+      ><a name="1751"
+      > </a
+      ><a name="1752" href="#" class="Bound"
+      >a</a
+      ><a name="1753" class="Symbol"
+      >}}</a
+      ><a name="1755"
+      > </a
+      ><a name="1756" class="Symbol"
+      >{{</a
+      ><a name="1758" href="#" class="Bound"
+      >_</a
+      ><a name="1759"
+      > </a
+      ><a name="1760" class="Symbol"
+      >:</a
+      ><a name="1761"
+      > </a
+      ><a name="1762" href="#" class="Record"
+      >Serializable</a
+      ><a name="1774"
+      > </a
+      ><a name="1775" href="#" class="Bound"
+      >b</a
+      ><a name="1776" class="Symbol"
+      >}}</a
+      ><a name="1778"
+      > </a
+      ><a name="1779" class="Symbol"
+      >:</a
+      ><a name="1780"
+      > </a
+      ><a name="1781" class="PrimitiveType"
+      >Set</a
+      ><a name="1784"
+      > </a
+      ><a name="1785" class="Keyword"
+      >where</a
+      ><a name="1790"
+      >
+  </a
+      ><a name="1793" class="Keyword"
+      >constructor</a
+      ><a name="1804"
+      > </a
+      ><a name="1805" href="#" class="InductiveConstructor"
+      >name</a
+      ><a name="1809"
+      >
+  </a
+      ><a name="1812" class="Keyword"
+      >field</a
+      ><a name="1817"
+      >
+    </a
+      ><a name="1822" href="#" class="Field"
+      >prefix</a
+      ><a name="1828"
+      > </a
+      ><a name="1829" class="Symbol"
+      >:</a
+      ><a name="1830"
+      > </a
+      ><a name="1831" href="#" class="Postulate"
+      >String</a
+      ><a name="1837"
+      >
+
+</a
+      ><a name="1839" class="Keyword"
+      >record</a
+      ><a name="1845"
+      > </a
+      ><a name="1846" href="#" class="Record"
+      >ListPath</a
+      ><a name="1854"
+      > </a
+      ><a name="1855" class="Symbol"
+      >(</a
+      ><a name="1856" href="#" class="Bound"
+      >a</a
+      ><a name="1857"
+      > </a
+      ><a name="1858" href="#" class="Bound"
+      >b</a
+      ><a name="1859"
+      > </a
+      ><a name="1860" class="Symbol"
+      >:</a
+      ><a name="1861"
+      > </a
+      ><a name="1862" class="PrimitiveType"
+      >Set</a
+      ><a name="1865" class="Symbol"
+      >)</a
+      ><a name="1866"
+      > </a
+      ><a name="1867" class="Symbol"
+      >{{</a
+      ><a name="1869" href="#" class="Bound"
+      >_</a
+      ><a name="1870"
+      > </a
+      ><a name="1871" class="Symbol"
+      >:</a
+      ><a name="1872"
+      > </a
+      ><a name="1873" href="#" class="Record"
+      >Serializable</a
+      ><a name="1885"
+      > </a
+      ><a name="1886" href="#" class="Bound"
+      >a</a
+      ><a name="1887" class="Symbol"
+      >}}</a
+      ><a name="1889"
+      > </a
+      ><a name="1890" class="Symbol"
+      >{{</a
+      ><a name="1892" href="#" class="Bound"
+      >_</a
+      ><a name="1893"
+      > </a
+      ><a name="1894" class="Symbol"
+      >:</a
+      ><a name="1895"
+      > </a
+      ><a name="1896" href="#" class="Record"
+      >Serializable</a
+      ><a name="1908"
+      > </a
+      ><a name="1909" href="#" class="Bound"
+      >b</a
+      ><a name="1910" class="Symbol"
+      >}}</a
+      ><a name="1912"
+      > </a
+      ><a name="1913" class="Symbol"
+      >:</a
+      ><a name="1914"
+      > </a
+      ><a name="1915" class="PrimitiveType"
+      >Set</a
+      ><a name="1918"
+      > </a
+      ><a name="1919" class="Keyword"
+      >where</a
+      ><a name="1924"
+      >
+  </a
+      ><a name="1927" class="Keyword"
+      >constructor</a
+      ><a name="1938"
+      > </a
+      ><a name="1939" href="#" class="InductiveConstructor"
+      >name</a
+      ><a name="1943"
+      >
+  </a
+      ><a name="1946" class="Keyword"
+      >field</a
+      ><a name="1951"
+      >
+    </a
+      ><a name="1956" href="#" class="Field"
+      >prefix</a
+      ><a name="1962"
+      > </a
+      ><a name="1963" class="Symbol"
+      >:</a
+      ><a name="1964"
+      > </a
+      ><a name="1965" href="#" class="Postulate"
+      >String</a
+      ><a name="1971"
+      >
+
+</a
+      ><a name="1973" class="Comment"
+      >{-
+   We'll get back to using these Path types in a minute. For now, we need a
+   way to represent sequences of Redis commands as a data structure. Rather than
+   deal with the sequencing manually, we can simply defer this to the Free monad,
+   meaning all we really need from our Command structure is a Functor.
+
+   Simply providing a decoder parameter for each constructor will give us enough
+   power to make a Functor.
+-}</a
+      ><a name="2402"
+      >
+
+</a
+      ><a name="2404" class="Keyword"
+      >private</a
+      ><a name="2411"
+      >
+  </a
+      ><a name="2414" class="Keyword"
+      >data</a
+      ><a name="2418"
+      > </a
+      ><a name="2419" href="#" class="Datatype"
+      >Command</a
+      ><a name="2426"
+      > </a
+      ><a name="2427" class="Symbol"
+      >{</a
+      ><a name="2428" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="2429" class="Symbol"
+      >}</a
+      ><a name="2430"
+      > </a
+      ><a name="2431" class="Symbol"
+      >:</a
+      ><a name="2432"
+      > </a
+      ><a name="2433" class="PrimitiveType"
+      >Set</a
+      ><a name="2436"
+      > </a
+      ><a name="2437" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="2438"
+      > </a
+      ><a name="2439" class="Symbol"
+      >&#8594;</a
+      ><a name="2440"
+      > </a
+      ><a name="2441" class="PrimitiveType"
+      >Set</a
+      ><a name="2444"
+      > </a
+      ><a name="2445" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="2446"
+      > </a
+      ><a name="2447" class="Keyword"
+      >where</a
+      ><a name="2452"
+      >
+    </a
+      ><a name="2457" href="#" class="InductiveConstructor"
+      >lookup</a
+      ><a name="2463"
+      > </a
+      ><a name="2464" class="Symbol"
+      >:</a
+      ><a name="2465"
+      > </a
+      ><a name="2466" class="Symbol"
+      >&#8704;</a
+      ><a name="2467"
+      > </a
+      ><a name="2468" class="Symbol"
+      >{</a
+      ><a name="2469" href="#" class="Bound"
+      >t</a
+      ><a name="2470"
+      > </a
+      ><a name="2471" class="Symbol"
+      >:</a
+      ><a name="2472"
+      > </a
+      ><a name="2473" class="PrimitiveType"
+      >Set</a
+      ><a name="2476"
+      > </a
+      ><a name="2477" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="2478" class="Symbol"
+      >}</a
+      ><a name="2479"
+      > </a
+      ><a name="2480" class="Symbol"
+      >&#8594;</a
+      ><a name="2481"
+      > </a
+      ><a name="2482" class="Symbol"
+      >(</a
+      ><a name="2483" href="#" class="Bound"
+      >key</a
+      ><a name="2486"
+      > </a
+      ><a name="2487" class="Symbol"
+      >:</a
+      ><a name="2488"
+      > </a
+      ><a name="2489" href="#" class="Postulate"
+      >String</a
+      ><a name="2495" class="Symbol"
+      >)</a
+      ><a name="2496"
+      > </a
+      ><a name="2497" class="Symbol"
+      >&#8594;</a
+      ><a name="2498"
+      > </a
+      ><a name="2499" class="Symbol"
+      >(</a
+      ><a name="2500" href="#" class="Datatype"
+      >Maybe</a
+      ><a name="2505"
+      > </a
+      ><a name="2506" href="#" class="Postulate"
+      >String</a
+      ><a name="2512"
+      > </a
+      ><a name="2513" class="Symbol"
+      >&#8594;</a
+      ><a name="2514"
+      > </a
+      ><a name="2515" href="#" class="Bound"
+      >t</a
+      ><a name="2516" class="Symbol"
+      >)</a
+      ><a name="2517"
+      > </a
+      ><a name="2518" class="Symbol"
+      >&#8594;</a
+      ><a name="2519"
+      > </a
+      ><a name="2520" href="#" class="Datatype"
+      >Command</a
+      ><a name="2527"
+      > </a
+      ><a name="2528" href="#" class="Bound"
+      >t</a
+      ><a name="2529"
+      >
+    </a
+      ><a name="2534" href="#" class="InductiveConstructor"
+      >lookupList</a
+      ><a name="2544"
+      > </a
+      ><a name="2545" class="Symbol"
+      >:</a
+      ><a name="2546"
+      > </a
+      ><a name="2547" class="Symbol"
+      >&#8704;</a
+      ><a name="2548"
+      > </a
+      ><a name="2549" class="Symbol"
+      >{</a
+      ><a name="2550" href="#" class="Bound"
+      >t</a
+      ><a name="2551"
+      > </a
+      ><a name="2552" class="Symbol"
+      >:</a
+      ><a name="2553"
+      > </a
+      ><a name="2554" class="PrimitiveType"
+      >Set</a
+      ><a name="2557"
+      > </a
+      ><a name="2558" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="2559" class="Symbol"
+      >}</a
+      ><a name="2560"
+      > </a
+      ><a name="2561" class="Symbol"
+      >&#8594;</a
+      ><a name="2562"
+      > </a
+      ><a name="2563" class="Symbol"
+      >(</a
+      ><a name="2564" href="#" class="Bound"
+      >key</a
+      ><a name="2567"
+      > </a
+      ><a name="2568" class="Symbol"
+      >:</a
+      ><a name="2569"
+      > </a
+      ><a name="2570" href="#" class="Postulate"
+      >String</a
+      ><a name="2576" class="Symbol"
+      >)</a
+      ><a name="2577"
+      > </a
+      ><a name="2578" class="Symbol"
+      >&#8594;</a
+      ><a name="2579"
+      > </a
+      ><a name="2580" class="Symbol"
+      >(</a
+      ><a name="2581" href="#" class="Datatype"
+      >List</a
+      ><a name="2585"
+      > </a
+      ><a name="2586" href="#" class="Postulate"
+      >String</a
+      ><a name="2592"
+      > </a
+      ><a name="2593" class="Symbol"
+      >&#8594;</a
+      ><a name="2594"
+      > </a
+      ><a name="2595" href="#" class="Bound"
+      >t</a
+      ><a name="2596" class="Symbol"
+      >)</a
+      ><a name="2597"
+      > </a
+      ><a name="2598" class="Symbol"
+      >&#8594;</a
+      ><a name="2599"
+      > </a
+      ><a name="2600" href="#" class="Datatype"
+      >Command</a
+      ><a name="2607"
+      > </a
+      ><a name="2608" href="#" class="Bound"
+      >t</a
+      ><a name="2609"
+      >
+    </a
+      ><a name="2614" href="#" class="InductiveConstructor"
+      >store</a
+      ><a name="2619"
+      > </a
+      ><a name="2620" class="Symbol"
+      >:</a
+      ><a name="2621"
+      > </a
+      ><a name="2622" class="Symbol"
+      >&#8704;</a
+      ><a name="2623"
+      > </a
+      ><a name="2624" class="Symbol"
+      >{</a
+      ><a name="2625" href="#" class="Bound"
+      >t</a
+      ><a name="2626" class="Symbol"
+      >}</a
+      ><a name="2627"
+      > </a
+      ><a name="2628" class="Symbol"
+      >(</a
+      ><a name="2629" href="#" class="Bound"
+      >key</a
+      ><a name="2632"
+      > </a
+      ><a name="2633" href="#" class="Bound"
+      >value</a
+      ><a name="2638"
+      > </a
+      ><a name="2639" class="Symbol"
+      >:</a
+      ><a name="2640"
+      > </a
+      ><a name="2641" href="#" class="Postulate"
+      >String</a
+      ><a name="2647" class="Symbol"
+      >)</a
+      ><a name="2648"
+      > </a
+      ><a name="2649" class="Symbol"
+      >&#8594;</a
+      ><a name="2650"
+      > </a
+      ><a name="2651" class="Symbol"
+      >(</a
+      ><a name="2652" href="#" class="Record"
+      >&#8868;</a
+      ><a name="2653"
+      > </a
+      ><a name="2654" class="Symbol"
+      >&#8594;</a
+      ><a name="2655"
+      > </a
+      ><a name="2656" href="#" class="Bound"
+      >t</a
+      ><a name="2657" class="Symbol"
+      >)</a
+      ><a name="2658"
+      > </a
+      ><a name="2659" class="Symbol"
+      >&#8594;</a
+      ><a name="2660"
+      > </a
+      ><a name="2661" href="#" class="Datatype"
+      >Command</a
+      ><a name="2668"
+      > </a
+      ><a name="2669" href="#" class="Bound"
+      >t</a
+      ><a name="2670"
+      >
+    </a
+      ><a name="2675" href="#" class="InductiveConstructor"
+      >prepend</a
+      ><a name="2682"
+      > </a
+      ><a name="2683" class="Symbol"
+      >:</a
+      ><a name="2684"
+      > </a
+      ><a name="2685" class="Symbol"
+      >&#8704;</a
+      ><a name="2686"
+      > </a
+      ><a name="2687" class="Symbol"
+      >{</a
+      ><a name="2688" href="#" class="Bound"
+      >t</a
+      ><a name="2689" class="Symbol"
+      >}</a
+      ><a name="2690"
+      > </a
+      ><a name="2691" class="Symbol"
+      >(</a
+      ><a name="2692" href="#" class="Bound"
+      >key</a
+      ><a name="2695"
+      > </a
+      ><a name="2696" href="#" class="Bound"
+      >value</a
+      ><a name="2701"
+      > </a
+      ><a name="2702" class="Symbol"
+      >:</a
+      ><a name="2703"
+      > </a
+      ><a name="2704" href="#" class="Postulate"
+      >String</a
+      ><a name="2710" class="Symbol"
+      >)</a
+      ><a name="2711"
+      > </a
+      ><a name="2712" class="Symbol"
+      >&#8594;</a
+      ><a name="2713"
+      > </a
+      ><a name="2714" class="Symbol"
+      >(</a
+      ><a name="2715" href="#" class="Record"
+      >&#8868;</a
+      ><a name="2716"
+      > </a
+      ><a name="2717" class="Symbol"
+      >&#8594;</a
+      ><a name="2718"
+      > </a
+      ><a name="2719" href="#" class="Bound"
+      >t</a
+      ><a name="2720" class="Symbol"
+      >)</a
+      ><a name="2721"
+      > </a
+      ><a name="2722" class="Symbol"
+      >&#8594;</a
+      ><a name="2723"
+      > </a
+      ><a name="2724" href="#" class="Datatype"
+      >Command</a
+      ><a name="2731"
+      > </a
+      ><a name="2732" href="#" class="Bound"
+      >t</a
+      ><a name="2733"
+      >
+    </a
+      ><a name="2738" href="#" class="InductiveConstructor"
+      >delete</a
+      ><a name="2744"
+      > </a
+      ><a name="2745" class="Symbol"
+      >:</a
+      ><a name="2746"
+      > </a
+      ><a name="2747" class="Symbol"
+      >&#8704;</a
+      ><a name="2748"
+      > </a
+      ><a name="2749" class="Symbol"
+      >{</a
+      ><a name="2750" href="#" class="Bound"
+      >t</a
+      ><a name="2751" class="Symbol"
+      >}</a
+      ><a name="2752"
+      > </a
+      ><a name="2753" class="Symbol"
+      >(</a
+      ><a name="2754" href="#" class="Bound"
+      >key</a
+      ><a name="2757"
+      > </a
+      ><a name="2758" class="Symbol"
+      >:</a
+      ><a name="2759"
+      > </a
+      ><a name="2760" href="#" class="Postulate"
+      >String</a
+      ><a name="2766" class="Symbol"
+      >)</a
+      ><a name="2767"
+      > </a
+      ><a name="2768" class="Symbol"
+      >&#8594;</a
+      ><a name="2769"
+      > </a
+      ><a name="2770" class="Symbol"
+      >(</a
+      ><a name="2771" href="#" class="Record"
+      >&#8868;</a
+      ><a name="2772"
+      > </a
+      ><a name="2773" class="Symbol"
+      >&#8594;</a
+      ><a name="2774"
+      > </a
+      ><a name="2775" href="#" class="Bound"
+      >t</a
+      ><a name="2776" class="Symbol"
+      >)</a
+      ><a name="2777"
+      > </a
+      ><a name="2778" class="Symbol"
+      >&#8594;</a
+      ><a name="2779"
+      > </a
+      ><a name="2780" href="#" class="Datatype"
+      >Command</a
+      ><a name="2787"
+      > </a
+      ><a name="2788" href="#" class="Bound"
+      >t</a
+      ><a name="2789"
+      >
+
+  </a
+      ><a name="2795" href="#" class="Function"
+      >mapOp</a
+      ><a name="2800"
+      > </a
+      ><a name="2801" class="Symbol"
+      >:</a
+      ><a name="2802"
+      > </a
+      ><a name="2803" class="Symbol"
+      >&#8704;</a
+      ><a name="2804"
+      > </a
+      ><a name="2805" class="Symbol"
+      >{</a
+      ><a name="2806" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="2808"
+      > </a
+      ><a name="2809" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="2811" class="Symbol"
+      >}</a
+      ><a name="2812"
+      > </a
+      ><a name="2813" class="Symbol"
+      >{</a
+      ><a name="2814" href="#" class="Bound"
+      >t&#8321;</a
+      ><a name="2816"
+      > </a
+      ><a name="2817" class="Symbol"
+      >:</a
+      ><a name="2818"
+      > </a
+      ><a name="2819" class="PrimitiveType"
+      >Set</a
+      ><a name="2822"
+      > </a
+      ><a name="2823" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="2825" class="Symbol"
+      >}</a
+      ><a name="2826"
+      > </a
+      ><a name="2827" class="Symbol"
+      >{</a
+      ><a name="2828" href="#" class="Bound"
+      >t&#8322;</a
+      ><a name="2830"
+      > </a
+      ><a name="2831" class="Symbol"
+      >:</a
+      ><a name="2832"
+      > </a
+      ><a name="2833" class="PrimitiveType"
+      >Set</a
+      ><a name="2836"
+      > </a
+      ><a name="2837" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="2839" class="Symbol"
+      >}</a
+      ><a name="2840"
+      > </a
+      ><a name="2841" class="Symbol"
+      >&#8594;</a
+      ><a name="2842"
+      > </a
+      ><a name="2843" class="Symbol"
+      >(</a
+      ><a name="2844" href="#" class="Bound"
+      >t&#8321;</a
+      ><a name="2846"
+      > </a
+      ><a name="2847" class="Symbol"
+      >&#8594;</a
+      ><a name="2848"
+      > </a
+      ><a name="2849" href="#" class="Bound"
+      >t&#8322;</a
+      ><a name="2851" class="Symbol"
+      >)</a
+      ><a name="2852"
+      > </a
+      ><a name="2853" class="Symbol"
+      >&#8594;</a
+      ><a name="2854"
+      > </a
+      ><a name="2855" href="#" class="Datatype"
+      >Command</a
+      ><a name="2862"
+      > </a
+      ><a name="2863" href="#" class="Bound"
+      >t&#8321;</a
+      ><a name="2865"
+      > </a
+      ><a name="2866" class="Symbol"
+      >&#8594;</a
+      ><a name="2867"
+      > </a
+      ><a name="2868" href="#" class="Datatype"
+      >Command</a
+      ><a name="2875"
+      > </a
+      ><a name="2876" href="#" class="Bound"
+      >t&#8322;</a
+      ><a name="2878"
+      >
+  </a
+      ><a name="2881" href="#" class="Function"
+      >mapOp</a
+      ><a name="2886"
+      > </a
+      ><a name="2887" href="#" class="Bound"
+      >f</a
+      ><a name="2888"
+      > </a
+      ><a name="2889" class="Symbol"
+      >(</a
+      ><a name="2890" href="#" class="InductiveConstructor"
+      >lookup</a
+      ><a name="2896"
+      > </a
+      ><a name="2897" href="#" class="Bound"
+      >x</a
+      ><a name="2898"
+      > </a
+      ><a name="2899" href="#" class="Bound"
+      >d</a
+      ><a name="2900" class="Symbol"
+      >)</a
+      ><a name="2901"
+      > </a
+      ><a name="2902" class="Symbol"
+      >=</a
+      ><a name="2903"
+      > </a
+      ><a name="2904" href="#" class="InductiveConstructor"
+      >lookup</a
+      ><a name="2910"
+      > </a
+      ><a name="2911" href="#" class="Bound"
+      >x</a
+      ><a name="2912"
+      > </a
+      ><a name="2913" class="Symbol"
+      >(</a
+      ><a name="2914" href="#" class="Bound"
+      >f</a
+      ><a name="2915"
+      > </a
+      ><a name="2916" href="#" class="Function Operator"
+      >&#8728;</a
+      ><a name="2917"
+      > </a
+      ><a name="2918" href="#" class="Bound"
+      >d</a
+      ><a name="2919" class="Symbol"
+      >)</a
+      ><a name="2920"
+      >
+  </a
+      ><a name="2923" href="#" class="Function"
+      >mapOp</a
+      ><a name="2928"
+      > </a
+      ><a name="2929" href="#" class="Bound"
+      >f</a
+      ><a name="2930"
+      > </a
+      ><a name="2931" class="Symbol"
+      >(</a
+      ><a name="2932" href="#" class="InductiveConstructor"
+      >lookupList</a
+      ><a name="2942"
+      > </a
+      ><a name="2943" href="#" class="Bound"
+      >x</a
+      ><a name="2944"
+      > </a
+      ><a name="2945" href="#" class="Bound"
+      >d</a
+      ><a name="2946" class="Symbol"
+      >)</a
+      ><a name="2947"
+      > </a
+      ><a name="2948" class="Symbol"
+      >=</a
+      ><a name="2949"
+      > </a
+      ><a name="2950" href="#" class="InductiveConstructor"
+      >lookupList</a
+      ><a name="2960"
+      > </a
+      ><a name="2961" href="#" class="Bound"
+      >x</a
+      ><a name="2962"
+      > </a
+      ><a name="2963" class="Symbol"
+      >(</a
+      ><a name="2964" href="#" class="Bound"
+      >f</a
+      ><a name="2965"
+      > </a
+      ><a name="2966" href="#" class="Function Operator"
+      >&#8728;</a
+      ><a name="2967"
+      > </a
+      ><a name="2968" href="#" class="Bound"
+      >d</a
+      ><a name="2969" class="Symbol"
+      >)</a
+      ><a name="2970"
+      >
+  </a
+      ><a name="2973" href="#" class="Function"
+      >mapOp</a
+      ><a name="2978"
+      > </a
+      ><a name="2979" href="#" class="Bound"
+      >f</a
+      ><a name="2980"
+      > </a
+      ><a name="2981" class="Symbol"
+      >(</a
+      ><a name="2982" href="#" class="InductiveConstructor"
+      >store</a
+      ><a name="2987"
+      > </a
+      ><a name="2988" href="#" class="Bound"
+      >key</a
+      ><a name="2991"
+      > </a
+      ><a name="2992" href="#" class="Bound"
+      >value</a
+      ><a name="2997"
+      > </a
+      ><a name="2998" href="#" class="Bound"
+      >x</a
+      ><a name="2999" class="Symbol"
+      >)</a
+      ><a name="3000"
+      > </a
+      ><a name="3001" class="Symbol"
+      >=</a
+      ><a name="3002"
+      > </a
+      ><a name="3003" href="#" class="InductiveConstructor"
+      >store</a
+      ><a name="3008"
+      > </a
+      ><a name="3009" href="#" class="Bound"
+      >key</a
+      ><a name="3012"
+      > </a
+      ><a name="3013" href="#" class="Bound"
+      >value</a
+      ><a name="3018"
+      > </a
+      ><a name="3019" class="Symbol"
+      >(&#955;</a
+      ><a name="3021"
+      > </a
+      ><a name="3022" href="#" class="Bound"
+      >_</a
+      ><a name="3023"
+      > </a
+      ><a name="3024" class="Symbol"
+      >&#8594;</a
+      ><a name="3025"
+      > </a
+      ><a name="3026" href="#" class="Bound"
+      >f</a
+      ><a name="3027"
+      > </a
+      ><a name="3028" class="Symbol"
+      >(</a
+      ><a name="3029" href="#" class="Bound"
+      >x</a
+      ><a name="3030"
+      > </a
+      ><a name="3031" href="#" class="InductiveConstructor"
+      >tt</a
+      ><a name="3033" class="Symbol"
+      >))</a
+      ><a name="3035"
+      >
+  </a
+      ><a name="3038" href="#" class="Function"
+      >mapOp</a
+      ><a name="3043"
+      > </a
+      ><a name="3044" href="#" class="Bound"
+      >f</a
+      ><a name="3045"
+      > </a
+      ><a name="3046" class="Symbol"
+      >(</a
+      ><a name="3047" href="#" class="InductiveConstructor"
+      >prepend</a
+      ><a name="3054"
+      > </a
+      ><a name="3055" href="#" class="Bound"
+      >key</a
+      ><a name="3058"
+      > </a
+      ><a name="3059" href="#" class="Bound"
+      >value</a
+      ><a name="3064"
+      > </a
+      ><a name="3065" href="#" class="Bound"
+      >x</a
+      ><a name="3066" class="Symbol"
+      >)</a
+      ><a name="3067"
+      > </a
+      ><a name="3068" class="Symbol"
+      >=</a
+      ><a name="3069"
+      > </a
+      ><a name="3070" href="#" class="InductiveConstructor"
+      >prepend</a
+      ><a name="3077"
+      > </a
+      ><a name="3078" href="#" class="Bound"
+      >key</a
+      ><a name="3081"
+      > </a
+      ><a name="3082" href="#" class="Bound"
+      >value</a
+      ><a name="3087"
+      > </a
+      ><a name="3088" class="Symbol"
+      >(&#955;</a
+      ><a name="3090"
+      > </a
+      ><a name="3091" href="#" class="Bound"
+      >_</a
+      ><a name="3092"
+      > </a
+      ><a name="3093" class="Symbol"
+      >&#8594;</a
+      ><a name="3094"
+      > </a
+      ><a name="3095" href="#" class="Bound"
+      >f</a
+      ><a name="3096"
+      > </a
+      ><a name="3097" class="Symbol"
+      >(</a
+      ><a name="3098" href="#" class="Bound"
+      >x</a
+      ><a name="3099"
+      > </a
+      ><a name="3100" href="#" class="InductiveConstructor"
+      >tt</a
+      ><a name="3102" class="Symbol"
+      >))</a
+      ><a name="3104"
+      >
+  </a
+      ><a name="3107" href="#" class="Function"
+      >mapOp</a
+      ><a name="3112"
+      > </a
+      ><a name="3113" href="#" class="Bound"
+      >f</a
+      ><a name="3114"
+      > </a
+      ><a name="3115" class="Symbol"
+      >(</a
+      ><a name="3116" href="#" class="InductiveConstructor"
+      >delete</a
+      ><a name="3122"
+      > </a
+      ><a name="3123" href="#" class="Bound"
+      >key</a
+      ><a name="3126"
+      > </a
+      ><a name="3127" href="#" class="Bound"
+      >x</a
+      ><a name="3128" class="Symbol"
+      >)</a
+      ><a name="3129"
+      > </a
+      ><a name="3130" class="Symbol"
+      >=</a
+      ><a name="3131"
+      > </a
+      ><a name="3132" href="#" class="InductiveConstructor"
+      >delete</a
+      ><a name="3138"
+      > </a
+      ><a name="3139" href="#" class="Bound"
+      >key</a
+      ><a name="3142"
+      > </a
+      ><a name="3143" class="Symbol"
+      >(&#955;</a
+      ><a name="3145"
+      > </a
+      ><a name="3146" href="#" class="Bound"
+      >_</a
+      ><a name="3147"
+      > </a
+      ><a name="3148" class="Symbol"
+      >&#8594;</a
+      ><a name="3149"
+      > </a
+      ><a name="3150" href="#" class="Bound"
+      >f</a
+      ><a name="3151"
+      > </a
+      ><a name="3152" class="Symbol"
+      >(</a
+      ><a name="3153" href="#" class="Bound"
+      >x</a
+      ><a name="3154"
+      > </a
+      ><a name="3155" href="#" class="InductiveConstructor"
+      >tt</a
+      ><a name="3157" class="Symbol"
+      >))</a
+      ><a name="3159"
+      >
+
+  </a
+      ><a name="3163" class="Keyword"
+      >instance</a
+      ><a name="3171"
+      >
+    </a
+      ><a name="3176" href="#" class="Function"
+      >redisIsFunctor</a
+      ><a name="3190"
+      > </a
+      ><a name="3191" class="Symbol"
+      >:</a
+      ><a name="3192"
+      > </a
+      ><a name="3193" class="Symbol"
+      >&#8704;</a
+      ><a name="3194"
+      > </a
+      ><a name="3195" class="Symbol"
+      >{</a
+      ><a name="3196" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="3198"
+      > </a
+      ><a name="3199" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="3201" class="Symbol"
+      >}</a
+      ><a name="3202"
+      > </a
+      ><a name="3203" class="Symbol"
+      >&#8594;</a
+      ><a name="3204"
+      > </a
+      ><a name="3205" href="#" class="Record"
+      >Functor</a
+      ><a name="3212"
+      > </a
+      ><a name="3213" href="#" class="Datatype"
+      >Command</a
+      ><a name="3220"
+      > </a
+      ><a name="3221" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="3223"
+      > </a
+      ><a name="3224" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="3226"
+      >
+    </a
+      ><a name="3231" href="#" class="Function"
+      >redisIsFunctor</a
+      ><a name="3245"
+      > </a
+      ><a name="3246" class="Symbol"
+      >=</a
+      ><a name="3247"
+      > </a
+      ><a name="3248" class="Keyword"
+      >record</a
+      ><a name="3254"
+      > </a
+      ><a name="3255" class="Symbol"
+      >{</a
+      ><a name="3256"
+      > </a
+      ><a name="3257" class="Field Operator"
+      >_&lt;$&gt;_</a
+      ><a name="3262"
+      > </a
+      ><a name="3263" class="Symbol"
+      >=</a
+      ><a name="3264"
+      > </a
+      ><a name="3265" href="#" class="Function"
+      >mapOp</a
+      ><a name="3270"
+      > </a
+      ><a name="3271" class="Symbol"
+      >}</a
+      ><a name="3272"
+      >
+
+  </a
+      ><a name="3276" href="#" class="Function"
+      >Redis</a
+      ><a name="3281"
+      > </a
+      ><a name="3282" class="Symbol"
+      >=</a
+      ><a name="3283"
+      > </a
+      ><a name="3284" href="#" class="Datatype"
+      >Free</a
+      ><a name="3288"
+      > </a
+      ><a name="3289" href="#" class="Datatype"
+      >Command</a
+      ><a name="3296"
+      >
+
+</a
+      ><a name="3298" class="Comment"
+      >{-
+   To use our new Redis monad, we need to reify it back into IO. As an aside,
+   it's possible to define a pure implementation of Redis's primitives and
+   reify into that as well, meaning you could state and prove mathematical
+   properties about your relations and queries.
+
+   But for this article, we'll just reify back to IO.
+-}</a
+      ><a name="3638"
+      >
+
+</a
+      ><a name="3642" class="Symbol"
+      >{-#</a
+      ><a name="3645"
+      > </a
+      ><a name="3646" class="Keyword"
+      >TERMINATING</a
+      ><a name="3657"
+      > </a
+      ><a name="3658" class="Symbol"
+      >#-}</a
+      ><a name="3661"
+      >
+</a
+      ><a name="3662" href="#" class="Function"
+      >reifyToPrimitive</a
+      ><a name="3678"
+      > </a
+      ><a name="3679" class="Symbol"
+      >:</a
+      ><a name="3680"
+      > </a
+      ><a name="3681" class="Symbol"
+      >&#8704;</a
+      ><a name="3682"
+      > </a
+      ><a name="3683" class="Symbol"
+      >{</a
+      ><a name="3684" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="3685" class="Symbol"
+      >}</a
+      ><a name="3686"
+      > </a
+      ><a name="3687" class="Symbol"
+      >{</a
+      ><a name="3688" href="#" class="Bound"
+      >t</a
+      ><a name="3689"
+      > </a
+      ><a name="3690" class="Symbol"
+      >:</a
+      ><a name="3691"
+      > </a
+      ><a name="3692" class="PrimitiveType"
+      >Set</a
+      ><a name="3695"
+      > </a
+      ><a name="3696" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="3697" class="Symbol"
+      >}</a
+      ><a name="3698"
+      > </a
+      ><a name="3699" class="Symbol"
+      >&#8594;</a
+      ><a name="3700"
+      > </a
+      ><a name="3701" href="#" class="Function"
+      >Redis</a
+      ><a name="3706"
+      > </a
+      ><a name="3707" href="#" class="Bound"
+      >t</a
+      ><a name="3708"
+      > </a
+      ><a name="3709" class="Symbol"
+      >&#8594;</a
+      ><a name="3710"
+      > </a
+      ><a name="3711" href="#" class="Function"
+      >RedisPrimitiveCommand</a
+      ><a name="3732"
+      > </a
+      ><a name="3733" href="#" class="Bound"
+      >t</a
+      ><a name="3734"
+      >
+</a
+      ><a name="3735" href="#" class="Function"
+      >reifyToPrimitive</a
+      ><a name="3751"
+      > </a
+      ><a name="3752" class="Symbol"
+      >(</a
+      ><a name="3753" href="#" class="InductiveConstructor"
+      >Pure</a
+      ><a name="3757"
+      > </a
+      ><a name="3758" href="#" class="Bound"
+      >x</a
+      ><a name="3759" class="Symbol"
+      >)</a
+      ><a name="3760"
+      > </a
+      ><a name="3761" class="Symbol"
+      >=</a
+      ><a name="3762"
+      > </a
+      ><a name="3763" href="#" class="Field"
+      >pure</a
+      ><a name="3767"
+      > </a
+      ><a name="3768" href="#" class="Bound"
+      >x</a
+      ><a name="3769"
+      >
+</a
+      ><a name="3770" href="#" class="Function"
+      >reifyToPrimitive</a
+      ><a name="3786"
+      > </a
+      ><a name="3787" class="Symbol"
+      >(</a
+      ><a name="3788" href="#" class="InductiveConstructor"
+      >MkFree</a
+      ><a name="3794"
+      > </a
+      ><a name="3795" class="Symbol"
+      >(</a
+      ><a name="3796" href="#" class="InductiveConstructor"
+      >lookup</a
+      ><a name="3802"
+      > </a
+      ><a name="3803" href="#" class="Bound"
+      >x</a
+      ><a name="3804"
+      > </a
+      ><a name="3805" href="#" class="Bound"
+      >d</a
+      ><a name="3806" class="Symbol"
+      >))</a
+      ><a name="3808"
+      > </a
+      ><a name="3809" class="Symbol"
+      >=</a
+      ><a name="3810"
+      > </a
+      ><a name="3811" href="#" class="Bound"
+      >d</a
+      ><a name="3812"
+      > </a
+      ><a name="3813" href="#" class="Field Operator"
+      >&lt;$&gt;</a
+      ><a name="3816"
+      > </a
+      ><a name="3817" href="#" class="Postulate"
+      >GET</a
+      ><a name="3820"
+      > </a
+      ><a name="3821" href="#" class="Bound"
+      >x</a
+      ><a name="3822"
+      > </a
+      ><a name="3823" href="#" class="Field Operator"
+      >&gt;&gt;=</a
+      ><a name="3826"
+      > </a
+      ><a name="3827" href="#" class="Function"
+      >reifyToPrimitive</a
+      ><a name="3843"
+      >
+</a
+      ><a name="3844" href="#" class="Function"
+      >reifyToPrimitive</a
+      ><a name="3860"
+      > </a
+      ><a name="3861" class="Symbol"
+      >(</a
+      ><a name="3862" href="#" class="InductiveConstructor"
+      >MkFree</a
+      ><a name="3868"
+      > </a
+      ><a name="3869" class="Symbol"
+      >(</a
+      ><a name="3870" href="#" class="InductiveConstructor"
+      >lookupList</a
+      ><a name="3880"
+      > </a
+      ><a name="3881" href="#" class="Bound"
+      >x</a
+      ><a name="3882"
+      > </a
+      ><a name="3883" href="#" class="Bound"
+      >d</a
+      ><a name="3884" class="Symbol"
+      >))</a
+      ><a name="3886"
+      > </a
+      ><a name="3887" class="Symbol"
+      >=</a
+      ><a name="3888"
+      > </a
+      ><a name="3889" href="#" class="Bound"
+      >d</a
+      ><a name="3890"
+      > </a
+      ><a name="3891" href="#" class="Field Operator"
+      >&lt;$&gt;</a
+      ><a name="3894"
+      > </a
+      ><a name="3895" href="#" class="Postulate"
+      >GETLIST</a
+      ><a name="3902"
+      > </a
+      ><a name="3903" href="#" class="Bound"
+      >x</a
+      ><a name="3904"
+      > </a
+      ><a name="3905" href="#" class="Field Operator"
+      >&gt;&gt;=</a
+      ><a name="3908"
+      > </a
+      ><a name="3909" href="#" class="Function"
+      >reifyToPrimitive</a
+      ><a name="3925"
+      >
+</a
+      ><a name="3926" href="#" class="Function"
+      >reifyToPrimitive</a
+      ><a name="3942"
+      > </a
+      ><a name="3943" class="Symbol"
+      >(</a
+      ><a name="3944" href="#" class="InductiveConstructor"
+      >MkFree</a
+      ><a name="3950"
+      > </a
+      ><a name="3951" class="Symbol"
+      >(</a
+      ><a name="3952" href="#" class="InductiveConstructor"
+      >store</a
+      ><a name="3957"
+      > </a
+      ><a name="3958" href="#" class="Bound"
+      >key</a
+      ><a name="3961"
+      > </a
+      ><a name="3962" href="#" class="Bound"
+      >value</a
+      ><a name="3967"
+      > </a
+      ><a name="3968" href="#" class="Bound"
+      >d</a
+      ><a name="3969" class="Symbol"
+      >))</a
+      ><a name="3971"
+      > </a
+      ><a name="3972" class="Symbol"
+      >=</a
+      ><a name="3973"
+      > </a
+      ><a name="3974" href="#" class="Bound"
+      >d</a
+      ><a name="3975"
+      > </a
+      ><a name="3976" href="#" class="Field Operator"
+      >&lt;$&gt;</a
+      ><a name="3979"
+      > </a
+      ><a name="3980" href="#" class="Postulate"
+      >SET</a
+      ><a name="3983"
+      > </a
+      ><a name="3984" href="#" class="Bound"
+      >key</a
+      ><a name="3987"
+      > </a
+      ><a name="3988" href="#" class="Bound"
+      >value</a
+      ><a name="3993"
+      > </a
+      ><a name="3994" href="#" class="Field Operator"
+      >&gt;&gt;=</a
+      ><a name="3997"
+      > </a
+      ><a name="3998" href="#" class="Function"
+      >reifyToPrimitive</a
+      ><a name="4014"
+      >
+</a
+      ><a name="4015" href="#" class="Function"
+      >reifyToPrimitive</a
+      ><a name="4031"
+      > </a
+      ><a name="4032" class="Symbol"
+      >(</a
+      ><a name="4033" href="#" class="InductiveConstructor"
+      >MkFree</a
+      ><a name="4039"
+      > </a
+      ><a name="4040" class="Symbol"
+      >(</a
+      ><a name="4041" href="#" class="InductiveConstructor"
+      >prepend</a
+      ><a name="4048"
+      > </a
+      ><a name="4049" href="#" class="Bound"
+      >key</a
+      ><a name="4052"
+      > </a
+      ><a name="4053" href="#" class="Bound"
+      >value</a
+      ><a name="4058"
+      > </a
+      ><a name="4059" href="#" class="Bound"
+      >d</a
+      ><a name="4060" class="Symbol"
+      >))</a
+      ><a name="4062"
+      > </a
+      ><a name="4063" class="Symbol"
+      >=</a
+      ><a name="4064"
+      > </a
+      ><a name="4065" href="#" class="Bound"
+      >d</a
+      ><a name="4066"
+      > </a
+      ><a name="4067" href="#" class="Field Operator"
+      >&lt;$&gt;</a
+      ><a name="4070"
+      > </a
+      ><a name="4071" href="#" class="Postulate"
+      >PREPEND</a
+      ><a name="4078"
+      > </a
+      ><a name="4079" href="#" class="Bound"
+      >key</a
+      ><a name="4082"
+      > </a
+      ><a name="4083" href="#" class="Bound"
+      >value</a
+      ><a name="4088"
+      > </a
+      ><a name="4089" href="#" class="Field Operator"
+      >&gt;&gt;=</a
+      ><a name="4092"
+      > </a
+      ><a name="4093" href="#" class="Function"
+      >reifyToPrimitive</a
+      ><a name="4109"
+      >
+</a
+      ><a name="4110" href="#" class="Function"
+      >reifyToPrimitive</a
+      ><a name="4126"
+      > </a
+      ><a name="4127" class="Symbol"
+      >(</a
+      ><a name="4128" href="#" class="InductiveConstructor"
+      >MkFree</a
+      ><a name="4134"
+      > </a
+      ><a name="4135" class="Symbol"
+      >(</a
+      ><a name="4136" href="#" class="InductiveConstructor"
+      >delete</a
+      ><a name="4142"
+      > </a
+      ><a name="4143" href="#" class="Bound"
+      >key</a
+      ><a name="4146"
+      > </a
+      ><a name="4147" href="#" class="Bound"
+      >d</a
+      ><a name="4148" class="Symbol"
+      >))</a
+      ><a name="4150"
+      > </a
+      ><a name="4151" class="Symbol"
+      >=</a
+      ><a name="4152"
+      > </a
+      ><a name="4153" href="#" class="Bound"
+      >d</a
+      ><a name="4154"
+      > </a
+      ><a name="4155" href="#" class="Field Operator"
+      >&lt;$&gt;</a
+      ><a name="4158"
+      > </a
+      ><a name="4159" href="#" class="Postulate"
+      >DELETE</a
+      ><a name="4165"
+      > </a
+      ><a name="4166" href="#" class="Bound"
+      >key</a
+      ><a name="4169"
+      > </a
+      ><a name="4170" href="#" class="Field Operator"
+      >&gt;&gt;=</a
+      ><a name="4173"
+      > </a
+      ><a name="4174" href="#" class="Function"
+      >reifyToPrimitive</a
+      ><a name="4190"
+      >
+
+</a
+      ><a name="4192" class="Comment"
+      >{-
+   And one final piece to complete our abstraction: connect our Path concept to our new
+   Redis monad! Since the implementation of Command is private, access via a Path as
+   defined below is the only way to create a Redis t.
+-}</a
+      ><a name="4424"
+      >
+
+</a
+      ><a name="4426" class="Keyword"
+      >open</a
+      ><a name="4430"
+      > </a
+      ><a name="4431" href="#" class="Module"
+      >Serializable</a
+      ><a name="4443"
+      > </a
+      ><a name="4444" class="Symbol"
+      >{{...}}</a
+      ><a name="4451"
+      >
+
+</a
+      ><a name="4453" href="#" class="Function"
+      >lookupPath</a
+      ><a name="4463"
+      > </a
+      ><a name="4464" class="Symbol"
+      >:</a
+      ><a name="4465"
+      > </a
+      ><a name="4466" class="Symbol"
+      >&#8704;</a
+      ><a name="4467"
+      > </a
+      ><a name="4468" class="Symbol"
+      >{</a
+      ><a name="4469" href="#" class="Bound"
+      >a</a
+      ><a name="4470"
+      > </a
+      ><a name="4471" href="#" class="Bound"
+      >b</a
+      ><a name="4472" class="Symbol"
+      >}</a
+      ><a name="4473"
+      > </a
+      ><a name="4474" class="Symbol"
+      >{{</a
+      ><a name="4476" href="#" class="Bound"
+      >_</a
+      ><a name="4477"
+      > </a
+      ><a name="4478" class="Symbol"
+      >:</a
+      ><a name="4479"
+      > </a
+      ><a name="4480" href="#" class="Record"
+      >Serializable</a
+      ><a name="4492"
+      > </a
+      ><a name="4493" href="#" class="Bound"
+      >a</a
+      ><a name="4494" class="Symbol"
+      >}}</a
+      ><a name="4496"
+      > </a
+      ><a name="4497" class="Symbol"
+      >{{</a
+      ><a name="4499" href="#" class="Bound"
+      >_</a
+      ><a name="4500"
+      > </a
+      ><a name="4501" class="Symbol"
+      >:</a
+      ><a name="4502"
+      > </a
+      ><a name="4503" href="#" class="Record"
+      >Serializable</a
+      ><a name="4515"
+      > </a
+      ><a name="4516" href="#" class="Bound"
+      >b</a
+      ><a name="4517" class="Symbol"
+      >}}</a
+      ><a name="4519"
+      > </a
+      ><a name="4520" class="Symbol"
+      >&#8594;</a
+      ><a name="4521"
+      > </a
+      ><a name="4522" href="#" class="Record"
+      >Path</a
+      ><a name="4526"
+      > </a
+      ><a name="4527" href="#" class="Bound"
+      >a</a
+      ><a name="4528"
+      > </a
+      ><a name="4529" href="#" class="Bound"
+      >b</a
+      ><a name="4530"
+      > </a
+      ><a name="4531" class="Symbol"
+      >&#8594;</a
+      ><a name="4532"
+      > </a
+      ><a name="4533" href="#" class="Bound"
+      >a</a
+      ><a name="4534"
+      > </a
+      ><a name="4535" class="Symbol"
+      >&#8594;</a
+      ><a name="4536"
+      > </a
+      ><a name="4537" href="#" class="Function"
+      >Redis</a
+      ><a name="4542"
+      > </a
+      ><a name="4543" class="Symbol"
+      >(</a
+      ><a name="4544" href="#" class="Datatype"
+      >Maybe</a
+      ><a name="4549"
+      > </a
+      ><a name="4550" href="#" class="Bound"
+      >b</a
+      ><a name="4551" class="Symbol"
+      >)</a
+      ><a name="4552"
+      >
+</a
+      ><a name="4553" href="#" class="Function"
+      >lookupPath</a
+      ><a name="4563"
+      > </a
+      ><a name="4564" class="Symbol"
+      >(</a
+      ><a name="4565" href="#" class="InductiveConstructor"
+      >name</a
+      ><a name="4569"
+      > </a
+      ><a name="4570" href="#" class="Bound"
+      >prefix</a
+      ><a name="4576" class="Symbol"
+      >)</a
+      ><a name="4577"
+      > </a
+      ><a name="4578" href="#" class="Bound"
+      >x</a
+      ><a name="4579"
+      > </a
+      ><a name="4580" class="Symbol"
+      >=</a
+      ><a name="4581"
+      > </a
+      ><a name="4582" href="#" class="Function"
+      >wrap</a
+      ><a name="4586"
+      > </a
+      ><a name="4587" class="Symbol"
+      >(</a
+      ><a name="4588" href="#" class="InductiveConstructor"
+      >lookup</a
+      ><a name="4594"
+      > </a
+      ><a name="4595" class="Symbol"
+      >(</a
+      ><a name="4596" href="#" class="Bound"
+      >prefix</a
+      ><a name="4602"
+      > </a
+      ><a name="4603" href="#" class="Field Operator"
+      >++</a
+      ><a name="4605"
+      > </a
+      ><a name="4606" href="#" class="Field"
+      >serialize</a
+      ><a name="4615"
+      > </a
+      ><a name="4616" href="#" class="Bound"
+      >x</a
+      ><a name="4617" class="Symbol"
+      >)</a
+      ><a name="4618"
+      > </a
+      ><a name="4619" class="Symbol"
+      >(&#955;</a
+      ><a name="4621"
+      > </a
+      ><a name="4622" href="#" class="Bound"
+      >x</a
+      ><a name="4623"
+      > </a
+      ><a name="4624" class="Symbol"
+      >&#8594;</a
+      ><a name="4625"
+      > </a
+      ><a name="4626" href="#" class="Function"
+      >join</a
+      ><a name="4630"
+      > </a
+      ><a name="4631" class="Symbol"
+      >(</a
+      ><a name="4632" href="#" class="Field"
+      >deserialize</a
+      ><a name="4643"
+      > </a
+      ><a name="4644" href="#" class="Field Operator"
+      >&lt;$&gt;</a
+      ><a name="4647"
+      > </a
+      ><a name="4648" href="#" class="Bound"
+      >x</a
+      ><a name="4649" class="Symbol"
+      >)))</a
+      ><a name="4652"
+      >
+
+</a
+      ><a name="4654" href="#" class="Function"
+      >lookupListPath</a
+      ><a name="4668"
+      > </a
+      ><a name="4669" class="Symbol"
+      >:</a
+      ><a name="4670"
+      > </a
+      ><a name="4671" class="Symbol"
+      >&#8704;</a
+      ><a name="4672"
+      > </a
+      ><a name="4673" class="Symbol"
+      >{</a
+      ><a name="4674" href="#" class="Bound"
+      >a</a
+      ><a name="4675"
+      > </a
+      ><a name="4676" href="#" class="Bound"
+      >b</a
+      ><a name="4677" class="Symbol"
+      >}</a
+      ><a name="4678"
+      > </a
+      ><a name="4679" class="Symbol"
+      >{{</a
+      ><a name="4681" href="#" class="Bound"
+      >_</a
+      ><a name="4682"
+      > </a
+      ><a name="4683" class="Symbol"
+      >:</a
+      ><a name="4684"
+      > </a
+      ><a name="4685" href="#" class="Record"
+      >Serializable</a
+      ><a name="4697"
+      > </a
+      ><a name="4698" href="#" class="Bound"
+      >a</a
+      ><a name="4699" class="Symbol"
+      >}}</a
+      ><a name="4701"
+      > </a
+      ><a name="4702" class="Symbol"
+      >{{</a
+      ><a name="4704" href="#" class="Bound"
+      >_</a
+      ><a name="4705"
+      > </a
+      ><a name="4706" class="Symbol"
+      >:</a
+      ><a name="4707"
+      > </a
+      ><a name="4708" href="#" class="Record"
+      >Serializable</a
+      ><a name="4720"
+      > </a
+      ><a name="4721" href="#" class="Bound"
+      >b</a
+      ><a name="4722" class="Symbol"
+      >}}</a
+      ><a name="4724"
+      > </a
+      ><a name="4725" class="Symbol"
+      >&#8594;</a
+      ><a name="4726"
+      > </a
+      ><a name="4727" href="#" class="Record"
+      >ListPath</a
+      ><a name="4735"
+      > </a
+      ><a name="4736" href="#" class="Bound"
+      >a</a
+      ><a name="4737"
+      > </a
+      ><a name="4738" href="#" class="Bound"
+      >b</a
+      ><a name="4739"
+      > </a
+      ><a name="4740" class="Symbol"
+      >&#8594;</a
+      ><a name="4741"
+      > </a
+      ><a name="4742" href="#" class="Bound"
+      >a</a
+      ><a name="4743"
+      > </a
+      ><a name="4744" class="Symbol"
+      >&#8594;</a
+      ><a name="4745"
+      > </a
+      ><a name="4746" href="#" class="Function"
+      >Redis</a
+      ><a name="4751"
+      > </a
+      ><a name="4752" class="Symbol"
+      >(</a
+      ><a name="4753" href="#" class="Datatype"
+      >List</a
+      ><a name="4757"
+      > </a
+      ><a name="4758" href="#" class="Bound"
+      >b</a
+      ><a name="4759" class="Symbol"
+      >)</a
+      ><a name="4760"
+      >
+</a
+      ><a name="4761" href="#" class="Function"
+      >lookupListPath</a
+      ><a name="4775"
+      > </a
+      ><a name="4776" class="Symbol"
+      >(</a
+      ><a name="4777" href="#" class="InductiveConstructor"
+      >name</a
+      ><a name="4781"
+      > </a
+      ><a name="4782" href="#" class="Bound"
+      >prefix</a
+      ><a name="4788" class="Symbol"
+      >)</a
+      ><a name="4789"
+      > </a
+      ><a name="4790" href="#" class="Bound"
+      >x</a
+      ><a name="4791"
+      > </a
+      ><a name="4792" class="Symbol"
+      >=</a
+      ><a name="4793"
+      > </a
+      ><a name="4794" href="#" class="Function"
+      >wrap</a
+      ><a name="4798"
+      > </a
+      ><a name="4799" class="Symbol"
+      >(</a
+      ><a name="4800" href="#" class="InductiveConstructor"
+      >lookupList</a
+      ><a name="4810"
+      > </a
+      ><a name="4811" class="Symbol"
+      >(</a
+      ><a name="4812" href="#" class="Bound"
+      >prefix</a
+      ><a name="4818"
+      > </a
+      ><a name="4819" href="#" class="Field Operator"
+      >++</a
+      ><a name="4821"
+      > </a
+      ><a name="4822" href="#" class="Field"
+      >serialize</a
+      ><a name="4831"
+      > </a
+      ><a name="4832" href="#" class="Bound"
+      >x</a
+      ><a name="4833" class="Symbol"
+      >)</a
+      ><a name="4834"
+      > </a
+      ><a name="4835" class="Symbol"
+      >(&#955;</a
+      ><a name="4837"
+      > </a
+      ><a name="4838" href="#" class="Bound"
+      >x</a
+      ><a name="4839"
+      > </a
+      ><a name="4840" class="Symbol"
+      >&#8594;</a
+      ><a name="4841"
+      > </a
+      ><a name="4842" href="#" class="Function"
+      >filter</a
+      ><a name="4848"
+      > </a
+      ><a name="4849" href="#" class="Function"
+      >id</a
+      ><a name="4851"
+      > </a
+      ><a name="4852" class="Symbol"
+      >(</a
+      ><a name="4853" href="#" class="Field"
+      >deserialize</a
+      ><a name="4864"
+      > </a
+      ><a name="4865" href="#" class="Field Operator"
+      >&lt;$&gt;</a
+      ><a name="4868"
+      > </a
+      ><a name="4869" href="#" class="Bound"
+      >x</a
+      ><a name="4870" class="Symbol"
+      >)))</a
+      ><a name="4873"
+      >
+
+</a
+      ><a name="4875" href="#" class="Function"
+      >setPath</a
+      ><a name="4882"
+      > </a
+      ><a name="4883" class="Symbol"
+      >:</a
+      ><a name="4884"
+      > </a
+      ><a name="4885" class="Symbol"
+      >&#8704;</a
+      ><a name="4886"
+      > </a
+      ><a name="4887" class="Symbol"
+      >{</a
+      ><a name="4888" href="#" class="Bound"
+      >a</a
+      ><a name="4889"
+      > </a
+      ><a name="4890" href="#" class="Bound"
+      >b</a
+      ><a name="4891" class="Symbol"
+      >}</a
+      ><a name="4892"
+      > </a
+      ><a name="4893" class="Symbol"
+      >{{</a
+      ><a name="4895" href="#" class="Bound"
+      >_</a
+      ><a name="4896"
+      > </a
+      ><a name="4897" class="Symbol"
+      >:</a
+      ><a name="4898"
+      > </a
+      ><a name="4899" href="#" class="Record"
+      >Serializable</a
+      ><a name="4911"
+      > </a
+      ><a name="4912" href="#" class="Bound"
+      >a</a
+      ><a name="4913" class="Symbol"
+      >}}</a
+      ><a name="4915"
+      > </a
+      ><a name="4916" class="Symbol"
+      >{{</a
+      ><a name="4918" href="#" class="Bound"
+      >_</a
+      ><a name="4919"
+      > </a
+      ><a name="4920" class="Symbol"
+      >:</a
+      ><a name="4921"
+      > </a
+      ><a name="4922" href="#" class="Record"
+      >Serializable</a
+      ><a name="4934"
+      > </a
+      ><a name="4935" href="#" class="Bound"
+      >b</a
+      ><a name="4936" class="Symbol"
+      >}}</a
+      ><a name="4938"
+      > </a
+      ><a name="4939" class="Symbol"
+      >&#8594;</a
+      ><a name="4940"
+      > </a
+      ><a name="4941" href="#" class="Record"
+      >Path</a
+      ><a name="4945"
+      > </a
+      ><a name="4946" href="#" class="Bound"
+      >a</a
+      ><a name="4947"
+      > </a
+      ><a name="4948" href="#" class="Bound"
+      >b</a
+      ><a name="4949"
+      > </a
+      ><a name="4950" class="Symbol"
+      >&#8594;</a
+      ><a name="4951"
+      > </a
+      ><a name="4952" href="#" class="Bound"
+      >a</a
+      ><a name="4953"
+      > </a
+      ><a name="4954" class="Symbol"
+      >&#8594;</a
+      ><a name="4955"
+      > </a
+      ><a name="4956" href="#" class="Bound"
+      >b</a
+      ><a name="4957"
+      > </a
+      ><a name="4958" class="Symbol"
+      >&#8594;</a
+      ><a name="4959"
+      > </a
+      ><a name="4960" href="#" class="Function"
+      >Redis</a
+      ><a name="4965"
+      > </a
+      ><a name="4966" href="#" class="Record"
+      >&#8868;</a
+      ><a name="4967"
+      >
+</a
+      ><a name="4968" href="#" class="Function"
+      >setPath</a
+      ><a name="4975"
+      > </a
+      ><a name="4976" class="Symbol"
+      >(</a
+      ><a name="4977" href="#" class="InductiveConstructor"
+      >name</a
+      ><a name="4981"
+      > </a
+      ><a name="4982" href="#" class="Bound"
+      >prefix</a
+      ><a name="4988" class="Symbol"
+      >)</a
+      ><a name="4989"
+      > </a
+      ><a name="4990" href="#" class="Bound"
+      >k</a
+      ><a name="4991"
+      > </a
+      ><a name="4992" href="#" class="Bound"
+      >v</a
+      ><a name="4993"
+      > </a
+      ><a name="4994" class="Symbol"
+      >=</a
+      ><a name="4995"
+      > </a
+      ><a name="4996" href="#" class="Function"
+      >wrap</a
+      ><a name="5000"
+      > </a
+      ><a name="5001" class="Symbol"
+      >(</a
+      ><a name="5002" href="#" class="InductiveConstructor"
+      >store</a
+      ><a name="5007"
+      > </a
+      ><a name="5008" class="Symbol"
+      >(</a
+      ><a name="5009" href="#" class="Bound"
+      >prefix</a
+      ><a name="5015"
+      > </a
+      ><a name="5016" href="#" class="Field Operator"
+      >++</a
+      ><a name="5018"
+      > </a
+      ><a name="5019" href="#" class="Field"
+      >serialize</a
+      ><a name="5028"
+      > </a
+      ><a name="5029" href="#" class="Bound"
+      >k</a
+      ><a name="5030" class="Symbol"
+      >)</a
+      ><a name="5031"
+      > </a
+      ><a name="5032" class="Symbol"
+      >(</a
+      ><a name="5033" href="#" class="Field"
+      >serialize</a
+      ><a name="5042"
+      > </a
+      ><a name="5043" href="#" class="Bound"
+      >v</a
+      ><a name="5044" class="Symbol"
+      >)</a
+      ><a name="5045"
+      > </a
+      ><a name="5046" href="#" class="Function"
+      >id</a
+      ><a name="5048" class="Symbol"
+      >)</a
+      ><a name="5049"
+      >
+
+</a
+      ><a name="5051" href="#" class="Function"
+      >prependPath</a
+      ><a name="5062"
+      > </a
+      ><a name="5063" class="Symbol"
+      >:</a
+      ><a name="5064"
+      > </a
+      ><a name="5065" class="Symbol"
+      >&#8704;</a
+      ><a name="5066"
+      > </a
+      ><a name="5067" class="Symbol"
+      >{</a
+      ><a name="5068" href="#" class="Bound"
+      >a</a
+      ><a name="5069"
+      > </a
+      ><a name="5070" href="#" class="Bound"
+      >b</a
+      ><a name="5071" class="Symbol"
+      >}</a
+      ><a name="5072"
+      > </a
+      ><a name="5073" class="Symbol"
+      >{{</a
+      ><a name="5075" href="#" class="Bound"
+      >_</a
+      ><a name="5076"
+      > </a
+      ><a name="5077" class="Symbol"
+      >:</a
+      ><a name="5078"
+      > </a
+      ><a name="5079" href="#" class="Record"
+      >Serializable</a
+      ><a name="5091"
+      > </a
+      ><a name="5092" href="#" class="Bound"
+      >a</a
+      ><a name="5093" class="Symbol"
+      >}}</a
+      ><a name="5095"
+      > </a
+      ><a name="5096" class="Symbol"
+      >{{</a
+      ><a name="5098" href="#" class="Bound"
+      >_</a
+      ><a name="5099"
+      > </a
+      ><a name="5100" class="Symbol"
+      >:</a
+      ><a name="5101"
+      > </a
+      ><a name="5102" href="#" class="Record"
+      >Serializable</a
+      ><a name="5114"
+      > </a
+      ><a name="5115" href="#" class="Bound"
+      >b</a
+      ><a name="5116" class="Symbol"
+      >}}</a
+      ><a name="5118"
+      > </a
+      ><a name="5119" class="Symbol"
+      >&#8594;</a
+      ><a name="5120"
+      > </a
+      ><a name="5121" href="#" class="Record"
+      >ListPath</a
+      ><a name="5129"
+      > </a
+      ><a name="5130" href="#" class="Bound"
+      >a</a
+      ><a name="5131"
+      > </a
+      ><a name="5132" href="#" class="Bound"
+      >b</a
+      ><a name="5133"
+      > </a
+      ><a name="5134" class="Symbol"
+      >&#8594;</a
+      ><a name="5135"
+      > </a
+      ><a name="5136" href="#" class="Bound"
+      >a</a
+      ><a name="5137"
+      > </a
+      ><a name="5138" class="Symbol"
+      >&#8594;</a
+      ><a name="5139"
+      > </a
+      ><a name="5140" href="#" class="Bound"
+      >b</a
+      ><a name="5141"
+      > </a
+      ><a name="5142" class="Symbol"
+      >&#8594;</a
+      ><a name="5143"
+      > </a
+      ><a name="5144" href="#" class="Function"
+      >Redis</a
+      ><a name="5149"
+      > </a
+      ><a name="5150" href="#" class="Record"
+      >&#8868;</a
+      ><a name="5151"
+      >
+</a
+      ><a name="5152" href="#" class="Function"
+      >prependPath</a
+      ><a name="5163"
+      > </a
+      ><a name="5164" class="Symbol"
+      >(</a
+      ><a name="5165" href="#" class="InductiveConstructor"
+      >name</a
+      ><a name="5169"
+      > </a
+      ><a name="5170" href="#" class="Bound"
+      >prefix</a
+      ><a name="5176" class="Symbol"
+      >)</a
+      ><a name="5177"
+      > </a
+      ><a name="5178" href="#" class="Bound"
+      >k</a
+      ><a name="5179"
+      > </a
+      ><a name="5180" href="#" class="Bound"
+      >v</a
+      ><a name="5181"
+      > </a
+      ><a name="5182" class="Symbol"
+      >=</a
+      ><a name="5183"
+      > </a
+      ><a name="5184" href="#" class="Function"
+      >wrap</a
+      ><a name="5188"
+      > </a
+      ><a name="5189" class="Symbol"
+      >(</a
+      ><a name="5190" href="#" class="InductiveConstructor"
+      >prepend</a
+      ><a name="5197"
+      > </a
+      ><a name="5198" class="Symbol"
+      >(</a
+      ><a name="5199" href="#" class="Bound"
+      >prefix</a
+      ><a name="5205"
+      > </a
+      ><a name="5206" href="#" class="Field Operator"
+      >++</a
+      ><a name="5208"
+      > </a
+      ><a name="5209" href="#" class="Field"
+      >serialize</a
+      ><a name="5218"
+      > </a
+      ><a name="5219" href="#" class="Bound"
+      >k</a
+      ><a name="5220" class="Symbol"
+      >)</a
+      ><a name="5221"
+      > </a
+      ><a name="5222" class="Symbol"
+      >(</a
+      ><a name="5223" href="#" class="Field"
+      >serialize</a
+      ><a name="5232"
+      > </a
+      ><a name="5233" href="#" class="Bound"
+      >v</a
+      ><a name="5234" class="Symbol"
+      >)</a
+      ><a name="5235"
+      > </a
+      ><a name="5236" href="#" class="Function"
+      >id</a
+      ><a name="5238" class="Symbol"
+      >)</a
+      ><a name="5239"
+      >
+
+</a
+      ><a name="5241" href="#" class="Function"
+      >deletePath</a
+      ><a name="5251"
+      > </a
+      ><a name="5252" class="Symbol"
+      >:</a
+      ><a name="5253"
+      > </a
+      ><a name="5254" class="Symbol"
+      >&#8704;</a
+      ><a name="5255"
+      > </a
+      ><a name="5256" class="Symbol"
+      >{</a
+      ><a name="5257" href="#" class="Bound"
+      >a</a
+      ><a name="5258"
+      > </a
+      ><a name="5259" href="#" class="Bound"
+      >b</a
+      ><a name="5260" class="Symbol"
+      >}</a
+      ><a name="5261"
+      > </a
+      ><a name="5262" class="Symbol"
+      >{{</a
+      ><a name="5264" href="#" class="Bound"
+      >_</a
+      ><a name="5265"
+      > </a
+      ><a name="5266" class="Symbol"
+      >:</a
+      ><a name="5267"
+      > </a
+      ><a name="5268" href="#" class="Record"
+      >Serializable</a
+      ><a name="5280"
+      > </a
+      ><a name="5281" href="#" class="Bound"
+      >a</a
+      ><a name="5282" class="Symbol"
+      >}}</a
+      ><a name="5284"
+      > </a
+      ><a name="5285" class="Symbol"
+      >{{</a
+      ><a name="5287" href="#" class="Bound"
+      >_</a
+      ><a name="5288"
+      > </a
+      ><a name="5289" class="Symbol"
+      >:</a
+      ><a name="5290"
+      > </a
+      ><a name="5291" href="#" class="Record"
+      >Serializable</a
+      ><a name="5303"
+      > </a
+      ><a name="5304" href="#" class="Bound"
+      >b</a
+      ><a name="5305" class="Symbol"
+      >}}</a
+      ><a name="5307"
+      > </a
+      ><a name="5308" class="Symbol"
+      >&#8594;</a
+      ><a name="5309"
+      > </a
+      ><a name="5310" href="#" class="Record"
+      >Path</a
+      ><a name="5314"
+      > </a
+      ><a name="5315" href="#" class="Bound"
+      >a</a
+      ><a name="5316"
+      > </a
+      ><a name="5317" href="#" class="Bound"
+      >b</a
+      ><a name="5318"
+      > </a
+      ><a name="5319" class="Symbol"
+      >&#8594;</a
+      ><a name="5320"
+      > </a
+      ><a name="5321" href="#" class="Bound"
+      >a</a
+      ><a name="5322"
+      > </a
+      ><a name="5323" class="Symbol"
+      >&#8594;</a
+      ><a name="5324"
+      > </a
+      ><a name="5325" href="#" class="Function"
+      >Redis</a
+      ><a name="5330"
+      > </a
+      ><a name="5331" href="#" class="Record"
+      >&#8868;</a
+      ><a name="5332"
+      >
+</a
+      ><a name="5333" href="#" class="Function"
+      >deletePath</a
+      ><a name="5343"
+      > </a
+      ><a name="5344" class="Symbol"
+      >(</a
+      ><a name="5345" href="#" class="InductiveConstructor"
+      >name</a
+      ><a name="5349"
+      > </a
+      ><a name="5350" href="#" class="Bound"
+      >prefix</a
+      ><a name="5356" class="Symbol"
+      >)</a
+      ><a name="5357"
+      > </a
+      ><a name="5358" href="#" class="Bound"
+      >k</a
+      ><a name="5359"
+      > </a
+      ><a name="5360" class="Symbol"
+      >=</a
+      ><a name="5361"
+      > </a
+      ><a name="5362" href="#" class="Function"
+      >wrap</a
+      ><a name="5366"
+      > </a
+      ><a name="5367" class="Symbol"
+      >(</a
+      ><a name="5368" href="#" class="InductiveConstructor"
+      >delete</a
+      ><a name="5374"
+      > </a
+      ><a name="5375" class="Symbol"
+      >(</a
+      ><a name="5376" href="#" class="Bound"
+      >prefix</a
+      ><a name="5382"
+      > </a
+      ><a name="5383" href="#" class="Field Operator"
+      >++</a
+      ><a name="5385"
+      > </a
+      ><a name="5386" href="#" class="Field"
+      >serialize</a
+      ><a name="5395"
+      > </a
+      ><a name="5396" href="#" class="Bound"
+      >k</a
+      ><a name="5397" class="Symbol"
+      >)</a
+      ><a name="5398"
+      > </a
+      ><a name="5399" href="#" class="Function"
+      >id</a
+      ><a name="5401" class="Symbol"
+      >)</a
+      ><a name="5402"
+      >
+
+
+</a
+      ><a name="5405" href="#" class="Function"
+      >runRedis</a
+      ><a name="5413"
+      > </a
+      ><a name="5414" class="Symbol"
+      >:</a
+      ><a name="5415"
+      > </a
+      ><a name="5416" class="Symbol"
+      >&#8704;</a
+      ><a name="5417"
+      > </a
+      ><a name="5418" class="Symbol"
+      >{</a
+      ><a name="5419" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="5420" class="Symbol"
+      >}</a
+      ><a name="5421"
+      > </a
+      ><a name="5422" class="Symbol"
+      >{</a
+      ><a name="5423" href="#" class="Bound"
+      >t</a
+      ><a name="5424"
+      > </a
+      ><a name="5425" class="Symbol"
+      >:</a
+      ><a name="5426"
+      > </a
+      ><a name="5427" class="PrimitiveType"
+      >Set</a
+      ><a name="5430"
+      > </a
+      ><a name="5431" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="5432" class="Symbol"
+      >}</a
+      ><a name="5433"
+      > </a
+      ><a name="5434" class="Symbol"
+      >&#8594;</a
+      ><a name="5435"
+      > </a
+      ><a name="5436" href="#" class="Function"
+      >Redis</a
+      ><a name="5441"
+      > </a
+      ><a name="5442" href="#" class="Bound"
+      >t</a
+      ><a name="5443"
+      > </a
+      ><a name="5444" class="Symbol"
+      >&#8594;</a
+      ><a name="5445"
+      > </a
+      ><a name="5446" href="#" class="Postulate"
+      >IO</a
+      ><a name="5448"
+      > </a
+      ><a name="5449" href="#" class="Bound"
+      >t</a
+      ><a name="5450"
+      >
+</a
+      ><a name="5451" href="#" class="Function"
+      >runRedis</a
+      ><a name="5459"
+      > </a
+      ><a name="5460" class="Symbol"
+      >=</a
+      ><a name="5461"
+      > </a
+      ><a name="5462" href="#" class="Function"
+      >reifyToPrimitive</a
+      ><a name="5478"
+      >
+
+</a
+      ><a name="5480" class="Comment"
+      >{-
+   And we're done! We can now define paths between our application data
+   types and control them via the Redis monad. Below are some usage examples
+   demonstrating how concise and safe our API is:
+-}</a
+      ><a name="5684"
+      >
+
+</a
+      ><a name="5686" class="Comment"
+      >-- postulate some typical application types and their serializability</a
+      ><a name="5755"
+      >
+
+</a
+      ><a name="5757" class="Keyword"
+      >postulate</a
+      ><a name="5766"
+      >
+  </a
+      ><a name="5769" href="#" class="Postulate"
+      >UserId</a
+      ><a name="5775"
+      > </a
+      ><a name="5776" href="#" class="Postulate"
+      >PostId</a
+      ><a name="5782"
+      > </a
+      ><a name="5783" href="#" class="Postulate"
+      >Profile</a
+      ><a name="5790"
+      > </a
+      ><a name="5791" href="#" class="Postulate"
+      >Post</a
+      ><a name="5795"
+      > </a
+      ><a name="5796" class="Symbol"
+      >:</a
+      ><a name="5797"
+      > </a
+      ><a name="5798" class="PrimitiveType"
+      >Set</a
+      ><a name="5801"
+      ><a name="5821"
+      >
+
+  </a
+      ><a name="5825" class="Keyword"
+      >instance</a
+      ><a name="5833"
+      >
+    </a
+      ><a name="5838" href="#" class="Postulate"
+      >userIdIsSerializable</a
+      ><a name="5858"
+      > </a
+      ><a name="5859" class="Symbol"
+      >:</a
+      ><a name="5860"
+      > </a
+      ><a name="5861" href="#" class="Record"
+      >Serializable</a
+      ><a name="5873"
+      > </a
+      ><a name="5874" href="#" class="Postulate"
+      >UserId</a
+      ><a name="5880"
+      >
+    </a
+      ><a name="5885" href="#" class="Postulate"
+      >postIdIsSerializable</a
+      ><a name="5905"
+      > </a
+      ><a name="5906" class="Symbol"
+      >:</a
+      ><a name="5907"
+      > </a
+      ><a name="5908" href="#" class="Record"
+      >Serializable</a
+      ><a name="5920"
+      > </a
+      ><a name="5921" href="#" class="Postulate"
+      >PostId</a
+      ><a name="5927"
+      >
+    </a
+      ><a name="5932" href="#" class="Postulate"
+      >profileIsSerializable</a
+      ><a name="5953"
+      > </a
+      ><a name="5954" class="Symbol"
+      >:</a
+      ><a name="5955"
+      > </a
+      ><a name="5956" href="#" class="Record"
+      >Serializable</a
+      ><a name="5968"
+      > </a
+      ><a name="5969" href="#" class="Postulate"
+      >Profile</a
+      ><a name="5976"
+      >
+    </a
+      ><a name="5981" href="#" class="Postulate"
+      >postIsSerializable</a
+      ><a name="5999"
+      > </a
+      ><a name="6000" class="Symbol"
+      >:</a
+      ><a name="6001"
+      > </a
+      ><a name="6002" href="#" class="Record"
+      >Serializable</a
+      ><a name="6014"
+      > </a
+      ><a name="6015" href="#" class="Postulate"
+      >Post</a
+      ><a name="6019"
+      >
+
+</a
+      ><a name="6021" class="Comment"
+      >-- and declare some Paths between our data types</a
+      ><a name="6069"
+      >
+
+</a
+      ><a name="6071" href="#" class="Function"
+      >UserId:Profile</a
+      ><a name="6085"
+      > </a
+      ><a name="6086" class="Symbol"
+      >:</a
+      ><a name="6087"
+      > </a
+      ><a name="6088" href="#" class="Record"
+      >Path</a
+      ><a name="6092"
+      > </a
+      ><a name="6093" href="#" class="Postulate"
+      >UserId</a
+      ><a name="6099"
+      > </a
+      ><a name="6100" href="#" class="Postulate"
+      >Profile</a
+      ><a name="6107"
+      >
+</a
+      ><a name="6108" href="#" class="Function"
+      >UserId:Profile</a
+      ><a name="6122"
+      > </a
+      ><a name="6123" class="Symbol"
+      >=</a
+      ><a name="6124"
+      > </a
+      ><a name="6125" href="#" class="InductiveConstructor"
+      >name</a
+      ><a name="6129"
+      > </a
+      ><a name="6130" class="String"
+      >&quot;userIdToProfile&quot;</a
+      ><a name="6147"
+      >
+
+</a
+      ><a name="6149" href="#" class="Function"
+      >UserId:Friends</a
+      ><a name="6163"
+      > </a
+      ><a name="6164" class="Symbol"
+      >:</a
+      ><a name="6165"
+      > </a
+      ><a name="6166" href="#" class="Record"
+      >ListPath</a
+      ><a name="6174"
+      > </a
+      ><a name="6175" href="#" class="Postulate"
+      >UserId</a
+      ><a name="6181"
+      > </a
+      ><a name="6182" href="#" class="Postulate"
+      >UserId</a
+      ><a name="6188"
+      >
+</a
+      ><a name="6189" href="#" class="Function"
+      >UserId:Friends</a
+      ><a name="6203"
+      > </a
+      ><a name="6204" class="Symbol"
+      >=</a
+      ><a name="6205"
+      > </a
+      ><a name="6206" href="#" class="InductiveConstructor"
+      >name</a
+      ><a name="6210"
+      > </a
+      ><a name="6211" class="String"
+      >&quot;userIdToFriends&quot;</a
+      ><a name="6228"
+      >
+
+</a
+      ><a name="6230" href="#" class="Function"
+      >UserId:Posts</a
+      ><a name="6242"
+      > </a
+      ><a name="6243" class="Symbol"
+      >:</a
+      ><a name="6244"
+      > </a
+      ><a name="6245" href="#" class="Record"
+      >ListPath</a
+      ><a name="6253"
+      > </a
+      ><a name="6254" href="#" class="Postulate"
+      >UserId</a
+      ><a name="6260"
+      > </a
+      ><a name="6261" href="#" class="Postulate"
+      >PostId</a
+      ><a name="6267"
+      >
+</a
+      ><a name="6268" href="#" class="Function"
+      >UserId:Posts</a
+      ><a name="6280"
+      > </a
+      ><a name="6281" class="Symbol"
+      >=</a
+      ><a name="6282"
+      > </a
+      ><a name="6283" href="#" class="InductiveConstructor"
+      >name</a
+      ><a name="6287"
+      > </a
+      ><a name="6288" class="String"
+      >&quot;userIdToPosts&quot;</a
+      ><a name="6303"
+      >
+
+</a
+      ><a name="6305" href="#" class="Function"
+      >PostId:Post</a
+      ><a name="6316"
+      > </a
+      ><a name="6317" class="Symbol"
+      >:</a
+      ><a name="6318"
+      > </a
+      ><a name="6319" href="#" class="Record"
+      >Path</a
+      ><a name="6323"
+      > </a
+      ><a name="6324" href="#" class="Postulate"
+      >PostId</a
+      ><a name="6330"
+      > </a
+      ><a name="6331" href="#" class="Postulate"
+      >Post</a
+      ><a name="6335"
+      >
+</a
+      ><a name="6336" href="#" class="Function"
+      >PostId:Post</a
+      ><a name="6347"
+      > </a
+      ><a name="6348" class="Symbol"
+      >=</a
+      ><a name="6349"
+      > </a
+      ><a name="6350" href="#" class="InductiveConstructor"
+      >name</a
+      ><a name="6354"
+      > </a
+      ><a name="6355" class="String"
+      >&quot;postIdToPost&quot;</a
+      ><a name="6369"
+      >
+
+</a
+      ><a name="6371" class="Comment"
+      >-- and make our core application API!</a
+      ><a name="6408"
+      >
+
+</a
+      ><a name="6410" href="#" class="Function"
+      >getUserProfile</a
+      ><a name="6424"
+      > </a
+      ><a name="6425" class="Symbol"
+      >:</a
+      ><a name="6426"
+      > </a
+      ><a name="6427" href="#" class="Postulate"
+      >UserId</a
+      ><a name="6433"
+      > </a
+      ><a name="6434" class="Symbol"
+      >&#8594;</a
+      ><a name="6435"
+      > </a
+      ><a name="6436" href="#" class="Function"
+      >Redis</a
+      ><a name="6441"
+      > </a
+      ><a name="6442" class="Symbol"
+      >(</a
+      ><a name="6443" href="#" class="Datatype"
+      >Maybe</a
+      ><a name="6448"
+      > </a
+      ><a name="6449" href="#" class="Postulate"
+      >Profile</a
+      ><a name="6456" class="Symbol"
+      >)</a
+      ><a name="6457"
+      >
+</a
+      ><a name="6458" href="#" class="Function"
+      >getUserProfile</a
+      ><a name="6472"
+      > </a
+      ><a name="6473" class="Symbol"
+      >=</a
+      ><a name="6474"
+      > </a
+      ><a name="6475" href="#" class="Function"
+      >lookupPath</a
+      ><a name="6485"
+      > </a
+      ><a name="6486" href="#" class="Function"
+      >UserId:Profile</a
+      ><a name="6500"
+      >
+
+</a
+      ><a name="6502" href="#" class="Function"
+      >getPost</a
+      ><a name="6509"
+      > </a
+      ><a name="6510" class="Symbol"
+      >:</a
+      ><a name="6511"
+      > </a
+      ><a name="6512" href="#" class="Postulate"
+      >PostId</a
+      ><a name="6518"
+      > </a
+      ><a name="6519" class="Symbol"
+      >&#8594;</a
+      ><a name="6520"
+      > </a
+      ><a name="6521" href="#" class="Function"
+      >Redis</a
+      ><a name="6526"
+      > </a
+      ><a name="6527" class="Symbol"
+      >(</a
+      ><a name="6528" href="#" class="Datatype"
+      >Maybe</a
+      ><a name="6533"
+      > </a
+      ><a name="6534" href="#" class="Postulate"
+      >Post</a
+      ><a name="6538" class="Symbol"
+      >)</a
+      ><a name="6539"
+      >
+</a
+      ><a name="6540" href="#" class="Function"
+      >getPost</a
+      ><a name="6547"
+      > </a
+      ><a name="6548" class="Symbol"
+      >=</a
+      ><a name="6549"
+      > </a
+      ><a name="6550" href="#" class="Function"
+      >lookupPath</a
+      ><a name="6560"
+      > </a
+      ><a name="6561" href="#" class="Function"
+      >PostId:Post</a
+      ><a name="6572"
+      >
+
+</a
+      ><a name="6574" href="#" class="Function"
+      >getUserFriends</a
+      ><a name="6588"
+      > </a
+      ><a name="6589" class="Symbol"
+      >:</a
+      ><a name="6590"
+      > </a
+      ><a name="6591" href="#" class="Postulate"
+      >UserId</a
+      ><a name="6597"
+      > </a
+      ><a name="6598" class="Symbol"
+      >&#8594;</a
+      ><a name="6599"
+      > </a
+      ><a name="6600" href="#" class="Function"
+      >Redis</a
+      ><a name="6605"
+      > </a
+      ><a name="6606" class="Symbol"
+      >(</a
+      ><a name="6607" href="#" class="Datatype"
+      >List</a
+      ><a name="6611"
+      > </a
+      ><a name="6612" href="#" class="Postulate"
+      >Profile</a
+      ><a name="6619" class="Symbol"
+      >)</a
+      ><a name="6620"
+      >
+</a
+      ><a name="6621" href="#" class="Function"
+      >getUserFriends</a
+      ><a name="6635"
+      > </a
+      ><a name="6636" class="Symbol"
+      >=</a
+      ><a name="6637"
+      > </a
+      ><a name="6638" href="#" class="Function"
+      >lookupListPath</a
+      ><a name="6652"
+      > </a
+      ><a name="6653" href="#" class="Function"
+      >UserId:Friends</a
+      ><a name="6667"
+      > </a
+      ><a name="6668" href="#" class="Function Operator"
+      >&gt;=&gt;</a
+      ><a name="6671"
+      > </a
+      ><a name="6672" href="#" class="Function"
+      >filterA</a
+      ><a name="6679"
+      > </a
+      ><a name="6680" href="#" class="Function"
+      >getUserProfile</a
+      ><a name="6694"
+      >
+
+</a
+      ><a name="6696" href="#" class="Function"
+      >getUserPosts</a
+      ><a name="6708"
+      > </a
+      ><a name="6709" class="Symbol"
+      >:</a
+      ><a name="6710"
+      > </a
+      ><a name="6711" href="#" class="Postulate"
+      >UserId</a
+      ><a name="6717"
+      > </a
+      ><a name="6718" class="Symbol"
+      >&#8594;</a
+      ><a name="6719"
+      > </a
+      ><a name="6720" href="#" class="Function"
+      >Redis</a
+      ><a name="6725"
+      > </a
+      ><a name="6726" class="Symbol"
+      >(</a
+      ><a name="6727" href="#" class="Datatype"
+      >List</a
+      ><a name="6731"
+      > </a
+      ><a name="6732" href="#" class="Postulate"
+      >Post</a
+      ><a name="6736" class="Symbol"
+      >)</a
+      ><a name="6737"
+      >
+</a
+      ><a name="6738" href="#" class="Function"
+      >getUserPosts</a
+      ><a name="6750"
+      > </a
+      ><a name="6751" class="Symbol"
+      >=</a
+      ><a name="6752"
+      > </a
+      ><a name="6753" href="#" class="Function"
+      >lookupListPath</a
+      ><a name="6767"
+      > </a
+      ><a name="6768" href="#" class="Function"
+      >UserId:Posts</a
+      ><a name="6780"
+      > </a
+      ><a name="6781" href="#" class="Function Operator"
+      >&gt;=&gt;</a
+      ><a name="6784"
+      > </a
+      ><a name="6785" href="#" class="Function"
+      >filterA</a
+      ><a name="6792"
+      > </a
+      ><a name="6793" href="#" class="Function"
+      >getPost</a
+      ><a name="6800"
+      >
+
+</a
+      ><a name="6802" href="#" class="Function"
+      >createPost</a
+      ><a name="6812"
+      > </a
+      ><a name="6813" class="Symbol"
+      >:</a
+      ><a name="6814"
+      > </a
+      ><a name="6815" href="#" class="Postulate"
+      >UserId</a
+      ><a name="6821"
+      > </a
+      ><a name="6822" class="Symbol"
+      >&#8594;</a
+      ><a name="6823"
+      > </a
+      ><a name="6824" href="#" class="Postulate"
+      >PostId</a
+      ><a name="6830"
+      > </a
+      ><a name="6831" class="Symbol"
+      >&#8594;</a
+      ><a name="6832"
+      > </a
+      ><a name="6833" href="#" class="Postulate"
+      >Post</a
+      ><a name="6837"
+      > </a
+      ><a name="6838" class="Symbol"
+      >&#8594;</a
+      ><a name="6839"
+      > </a
+      ><a name="6840" href="#" class="Function"
+      >Redis</a
+      ><a name="6845"
+      > </a
+      ><a name="6846" href="#" class="Record"
+      >&#8868;</a
+      ><a name="6847"
+      >
+</a
+      ><a name="6848" href="#" class="Function"
+      >createPost</a
+      ><a name="6858"
+      > </a
+      ><a name="6859" href="#" class="Bound"
+      >userId</a
+      ><a name="6865"
+      > </a
+      ><a name="6866" href="#" class="Bound"
+      >postId</a
+      ><a name="6872"
+      > </a
+      ><a name="6873" href="#" class="Bound"
+      >post</a
+      ><a name="6877"
+      > </a
+      ><a name="6878" class="Symbol"
+      >=</a
+      ><a name="6879"
+      >
+  </a
+      ><a name="6882" href="#" class="Function"
+      >setPath</a
+      ><a name="6889"
+      > </a
+      ><a name="6890" href="#" class="Function"
+      >PostId:Post</a
+      ><a name="6901"
+      > </a
+      ><a name="6902" href="#" class="Bound"
+      >postId</a
+      ><a name="6908"
+      > </a
+      ><a name="6909" href="#" class="Bound"
+      >post</a
+      ><a name="6913"
+      > </a
+      ><a name="6914" href="#" class="Field Operator"
+      >&gt;&gt;=</a
+      ><a name="6917"
+      > </a
+      ><a name="6918" class="Symbol"
+      >&#955;</a
+      ><a name="6919"
+      > </a
+      ><a name="6920" href="#" class="Bound"
+      >_</a
+      ><a name="6921"
+      > </a
+      ><a name="6922" class="Symbol"
+      >&#8594;</a
+      ><a name="6923"
+      >
+  </a
+      ><a name="6926" href="#" class="Function"
+      >prependPath</a
+      ><a name="6937"
+      > </a
+      ><a name="6938" href="#" class="Function"
+      >UserId:Posts</a
+      ><a name="6950"
+      > </a
+      ><a name="6951" href="#" class="Bound"
+      >userId</a
+      ><a name="6957"
+      > </a
+      ><a name="6958" href="#" class="Bound"
+      >postId</a
+      ><a name="6964"
+      >
+
+</a
+      ></pre
+    ></body
+  ></html
+>
