@@ -1,0 +1,3122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >CrashReport</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="#" rel="stylesheet"><style>
+body {
+  background-color:#2d3335;
+}
+
+body * {
+  font-family:"Droid Sans Mono" !important;
+}
+
+*:focus {
+    outline: 0;
+}
+
+/* Aspects. */
+.Comment       { color: #62cd19 }
+.Keyword       { color: #a9a9a9 }
+.String        { color: #B22222 }
+.Number        { color: #da70d6 }
+.Symbol        { color: #bfbfbf }
+.PrimitiveType { color: #00bfff }
+.Operator      { }
+
+/* NameKinds. */
+.Bound                  { color: #ffa500   }
+.InductiveConstructor   { color: #da70d6 }
+.CoinductiveConstructor { color: #8B7500 }
+.Datatype               { color: #00bfff }
+.Field                  { color: #EE1289 }
+.Function               { color: #90ee90 }
+.Module                 { color: #66cdaa }
+.Postulate              { color: #ff1493 }
+.Primitive              { color: #90ee90 }
+.Record                 { color: #00ffff }
+
+/* OtherAspects. */
+.DottedPattern      {}
+.UnsolvedMeta       { color: black; background: yellow         }
+.UnsolvedConstraint { color: black; background: yellow         }
+.TerminationProblem { color: black; background: #FFA07A        }
+.IncompletePattern  { color: black; background: #F5DEB3        }
+.Error              { color: red;   text-decoration: underline }
+.TypeChecks         { color: black; background: #ADD8E6        }
+
+/* Standard attributes. */
+a { text-decoration: none }
+a[href]:hover { background-color: #3d4345 }
+     </style></head
+  ><body
+  ><pre
+    ><a name="1" class="Keyword"
+      >open</a
+      ><a name="5"
+      > </a
+      ><a name="6" class="Keyword"
+      >import</a
+      ><a name="12"
+      > </a
+      ><a name="13" href="#" class="Module"
+      >Level</a
+      ><a name="18"
+      >
+
+</a
+      ><a name="20" class="Comment"
+      >-- some typeclasses</a
+      ><a name="39"
+      >
+</a
+      ><a name="40" class="Keyword"
+      >record</a
+      ><a name="46"
+      > </a
+      ><a name="47" href="#" class="Record"
+      >Apply</a
+      ><a name="52"
+      > </a
+      ><a name="53" class="Symbol"
+      >(</a
+      ><a name="54" href="#" class="Bound"
+      >M</a
+      ><a name="55"
+      > </a
+      ><a name="56" class="Symbol"
+      >:</a
+      ><a name="57"
+      > </a
+      ><a name="58" class="Symbol"
+      >&#8704;</a
+      ><a name="59"
+      > </a
+      ><a name="60" class="Symbol"
+      >{</a
+      ><a name="61" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="62" class="Symbol"
+      >}</a
+      ><a name="63"
+      > </a
+      ><a name="64" class="Symbol"
+      >&#8594;</a
+      ><a name="65"
+      > </a
+      ><a name="66" class="PrimitiveType"
+      >Set</a
+      ><a name="69"
+      > </a
+      ><a name="70" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="71"
+      > </a
+      ><a name="72" class="Symbol"
+      >&#8594;</a
+      ><a name="73"
+      > </a
+      ><a name="74" class="PrimitiveType"
+      >Set</a
+      ><a name="77"
+      > </a
+      ><a name="78" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="79" class="Symbol"
+      >)</a
+      ><a name="80"
+      > </a
+      ><a name="81" class="Symbol"
+      >(</a
+      ><a name="82" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="84"
+      > </a
+      ><a name="85" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="87"
+      > </a
+      ><a name="88" class="Symbol"
+      >:</a
+      ><a name="89"
+      > </a
+      ><a name="90" href="#" class="Postulate"
+      >Level</a
+      ><a name="95" class="Symbol"
+      >)</a
+      ><a name="96"
+      > </a
+      ><a name="97" class="Symbol"
+      >:</a
+      ><a name="98"
+      > </a
+      ><a name="99" class="PrimitiveType"
+      >Set</a
+      ><a name="102"
+      > </a
+      ><a name="103" class="Symbol"
+      >(</a
+      ><a name="104" href="#" class="Primitive"
+      >suc</a
+      ><a name="107"
+      > </a
+      ><a name="108" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="110"
+      > </a
+      ><a name="111" href="#" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="112"
+      > </a
+      ><a name="113" href="#" class="Primitive"
+      >suc</a
+      ><a name="116"
+      > </a
+      ><a name="117" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="119" class="Symbol"
+      >)</a
+      ><a name="120"
+      > </a
+      ><a name="121" class="Keyword"
+      >where</a
+      ><a name="126"
+      >
+  </a
+      ><a name="129" class="Keyword"
+      >field</a
+      ><a name="134"
+      >
+    </a
+      ><a name="139" href="#" class="Field Operator"
+      >_&lt;*&gt;_</a
+      ><a name="144"
+      > </a
+      ><a name="145" class="Symbol"
+      >:</a
+      ><a name="146"
+      > </a
+      ><a name="147" class="Symbol"
+      >&#8704;</a
+      ><a name="148"
+      > </a
+      ><a name="149" class="Symbol"
+      >{</a
+      ><a name="150" href="#" class="Bound"
+      >t&#8321;</a
+      ><a name="152"
+      > </a
+      ><a name="153" class="Symbol"
+      >:</a
+      ><a name="154"
+      > </a
+      ><a name="155" class="PrimitiveType"
+      >Set</a
+      ><a name="158"
+      > </a
+      ><a name="159" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="161" class="Symbol"
+      >}</a
+      ><a name="162"
+      > </a
+      ><a name="163" class="Symbol"
+      >{</a
+      ><a name="164" href="#" class="Bound"
+      >t&#8322;</a
+      ><a name="166"
+      > </a
+      ><a name="167" class="Symbol"
+      >:</a
+      ><a name="168"
+      > </a
+      ><a name="169" class="PrimitiveType"
+      >Set</a
+      ><a name="172"
+      > </a
+      ><a name="173" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="175" class="Symbol"
+      >}</a
+      ><a name="176"
+      > </a
+      ><a name="177" class="Symbol"
+      >&#8594;</a
+      ><a name="178"
+      > </a
+      ><a name="179" href="#" class="Bound"
+      >M</a
+      ><a name="180"
+      > </a
+      ><a name="181" class="Symbol"
+      >(</a
+      ><a name="182" href="#" class="Bound"
+      >t&#8321;</a
+      ><a name="184"
+      > </a
+      ><a name="185" class="Symbol"
+      >&#8594;</a
+      ><a name="186"
+      > </a
+      ><a name="187" href="#" class="Bound"
+      >t&#8322;</a
+      ><a name="189" class="Symbol"
+      >)</a
+      ><a name="190"
+      > </a
+      ><a name="191" class="Symbol"
+      >&#8594;</a
+      ><a name="192"
+      > </a
+      ><a name="193" href="#" class="Bound"
+      >M</a
+      ><a name="194"
+      > </a
+      ><a name="195" href="#" class="Bound"
+      >t&#8321;</a
+      ><a name="197"
+      > </a
+      ><a name="198" class="Symbol"
+      >&#8594;</a
+      ><a name="199"
+      > </a
+      ><a name="200" href="#" class="Bound"
+      >M</a
+      ><a name="201"
+      > </a
+      ><a name="202" href="#" class="Bound"
+      >t&#8322;</a
+      ><a name="204"
+      >
+
+</a
+      ><a name="206" class="Keyword"
+      >record</a
+      ><a name="212"
+      > </a
+      ><a name="213" href="#" class="Record"
+      >Return</a
+      ><a name="219"
+      > </a
+      ><a name="220" class="Symbol"
+      >(</a
+      ><a name="221" href="#" class="Bound"
+      >M</a
+      ><a name="222"
+      > </a
+      ><a name="223" class="Symbol"
+      >:</a
+      ><a name="224"
+      > </a
+      ><a name="225" class="Symbol"
+      >&#8704;</a
+      ><a name="226"
+      > </a
+      ><a name="227" class="Symbol"
+      >{</a
+      ><a name="228" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="229" class="Symbol"
+      >}</a
+      ><a name="230"
+      > </a
+      ><a name="231" class="Symbol"
+      >&#8594;</a
+      ><a name="232"
+      > </a
+      ><a name="233" class="PrimitiveType"
+      >Set</a
+      ><a name="236"
+      > </a
+      ><a name="237" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="238"
+      > </a
+      ><a name="239" class="Symbol"
+      >&#8594;</a
+      ><a name="240"
+      > </a
+      ><a name="241" class="PrimitiveType"
+      >Set</a
+      ><a name="244"
+      > </a
+      ><a name="245" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="246" class="Symbol"
+      >)</a
+      ><a name="247"
+      > </a
+      ><a name="248" class="Symbol"
+      >(</a
+      ><a name="249" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="250"
+      > </a
+      ><a name="251" class="Symbol"
+      >:</a
+      ><a name="252"
+      > </a
+      ><a name="253" href="#" class="Postulate"
+      >Level</a
+      ><a name="258" class="Symbol"
+      >)</a
+      ><a name="259"
+      > </a
+      ><a name="260" class="Symbol"
+      >:</a
+      ><a name="261"
+      > </a
+      ><a name="262" class="PrimitiveType"
+      >Set</a
+      ><a name="265"
+      > </a
+      ><a name="266" class="Symbol"
+      >(</a
+      ><a name="267" href="#" class="Primitive"
+      >suc</a
+      ><a name="270"
+      > </a
+      ><a name="271" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="272" class="Symbol"
+      >)</a
+      ><a name="273"
+      > </a
+      ><a name="274" class="Keyword"
+      >where</a
+      ><a name="279"
+      >
+  </a
+      ><a name="282" class="Keyword"
+      >field</a
+      ><a name="287"
+      >
+    </a
+      ><a name="292" href="#" class="Field"
+      >return</a
+      ><a name="298"
+      > </a
+      ><a name="299" class="Symbol"
+      >:</a
+      ><a name="300"
+      > </a
+      ><a name="301" class="Symbol"
+      >&#8704;</a
+      ><a name="302"
+      > </a
+      ><a name="303" class="Symbol"
+      >(</a
+      ><a name="304" href="#" class="Bound"
+      >t</a
+      ><a name="305"
+      > </a
+      ><a name="306" class="Symbol"
+      >:</a
+      ><a name="307"
+      > </a
+      ><a name="308" class="PrimitiveType"
+      >Set</a
+      ><a name="311"
+      > </a
+      ><a name="312" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="313" class="Symbol"
+      >)</a
+      ><a name="314"
+      > </a
+      ><a name="315" class="Symbol"
+      >&#8594;</a
+      ><a name="316"
+      > </a
+      ><a name="317" href="#" class="Bound"
+      >M</a
+      ><a name="318"
+      > </a
+      ><a name="319" href="#" class="Bound"
+      >t</a
+      ><a name="320"
+      >
+
+</a
+      ><a name="322" class="Keyword"
+      >record</a
+      ><a name="328"
+      > </a
+      ><a name="329" href="#" class="Record"
+      >Bind</a
+      ><a name="333"
+      > </a
+      ><a name="334" class="Symbol"
+      >(</a
+      ><a name="335" href="#" class="Bound"
+      >M</a
+      ><a name="336"
+      > </a
+      ><a name="337" class="Symbol"
+      >:</a
+      ><a name="338"
+      > </a
+      ><a name="339" class="Symbol"
+      >&#8704;</a
+      ><a name="340"
+      > </a
+      ><a name="341" class="Symbol"
+      >{</a
+      ><a name="342" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="343" class="Symbol"
+      >}</a
+      ><a name="344"
+      > </a
+      ><a name="345" class="Symbol"
+      >&#8594;</a
+      ><a name="346"
+      > </a
+      ><a name="347" class="PrimitiveType"
+      >Set</a
+      ><a name="350"
+      > </a
+      ><a name="351" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="352"
+      > </a
+      ><a name="353" class="Symbol"
+      >&#8594;</a
+      ><a name="354"
+      > </a
+      ><a name="355" class="PrimitiveType"
+      >Set</a
+      ><a name="358"
+      > </a
+      ><a name="359" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="360" class="Symbol"
+      >)</a
+      ><a name="361"
+      > </a
+      ><a name="362" class="Symbol"
+      >(</a
+      ><a name="363" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="365"
+      > </a
+      ><a name="366" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="368"
+      > </a
+      ><a name="369" class="Symbol"
+      >:</a
+      ><a name="370"
+      > </a
+      ><a name="371" href="#" class="Postulate"
+      >Level</a
+      ><a name="376" class="Symbol"
+      >)</a
+      ><a name="377"
+      > </a
+      ><a name="378" class="Symbol"
+      >:</a
+      ><a name="379"
+      > </a
+      ><a name="380" class="PrimitiveType"
+      >Set</a
+      ><a name="383"
+      > </a
+      ><a name="384" class="Symbol"
+      >(</a
+      ><a name="385" href="#" class="Primitive"
+      >suc</a
+      ><a name="388"
+      > </a
+      ><a name="389" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="391"
+      > </a
+      ><a name="392" href="#" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="393"
+      > </a
+      ><a name="394" href="#" class="Primitive"
+      >suc</a
+      ><a name="397"
+      > </a
+      ><a name="398" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="400" class="Symbol"
+      >)</a
+      ><a name="401"
+      > </a
+      ><a name="402" class="Keyword"
+      >where</a
+      ><a name="407"
+      >
+  </a
+      ><a name="410" class="Keyword"
+      >field</a
+      ><a name="415"
+      >
+    </a
+      ><a name="420" href="#" class="Field Operator"
+      >_&gt;&gt;=_</a
+      ><a name="425"
+      > </a
+      ><a name="426" class="Symbol"
+      >:</a
+      ><a name="427"
+      > </a
+      ><a name="428" class="Symbol"
+      >&#8704;</a
+      ><a name="429"
+      > </a
+      ><a name="430" class="Symbol"
+      >{</a
+      ><a name="431" href="#" class="Bound"
+      >t&#8321;</a
+      ><a name="433"
+      > </a
+      ><a name="434" class="Symbol"
+      >:</a
+      ><a name="435"
+      > </a
+      ><a name="436" class="PrimitiveType"
+      >Set</a
+      ><a name="439"
+      > </a
+      ><a name="440" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="442" class="Symbol"
+      >}</a
+      ><a name="443"
+      > </a
+      ><a name="444" class="Symbol"
+      >{</a
+      ><a name="445" href="#" class="Bound"
+      >t&#8322;</a
+      ><a name="447"
+      > </a
+      ><a name="448" class="Symbol"
+      >:</a
+      ><a name="449"
+      > </a
+      ><a name="450" class="PrimitiveType"
+      >Set</a
+      ><a name="453"
+      > </a
+      ><a name="454" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="456" class="Symbol"
+      >}</a
+      ><a name="457"
+      > </a
+      ><a name="458" class="Symbol"
+      >&#8594;</a
+      ><a name="459"
+      > </a
+      ><a name="460" href="#" class="Bound"
+      >M</a
+      ><a name="461"
+      > </a
+      ><a name="462" href="#" class="Bound"
+      >t&#8321;</a
+      ><a name="464"
+      > </a
+      ><a name="465" class="Symbol"
+      >&#8594;</a
+      ><a name="466"
+      > </a
+      ><a name="467" class="Symbol"
+      >(</a
+      ><a name="468" href="#" class="Bound"
+      >t&#8321;</a
+      ><a name="470"
+      > </a
+      ><a name="471" class="Symbol"
+      >&#8594;</a
+      ><a name="472"
+      > </a
+      ><a name="473" href="#" class="Bound"
+      >M</a
+      ><a name="474"
+      > </a
+      ><a name="475" href="#" class="Bound"
+      >t&#8322;</a
+      ><a name="477" class="Symbol"
+      >)</a
+      ><a name="478"
+      > </a
+      ><a name="479" class="Symbol"
+      >&#8594;</a
+      ><a name="480"
+      > </a
+      ><a name="481" href="#" class="Bound"
+      >M</a
+      ><a name="482"
+      > </a
+      ><a name="483" href="#" class="Bound"
+      >t&#8322;</a
+      ><a name="485"
+      >
+
+</a
+      ><a name="487" class="Keyword"
+      >open</a
+      ><a name="491"
+      > </a
+      ><a name="492" href="#" class="Module"
+      >Apply</a
+      ><a name="497"
+      > </a
+      ><a name="498" class="Symbol"
+      >{{...}}</a
+      ><a name="505"
+      >
+</a
+      ><a name="506" class="Keyword"
+      >open</a
+      ><a name="510"
+      > </a
+      ><a name="511" href="#" class="Module"
+      >Return</a
+      ><a name="517"
+      > </a
+      ><a name="518" class="Symbol"
+      >{{...}}</a
+      ><a name="525"
+      >
+</a
+      ><a name="526" class="Keyword"
+      >open</a
+      ><a name="530"
+      > </a
+      ><a name="531" href="#" class="Module"
+      >Bind</a
+      ><a name="535"
+      > </a
+      ><a name="536" class="Symbol"
+      >{{...}}</a
+      ><a name="543"
+      >
+
+</a
+      ><a name="545" class="Comment"
+      >-- make a nice free monad</a
+      ><a name="570"
+      >
+
+</a
+      ><a name="572" class="Keyword"
+      >open</a
+      ><a name="576"
+      > </a
+      ><a name="577" class="Keyword"
+      >import</a
+      ><a name="583"
+      > </a
+      ><a name="584" href="#" class="Module"
+      >Data.Container</a
+      ><a name="598"
+      >
+</a
+      ><a name="599" class="Keyword"
+      >open</a
+      ><a name="603"
+      > </a
+      ><a name="604" class="Keyword"
+      >import</a
+      ><a name="610"
+      > </a
+      ><a name="611" href="#" class="Module"
+      >Data.Container.Combinator</a
+      ><a name="636"
+      > </a
+      ><a name="637" class="Keyword"
+      >hiding</a
+      ><a name="643"
+      > </a
+      ><a name="644" class="Symbol"
+      >(</a
+      ><a name="645" href="#" class="Function Operator"
+      >_&#8728;_</a
+      ><a name="648" class="Symbol"
+      >)</a
+      ><a name="649"
+      >
+
+</a
+      ><a name="651" class="Keyword"
+      >private</a
+      ><a name="658"
+      >
+  </a
+      ><a name="661" href="#" class="Function Operator"
+      >_&#8902;C_</a
+      ><a name="665"
+      > </a
+      ><a name="666" class="Symbol"
+      >:</a
+      ><a name="667"
+      > </a
+      ><a name="668" class="Symbol"
+      >&#8704;</a
+      ><a name="669"
+      > </a
+      ><a name="670" class="Symbol"
+      >{</a
+      ><a name="671" href="#" class="Bound"
+      >c</a
+      ><a name="672" class="Symbol"
+      >}</a
+      ><a name="673"
+      > </a
+      ><a name="674" class="Symbol"
+      >(</a
+      ><a name="675" href="#" class="Bound"
+      >_</a
+      ><a name="676"
+      > </a
+      ><a name="677" class="Symbol"
+      >:</a
+      ><a name="678"
+      > </a
+      ><a name="679" href="#" class="Record"
+      >Container</a
+      ><a name="688"
+      > </a
+      ><a name="689" href="#" class="Bound"
+      >c</a
+      ><a name="690" class="Symbol"
+      >)</a
+      ><a name="691"
+      > </a
+      ><a name="692" class="Symbol"
+      >{</a
+      ><a name="693" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="694" class="Symbol"
+      >}</a
+      ><a name="695"
+      > </a
+      ><a name="696" class="Symbol"
+      >&#8594;</a
+      ><a name="697"
+      > </a
+      ><a name="698" class="PrimitiveType"
+      >Set</a
+      ><a name="701"
+      > </a
+      ><a name="702" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="703"
+      > </a
+      ><a name="704" class="Symbol"
+      >&#8594;</a
+      ><a name="705"
+      > </a
+      ><a name="706" href="#" class="Record"
+      >Container</a
+      ><a name="715"
+      > </a
+      ><a name="716" class="Symbol"
+      >(</a
+      ><a name="717" href="#" class="Bound"
+      >c</a
+      ><a name="718"
+      > </a
+      ><a name="719" href="#" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="720"
+      > </a
+      ><a name="721" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="722" class="Symbol"
+      >)</a
+      ><a name="723"
+      >
+  </a
+      ><a name="726" href="#" class="Function Operator"
+      >_&#8902;C_</a
+      ><a name="730"
+      > </a
+      ><a name="731" class="Symbol"
+      >{</a
+      ><a name="732" href="#" class="Bound"
+      >c</a
+      ><a name="733" class="Symbol"
+      >}</a
+      ><a name="734"
+      > </a
+      ><a name="735" class="Symbol"
+      >(</a
+      ><a name="736" href="#" class="Bound"
+      >Shape</a
+      ><a name="741"
+      > </a
+      ><a name="742" href="#" class="InductiveConstructor Operator"
+      >&#9655;</a
+      ><a name="743"
+      > </a
+      ><a name="744" href="#" class="Bound"
+      >Position</a
+      ><a name="752" class="Symbol"
+      >)</a
+      ><a name="753"
+      > </a
+      ><a name="754" class="Symbol"
+      >{</a
+      ><a name="755" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="756" class="Symbol"
+      >}</a
+      ><a name="757"
+      > </a
+      ><a name="758" href="#" class="Bound"
+      >X</a
+      ><a name="759"
+      > </a
+      ><a name="760" class="Symbol"
+      >=</a
+      ><a name="761"
+      > </a
+      ><a name="762" href="#" class="Function"
+      >const</a
+      ><a name="767"
+      > </a
+      ><a name="768" class="Symbol"
+      >(</a
+      ><a name="769" href="#" class="Record"
+      >Lift</a
+      ><a name="773"
+      > </a
+      ><a name="774" class="Symbol"
+      >{</a
+      ><a name="775" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="776" class="Symbol"
+      >}</a
+      ><a name="777"
+      > </a
+      ><a name="778" class="Symbol"
+      >{</a
+      ><a name="779" href="#" class="Bound"
+      >c</a
+      ><a name="780" class="Symbol"
+      >}</a
+      ><a name="781"
+      > </a
+      ><a name="782" href="#" class="Bound"
+      >X</a
+      ><a name="783" class="Symbol"
+      >)</a
+      ><a name="784"
+      > </a
+      ><a name="785" href="#" class="Function Operator"
+      >&#8846;</a
+      ><a name="786"
+      > </a
+      ><a name="787" class="Symbol"
+      >(</a
+      ><a name="788" href="#" class="Record"
+      >Lift</a
+      ><a name="792"
+      > </a
+      ><a name="793" class="Symbol"
+      >{</a
+      ><a name="794" href="#" class="Bound"
+      >c</a
+      ><a name="795" class="Symbol"
+      >}</a
+      ><a name="796"
+      > </a
+      ><a name="797" class="Symbol"
+      >{</a
+      ><a name="798" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="799" class="Symbol"
+      >}</a
+      ><a name="800"
+      > </a
+      ><a name="801" href="#" class="Bound"
+      >Shape</a
+      ><a name="806"
+      > </a
+      ><a name="807" href="#" class="InductiveConstructor Operator"
+      >&#9655;</a
+      ><a name="808"
+      > </a
+      ><a name="809" class="Symbol"
+      >&#955;</a
+      ><a name="810"
+      > </a
+      ><a name="811" href="#" class="Bound"
+      >x</a
+      ><a name="812"
+      > </a
+      ><a name="813" class="Symbol"
+      >&#8594;</a
+      ><a name="814"
+      > </a
+      ><a name="815" href="#" class="Record"
+      >Lift</a
+      ><a name="819"
+      > </a
+      ><a name="820" class="Symbol"
+      >{</a
+      ><a name="821" href="#" class="Bound"
+      >c</a
+      ><a name="822" class="Symbol"
+      >}</a
+      ><a name="823"
+      > </a
+      ><a name="824" class="Symbol"
+      >{</a
+      ><a name="825" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="826" class="Symbol"
+      >}</a
+      ><a name="827"
+      > </a
+      ><a name="828" class="Symbol"
+      >(</a
+      ><a name="829" href="#" class="Bound"
+      >Position</a
+      ><a name="837"
+      > </a
+      ><a name="838" class="Symbol"
+      >(</a
+      ><a name="839" href="#" class="Field"
+      >lower</a
+      ><a name="844"
+      > </a
+      ><a name="845" href="#" class="Bound"
+      >x</a
+      ><a name="846" class="Symbol"
+      >)))</a
+      ><a name="849"
+      >
+
+  </a
+      ><a name="853" href="#" class="Function"
+      >PrimFree</a
+      ><a name="861"
+      > </a
+      ><a name="862" class="Symbol"
+      >:</a
+      ><a name="863"
+      > </a
+      ><a name="864" class="Symbol"
+      >&#8704;</a
+      ><a name="865"
+      > </a
+      ><a name="866" class="Symbol"
+      >{</a
+      ><a name="867" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="869" class="Symbol"
+      >}</a
+      ><a name="870"
+      > </a
+      ><a name="871" class="Symbol"
+      >(</a
+      ><a name="872" href="#" class="Bound"
+      >c</a
+      ><a name="873"
+      > </a
+      ><a name="874" class="Symbol"
+      >:</a
+      ><a name="875"
+      > </a
+      ><a name="876" href="#" class="Record"
+      >Container</a
+      ><a name="885"
+      > </a
+      ><a name="886" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="888" class="Symbol"
+      >)</a
+      ><a name="889"
+      > </a
+      ><a name="890" class="Symbol"
+      >{</a
+      ><a name="891" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="892" class="Symbol"
+      >}</a
+      ><a name="893"
+      > </a
+      ><a name="894" class="Symbol"
+      >(</a
+      ><a name="895" href="#" class="Bound"
+      >t</a
+      ><a name="896"
+      > </a
+      ><a name="897" class="Symbol"
+      >:</a
+      ><a name="898"
+      > </a
+      ><a name="899" class="PrimitiveType"
+      >Set</a
+      ><a name="902"
+      > </a
+      ><a name="903" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="904" class="Symbol"
+      >)</a
+      ><a name="905"
+      > </a
+      ><a name="906" class="Symbol"
+      >&#8594;</a
+      ><a name="907"
+      > </a
+      ><a name="908" class="PrimitiveType"
+      >Set</a
+      ><a name="911"
+      > </a
+      ><a name="912" class="Symbol"
+      >(</a
+      ><a name="913" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="915"
+      > </a
+      ><a name="916" href="#" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="917"
+      > </a
+      ><a name="918" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="919" class="Symbol"
+      >)</a
+      ><a name="920"
+      >
+  </a
+      ><a name="923" href="#" class="Function"
+      >PrimFree</a
+      ><a name="931"
+      > </a
+      ><a name="932" href="#" class="Bound"
+      >c</a
+      ><a name="933"
+      > </a
+      ><a name="934" href="#" class="Bound"
+      >t</a
+      ><a name="935"
+      > </a
+      ><a name="936" class="Symbol"
+      >=</a
+      ><a name="937"
+      > </a
+      ><a name="938" href="#" class="Function"
+      >&#956;</a
+      ><a name="939"
+      > </a
+      ><a name="940" class="Symbol"
+      >(</a
+      ><a name="941" href="#" class="Bound"
+      >c</a
+      ><a name="942"
+      > </a
+      ><a name="943" href="#" class="Function Operator"
+      >&#8902;C</a
+      ><a name="945"
+      > </a
+      ><a name="946" href="#" class="Bound"
+      >t</a
+      ><a name="947" class="Symbol"
+      >)</a
+      ><a name="948"
+      >
+
+</a
+      ><a name="950" class="Keyword"
+      >record</a
+      ><a name="956"
+      > </a
+      ><a name="957" href="#" class="Record"
+      >Free</a
+      ><a name="961"
+      > </a
+      ><a name="962" class="Symbol"
+      >{</a
+      ><a name="963" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="965" class="Symbol"
+      >}</a
+      ><a name="966"
+      > </a
+      ><a name="967" class="Symbol"
+      >(</a
+      ><a name="968" href="#" class="Bound"
+      >c</a
+      ><a name="969"
+      > </a
+      ><a name="970" class="Symbol"
+      >:</a
+      ><a name="971"
+      > </a
+      ><a name="972" href="#" class="Record"
+      >Container</a
+      ><a name="981"
+      > </a
+      ><a name="982" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="984" class="Symbol"
+      >)</a
+      ><a name="985"
+      > </a
+      ><a name="986" class="Symbol"
+      >{</a
+      ><a name="987" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="988" class="Symbol"
+      >}</a
+      ><a name="989"
+      > </a
+      ><a name="990" class="Symbol"
+      >(</a
+      ><a name="991" href="#" class="Bound"
+      >t</a
+      ><a name="992"
+      > </a
+      ><a name="993" class="Symbol"
+      >:</a
+      ><a name="994"
+      > </a
+      ><a name="995" class="PrimitiveType"
+      >Set</a
+      ><a name="998"
+      > </a
+      ><a name="999" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1000" class="Symbol"
+      >)</a
+      ><a name="1001"
+      > </a
+      ><a name="1002" class="Symbol"
+      >:</a
+      ><a name="1003"
+      > </a
+      ><a name="1004" class="PrimitiveType"
+      >Set</a
+      ><a name="1007"
+      > </a
+      ><a name="1008" class="Symbol"
+      >(</a
+      ><a name="1009" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="1011"
+      > </a
+      ><a name="1012" href="#" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="1013"
+      > </a
+      ><a name="1014" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1015" class="Symbol"
+      >)</a
+      ><a name="1016"
+      > </a
+      ><a name="1017" class="Keyword"
+      >where</a
+      ><a name="1022"
+      >
+  </a
+      ><a name="1025" class="Keyword"
+      >field</a
+      ><a name="1030"
+      >
+    </a
+      ><a name="1035" href="#" class="Field"
+      >free</a
+      ><a name="1039"
+      > </a
+      ><a name="1040" class="Symbol"
+      >:</a
+      ><a name="1041"
+      > </a
+      ><a name="1042" href="#" class="Function"
+      >PrimFree</a
+      ><a name="1050"
+      > </a
+      ><a name="1051" href="#" class="Bound"
+      >c</a
+      ><a name="1052"
+      > </a
+      ><a name="1053" href="#" class="Bound"
+      >t</a
+      ><a name="1054"
+      >
+
+</a
+      ><a name="1056" class="Comment"
+      >-- black magic (He Who Must Not Be Named)</a
+      ><a name="1097"
+      >
+
+</a
+      ><a name="1099" class="Keyword"
+      >data</a
+      ><a name="1103"
+      > </a
+      ><a name="1104" href="#" class="Datatype"
+      >Interpreter</a
+      ><a name="1115"
+      > </a
+      ><a name="1116" class="Symbol"
+      >{</a
+      ><a name="1117" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="1119" class="Symbol"
+      >}</a
+      ><a name="1120"
+      > </a
+      ><a name="1121" class="Symbol"
+      >(</a
+      ><a name="1122" href="#" class="Bound"
+      >c</a
+      ><a name="1123"
+      > </a
+      ><a name="1124" class="Symbol"
+      >:</a
+      ><a name="1125"
+      > </a
+      ><a name="1126" href="#" class="Record"
+      >Container</a
+      ><a name="1135"
+      > </a
+      ><a name="1136" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="1138" class="Symbol"
+      >)</a
+      ><a name="1139"
+      > </a
+      ><a name="1140" class="Symbol"
+      >{</a
+      ><a name="1141" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1142" class="Symbol"
+      >}</a
+      ><a name="1143"
+      > </a
+      ><a name="1144" class="Symbol"
+      >(</a
+      ><a name="1145" href="#" class="Bound"
+      >t</a
+      ><a name="1146"
+      > </a
+      ><a name="1147" class="Symbol"
+      >:</a
+      ><a name="1148"
+      > </a
+      ><a name="1149" class="PrimitiveType"
+      >Set</a
+      ><a name="1152"
+      > </a
+      ><a name="1153" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1154" class="Symbol"
+      >)</a
+      ><a name="1155"
+      > </a
+      ><a name="1156" class="Symbol"
+      >:</a
+      ><a name="1157"
+      > </a
+      ><a name="1158" class="Symbol"
+      >_</a
+      ><a name="1159"
+      > </a
+      ><a name="1160" class="Keyword"
+      >where</a
+      ><a name="1165"
+      >
+  </a
+      ><a name="1168" href="#" class="InductiveConstructor"
+      >MkInterpreter</a
+      ><a name="1181"
+      > </a
+      ><a name="1182" class="Symbol"
+      >:</a
+      ><a name="1183"
+      > </a
+      ><a name="1184" class="Symbol"
+      >&#8704;</a
+      ><a name="1185"
+      > </a
+      ><a name="1186" class="Symbol"
+      >(</a
+      ><a name="1187" href="#" class="Bound"
+      >_</a
+      ><a name="1188"
+      > </a
+      ><a name="1189" class="Symbol"
+      >:</a
+      ><a name="1190"
+      > </a
+      ><a name="1191" class="Symbol"
+      >{</a
+      ><a name="1192" href="#" class="Bound"
+      >M</a
+      ><a name="1193"
+      > </a
+      ><a name="1194" class="Symbol"
+      >:</a
+      ><a name="1195"
+      > </a
+      ><a name="1196" class="Symbol"
+      >&#8704;</a
+      ><a name="1197"
+      > </a
+      ><a name="1198" class="Symbol"
+      >{</a
+      ><a name="1199" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1200" class="Symbol"
+      >}</a
+      ><a name="1201"
+      > </a
+      ><a name="1202" class="Symbol"
+      >&#8594;</a
+      ><a name="1203"
+      > </a
+      ><a name="1204" class="PrimitiveType"
+      >Set</a
+      ><a name="1207"
+      > </a
+      ><a name="1208" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1209"
+      > </a
+      ><a name="1210" class="Symbol"
+      >&#8594;</a
+      ><a name="1211"
+      > </a
+      ><a name="1212" class="PrimitiveType"
+      >Set</a
+      ><a name="1215"
+      > </a
+      ><a name="1216" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1217" class="Symbol"
+      >}</a
+      ><a name="1218"
+      >
+                        </a
+      ><a name="1243" class="Symbol"
+      >{{</a
+      ><a name="1245" href="#" class="Bound"
+      >_</a
+      ><a name="1246"
+      > </a
+      ><a name="1247" class="Symbol"
+      >:</a
+      ><a name="1248"
+      > </a
+      ><a name="1249" class="Symbol"
+      >&#8704;</a
+      ><a name="1250"
+      > </a
+      ><a name="1251" class="Symbol"
+      >{</a
+      ><a name="1252" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1254"
+      > </a
+      ><a name="1255" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1257" class="Symbol"
+      >}</a
+      ><a name="1258"
+      > </a
+      ><a name="1259" class="Symbol"
+      >&#8594;</a
+      ><a name="1260"
+      > </a
+      ><a name="1261" href="#" class="Record"
+      >Apply</a
+      ><a name="1266"
+      > </a
+      ><a name="1267" href="#" class="Bound"
+      >M</a
+      ><a name="1268"
+      > </a
+      ><a name="1269" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1271"
+      > </a
+      ><a name="1272" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1274" class="Symbol"
+      >}}</a
+      ><a name="1276"
+      >
+                        </a
+      ><a name="1301" class="Symbol"
+      >{{</a
+      ><a name="1303" href="#" class="Bound"
+      >_</a
+      ><a name="1304"
+      > </a
+      ><a name="1305" class="Symbol"
+      >:</a
+      ><a name="1306"
+      > </a
+      ><a name="1307" class="Symbol"
+      >&#8704;</a
+      ><a name="1308"
+      > </a
+      ><a name="1309" class="Symbol"
+      >{</a
+      ><a name="1310" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1311" class="Symbol"
+      >}</a
+      ><a name="1312"
+      > </a
+      ><a name="1313" class="Symbol"
+      >&#8594;</a
+      ><a name="1314"
+      > </a
+      ><a name="1315" href="#" class="Record"
+      >Return</a
+      ><a name="1321"
+      > </a
+      ><a name="1322" href="#" class="Bound"
+      >M</a
+      ><a name="1323"
+      > </a
+      ><a name="1324" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1325" class="Symbol"
+      >}}</a
+      ><a name="1327"
+      >
+                        </a
+      ><a name="1352" class="Symbol"
+      >{{</a
+      ><a name="1354" href="#" class="Bound"
+      >_</a
+      ><a name="1355"
+      > </a
+      ><a name="1356" class="Symbol"
+      >:</a
+      ><a name="1357"
+      > </a
+      ><a name="1358" class="Symbol"
+      >&#8704;</a
+      ><a name="1359"
+      > </a
+      ><a name="1360" class="Symbol"
+      >{</a
+      ><a name="1361" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1363"
+      > </a
+      ><a name="1364" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1366" class="Symbol"
+      >}</a
+      ><a name="1367"
+      > </a
+      ><a name="1368" class="Symbol"
+      >&#8594;</a
+      ><a name="1369"
+      > </a
+      ><a name="1370" href="#" class="Record"
+      >Bind</a
+      ><a name="1374"
+      > </a
+      ><a name="1375" href="#" class="Bound"
+      >M</a
+      ><a name="1376"
+      > </a
+      ><a name="1377" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1379"
+      > </a
+      ><a name="1380" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1382" class="Symbol"
+      >}}</a
+      ><a name="1384"
+      >
+                 </a
+      ><a name="1402" class="Symbol"
+      >&#8594;</a
+      ><a name="1403"
+      > </a
+      ><a name="1404" class="Symbol"
+      >((&#8704;</a
+      ><a name="1407"
+      > </a
+      ><a name="1408" class="Symbol"
+      >{</a
+      ><a name="1409" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1410" class="Symbol"
+      >}</a
+      ><a name="1411"
+      > </a
+      ><a name="1412" class="Symbol"
+      >{</a
+      ><a name="1413" href="#" class="Bound"
+      >t'</a
+      ><a name="1415"
+      > </a
+      ><a name="1416" class="Symbol"
+      >:</a
+      ><a name="1417"
+      > </a
+      ><a name="1418" class="PrimitiveType"
+      >Set</a
+      ><a name="1421"
+      > </a
+      ><a name="1422" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1423" class="Symbol"
+      >}</a
+      ><a name="1424"
+      > </a
+      ><a name="1425" class="Symbol"
+      >&#8594;</a
+      ><a name="1426"
+      > </a
+      ><a name="1427" href="#" class="Record"
+      >Free</a
+      ><a name="1431"
+      > </a
+      ><a name="1432" href="#" class="Bound"
+      >c</a
+      ><a name="1433"
+      > </a
+      ><a name="1434" href="#" class="Bound"
+      >t'</a
+      ><a name="1436"
+      > </a
+      ><a name="1437" class="Symbol"
+      >&#8594;</a
+      ><a name="1438"
+      > </a
+      ><a name="1439" href="#" class="Bound"
+      >M</a
+      ><a name="1440"
+      > </a
+      ><a name="1441" href="#" class="Bound"
+      >t'</a
+      ><a name="1443" class="Symbol"
+      >)</a
+      ><a name="1444"
+      > </a
+      ><a name="1445" class="Symbol"
+      >&#8594;</a
+      ><a name="1446"
+      > </a
+      ><a name="1447" href="#" class="Bound"
+      >M</a
+      ><a name="1448"
+      > </a
+      ><a name="1449" href="#" class="Bound"
+      >t</a
+      ><a name="1450" class="Symbol"
+      >))</a
+      ><a name="1452"
+      > </a
+      ><a name="1453" class="Symbol"
+      >&#8594;</a
+      ><a name="1454"
+      > </a
+      ><a name="1455" href="#" class="Datatype"
+      >Interpreter</a
+      ><a name="1466"
+      > </a
+      ><a name="1467" href="#" class="Bound"
+      >c</a
+      ><a name="1468"
+      > </a
+      ><a name="1469" href="#" class="Bound"
+      >t</a
+      ><a name="1470"
+      >
+
+</a
+      ><a name="1472" class="Keyword"
+      >private</a
+      ><a name="1479"
+      >
+  </a
+      ><a name="1482" class="Comment"
+      >-- helper to pull the interpreter out of our Interpreter</a
+      ><a name="1538"
+      >
+  </a
+      ><a name="1541" href="#" class="Function"
+      >extract</a
+      ><a name="1548"
+      > </a
+      ><a name="1549" class="Symbol"
+      >:</a
+      ><a name="1550"
+      > </a
+      ><a name="1551" class="Symbol"
+      >&#8704;</a
+      ><a name="1552"
+      > </a
+      ><a name="1553" class="Symbol"
+      >{</a
+      ><a name="1554" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="1556" class="Symbol"
+      >}</a
+      ><a name="1557"
+      > </a
+      ><a name="1558" class="Symbol"
+      >{</a
+      ><a name="1559" href="#" class="Bound"
+      >c</a
+      ><a name="1560"
+      > </a
+      ><a name="1561" class="Symbol"
+      >:</a
+      ><a name="1562"
+      > </a
+      ><a name="1563" href="#" class="Record"
+      >Container</a
+      ><a name="1572"
+      > </a
+      ><a name="1573" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="1575" class="Symbol"
+      >}</a
+      ><a name="1576"
+      > </a
+      ><a name="1577" class="Symbol"
+      >{</a
+      ><a name="1578" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1579" class="Symbol"
+      >}</a
+      ><a name="1580"
+      > </a
+      ><a name="1581" class="Symbol"
+      >{</a
+      ><a name="1582" href="#" class="Bound"
+      >t</a
+      ><a name="1583"
+      > </a
+      ><a name="1584" class="Symbol"
+      >:</a
+      ><a name="1585"
+      > </a
+      ><a name="1586" class="PrimitiveType"
+      >Set</a
+      ><a name="1589"
+      > </a
+      ><a name="1590" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1591" class="Symbol"
+      >}</a
+      ><a name="1592"
+      > </a
+      ><a name="1593" class="Symbol"
+      >&#8594;</a
+      ><a name="1594"
+      > </a
+      ><a name="1595" href="#" class="Datatype"
+      >Interpreter</a
+      ><a name="1606"
+      > </a
+      ><a name="1607" href="#" class="Bound"
+      >c</a
+      ><a name="1608"
+      > </a
+      ><a name="1609" href="#" class="Bound"
+      >t</a
+      ><a name="1610"
+      > </a
+      ><a name="1611" class="Symbol"
+      >&#8594;</a
+      ><a name="1612"
+      >
+                 </a
+      ><a name="1630" class="Symbol"
+      >&#8704;</a
+      ><a name="1631"
+      > </a
+      ><a name="1632" class="Symbol"
+      >{</a
+      ><a name="1633" href="#" class="Bound"
+      >M</a
+      ><a name="1634"
+      > </a
+      ><a name="1635" class="Symbol"
+      >:</a
+      ><a name="1636"
+      > </a
+      ><a name="1637" class="Symbol"
+      >&#8704;</a
+      ><a name="1638"
+      > </a
+      ><a name="1639" class="Symbol"
+      >{</a
+      ><a name="1640" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1641" class="Symbol"
+      >}</a
+      ><a name="1642"
+      > </a
+      ><a name="1643" class="Symbol"
+      >&#8594;</a
+      ><a name="1644"
+      > </a
+      ><a name="1645" class="PrimitiveType"
+      >Set</a
+      ><a name="1648"
+      > </a
+      ><a name="1649" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1650"
+      > </a
+      ><a name="1651" class="Symbol"
+      >&#8594;</a
+      ><a name="1652"
+      > </a
+      ><a name="1653" class="PrimitiveType"
+      >Set</a
+      ><a name="1656"
+      > </a
+      ><a name="1657" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1658" class="Symbol"
+      >}</a
+      ><a name="1659"
+      >
+                        </a
+      ><a name="1684" class="Symbol"
+      >{{</a
+      ><a name="1686" href="#" class="Bound"
+      >_</a
+      ><a name="1687"
+      > </a
+      ><a name="1688" class="Symbol"
+      >:</a
+      ><a name="1689"
+      > </a
+      ><a name="1690" class="Symbol"
+      >&#8704;</a
+      ><a name="1691"
+      > </a
+      ><a name="1692" class="Symbol"
+      >{</a
+      ><a name="1693" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1695"
+      > </a
+      ><a name="1696" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1698" class="Symbol"
+      >}</a
+      ><a name="1699"
+      > </a
+      ><a name="1700" class="Symbol"
+      >&#8594;</a
+      ><a name="1701"
+      > </a
+      ><a name="1702" href="#" class="Record"
+      >Apply</a
+      ><a name="1707"
+      > </a
+      ><a name="1708" href="#" class="Bound"
+      >M</a
+      ><a name="1709"
+      > </a
+      ><a name="1710" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1712"
+      > </a
+      ><a name="1713" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1715" class="Symbol"
+      >}}</a
+      ><a name="1717"
+      >
+                        </a
+      ><a name="1742" class="Symbol"
+      >{{</a
+      ><a name="1744" href="#" class="Bound"
+      >_</a
+      ><a name="1745"
+      > </a
+      ><a name="1746" class="Symbol"
+      >:</a
+      ><a name="1747"
+      > </a
+      ><a name="1748" class="Symbol"
+      >&#8704;</a
+      ><a name="1749"
+      > </a
+      ><a name="1750" class="Symbol"
+      >{</a
+      ><a name="1751" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1752" class="Symbol"
+      >}</a
+      ><a name="1753"
+      > </a
+      ><a name="1754" class="Symbol"
+      >&#8594;</a
+      ><a name="1755"
+      > </a
+      ><a name="1756" href="#" class="Record"
+      >Return</a
+      ><a name="1762"
+      > </a
+      ><a name="1763" href="#" class="Bound"
+      >M</a
+      ><a name="1764"
+      > </a
+      ><a name="1765" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1766" class="Symbol"
+      >}}</a
+      ><a name="1768"
+      >
+                        </a
+      ><a name="1793" class="Symbol"
+      >{{</a
+      ><a name="1795" href="#" class="Bound"
+      >_</a
+      ><a name="1796"
+      > </a
+      ><a name="1797" class="Symbol"
+      >:</a
+      ><a name="1798"
+      > </a
+      ><a name="1799" class="Symbol"
+      >&#8704;</a
+      ><a name="1800"
+      > </a
+      ><a name="1801" class="Symbol"
+      >{</a
+      ><a name="1802" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1804"
+      > </a
+      ><a name="1805" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1807" class="Symbol"
+      >}</a
+      ><a name="1808"
+      > </a
+      ><a name="1809" class="Symbol"
+      >&#8594;</a
+      ><a name="1810"
+      > </a
+      ><a name="1811" href="#" class="Record"
+      >Bind</a
+      ><a name="1815"
+      > </a
+      ><a name="1816" href="#" class="Bound"
+      >M</a
+      ><a name="1817"
+      > </a
+      ><a name="1818" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1820"
+      > </a
+      ><a name="1821" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1823" class="Symbol"
+      >}}</a
+      ><a name="1825"
+      >
+                 </a
+      ><a name="1843" class="Symbol"
+      >&#8594;</a
+      ><a name="1844"
+      > </a
+      ><a name="1845" class="Symbol"
+      >((&#8704;</a
+      ><a name="1848"
+      > </a
+      ><a name="1849" class="Symbol"
+      >{</a
+      ><a name="1850" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1851" class="Symbol"
+      >}</a
+      ><a name="1852"
+      > </a
+      ><a name="1853" class="Symbol"
+      >{</a
+      ><a name="1854" href="#" class="Bound"
+      >t'</a
+      ><a name="1856"
+      > </a
+      ><a name="1857" class="Symbol"
+      >:</a
+      ><a name="1858"
+      > </a
+      ><a name="1859" class="PrimitiveType"
+      >Set</a
+      ><a name="1862"
+      > </a
+      ><a name="1863" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="1864" class="Symbol"
+      >}</a
+      ><a name="1865"
+      > </a
+      ><a name="1866" class="Symbol"
+      >&#8594;</a
+      ><a name="1867"
+      > </a
+      ><a name="1868" href="#" class="Record"
+      >Free</a
+      ><a name="1872"
+      > </a
+      ><a name="1873" href="#" class="Bound"
+      >c</a
+      ><a name="1874"
+      > </a
+      ><a name="1875" href="#" class="Bound"
+      >t'</a
+      ><a name="1877"
+      > </a
+      ><a name="1878" class="Symbol"
+      >&#8594;</a
+      ><a name="1879"
+      > </a
+      ><a name="1880" href="#" class="Bound"
+      >M</a
+      ><a name="1881"
+      > </a
+      ><a name="1882" href="#" class="Bound"
+      >t'</a
+      ><a name="1884" class="Symbol"
+      >)</a
+      ><a name="1885"
+      > </a
+      ><a name="1886" class="Symbol"
+      >&#8594;</a
+      ><a name="1887"
+      > </a
+      ><a name="1888" href="#" class="Bound"
+      >M</a
+      ><a name="1889"
+      > </a
+      ><a name="1890" href="#" class="Bound"
+      >t</a
+      ><a name="1891" class="Symbol"
+      >)</a
+      ><a name="1892"
+      >
+  </a
+      ><a name="1895" href="#" class="Function"
+      >extract</a
+      ><a name="1902"
+      > </a
+      ><a name="1903" class="Symbol"
+      >(</a
+      ><a name="1904" href="#" class="InductiveConstructor"
+      >MkInterpreter</a
+      ><a name="1917"
+      > </a
+      ><a name="1918" href="#" class="Bound"
+      >x</a
+      ><a name="1919" class="Symbol"
+      >)</a
+      ><a name="1920"
+      > </a
+      ><a name="1921" class="Symbol"
+      >=</a
+      ><a name="1922"
+      > </a
+      ><a name="1923" href="#" class="Bound"
+      >x</a
+      ><a name="1924"
+      >
+
+</a
+      ><a name="1926" class="Keyword"
+      >open</a
+      ><a name="1930"
+      > </a
+      ><a name="1931" class="Keyword"
+      >import</a
+      ><a name="1937"
+      > </a
+      ><a name="1938" href="#" class="Module"
+      >Data.W</a
+      ><a name="1944"
+      >
+</a
+      ><a name="1945" class="Keyword"
+      >open</a
+      ><a name="1949"
+      > </a
+      ><a name="1950" class="Keyword"
+      >import</a
+      ><a name="1956"
+      > </a
+      ><a name="1957" href="#" class="Module"
+      >Data.Sum</a
+      ><a name="1965"
+      >
+</a
+      ><a name="1966" class="Keyword"
+      >open</a
+      ><a name="1970"
+      > </a
+      ><a name="1971" class="Keyword"
+      >import</a
+      ><a name="1977"
+      > </a
+      ><a name="1978" href="#" class="Module"
+      >Data.Empty</a
+      ><a name="1988"
+      >
+</a
+      ><a name="1989" class="Keyword"
+      >open</a
+      ><a name="1993"
+      > </a
+      ><a name="1994" class="Keyword"
+      >import</a
+      ><a name="2000"
+      > </a
+      ><a name="2001" href="#" class="Module"
+      >Function</a
+      ><a name="2009"
+      >
+
+</a
+      ><a name="2011" class="Comment"
+      >-- shapes from our free monad are still usable in the interpreter</a
+      ><a name="2076"
+      >
+</a
+      ><a name="2077" href="#" class="Function"
+      >insert</a
+      ><a name="2083"
+      > </a
+      ><a name="2084" class="Symbol"
+      >:</a
+      ><a name="2085"
+      > </a
+      ><a name="2086" class="Symbol"
+      >&#8704;</a
+      ><a name="2087"
+      > </a
+      ><a name="2088" class="Symbol"
+      >{</a
+      ><a name="2089" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="2091"
+      > </a
+      ><a name="2092" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="2094" class="Symbol"
+      >}</a
+      ><a name="2095"
+      > </a
+      ><a name="2096" class="Symbol"
+      >{</a
+      ><a name="2097" href="#" class="Bound"
+      >t</a
+      ><a name="2098"
+      > </a
+      ><a name="2099" class="Symbol"
+      >:</a
+      ><a name="2100"
+      > </a
+      ><a name="2101" class="PrimitiveType"
+      >Set</a
+      ><a name="2104"
+      > </a
+      ><a name="2105" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="2107" class="Symbol"
+      >}</a
+      ><a name="2108"
+      > </a
+      ><a name="2109" class="Symbol"
+      >{</a
+      ><a name="2110" href="#" class="Bound"
+      >c</a
+      ><a name="2111"
+      > </a
+      ><a name="2112" class="Symbol"
+      >:</a
+      ><a name="2113"
+      > </a
+      ><a name="2114" href="#" class="Record"
+      >Container</a
+      ><a name="2123"
+      > </a
+      ><a name="2124" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="2126" class="Symbol"
+      >}</a
+      ><a name="2127"
+      > </a
+      ><a name="2128" class="Symbol"
+      >&#8594;</a
+      ><a name="2129"
+      > </a
+      ><a name="2130" class="Symbol"
+      >(</a
+      ><a name="2131" href="#" class="Bound"
+      >x</a
+      ><a name="2132"
+      > </a
+      ><a name="2133" class="Symbol"
+      >:</a
+      ><a name="2134"
+      > </a
+      ><a name="2135" href="#" class="Field"
+      >Shape</a
+      ><a name="2140"
+      > </a
+      ><a name="2141" href="#" class="Bound"
+      >c</a
+      ><a name="2142" class="Symbol"
+      >)</a
+      ><a name="2143"
+      > </a
+      ><a name="2144" class="Symbol"
+      >&#8594;</a
+      ><a name="2145"
+      > </a
+      ><a name="2146" href="#" class="Datatype"
+      >Interpreter</a
+      ><a name="2157"
+      > </a
+      ><a name="2158" href="#" class="Bound"
+      >c</a
+      ><a name="2159"
+      > </a
+      ><a name="2160" class="Symbol"
+      >(</a
+      ><a name="2161" href="#" class="Field"
+      >Position</a
+      ><a name="2169"
+      > </a
+      ><a name="2170" href="#" class="Bound"
+      >c</a
+      ><a name="2171"
+      > </a
+      ><a name="2172" href="#" class="Bound"
+      >x</a
+      ><a name="2173" class="Symbol"
+      >)</a
+      ><a name="2174"
+      >
+</a
+      ><a name="2175" href="#" class="Function"
+      >insert</a
+      ><a name="2181"
+      > </a
+      ><a name="2182" class="Symbol"
+      >{_}</a
+      ><a name="2185"
+      > </a
+      ><a name="2186" class="Symbol"
+      >{_}</a
+      ><a name="2189"
+      > </a
+      ><a name="2190" class="Symbol"
+      >{</a
+      ><a name="2191" href="#" class="Bound"
+      >t</a
+      ><a name="2192" class="Symbol"
+      >}</a
+      ><a name="2193"
+      > </a
+      ><a name="2194" class="Symbol"
+      >{</a
+      ><a name="2195" href="#" class="Bound"
+      >c</a
+      ><a name="2196" class="Symbol"
+      >}</a
+      ><a name="2197"
+      > </a
+      ><a name="2198" href="#" class="Bound"
+      >v</a
+      ><a name="2199"
+      > </a
+      ><a name="2200" class="Symbol"
+      >=</a
+      ><a name="2201"
+      >
+  </a
+      ><a name="2204" class="Keyword"
+      >let</a
+      ><a name="2207"
+      >
+    </a
+      ><a name="2212" href="#" class="Bound"
+      >m</a
+      ><a name="2213"
+      > </a
+      ><a name="2214" class="Symbol"
+      >:</a
+      ><a name="2215"
+      > </a
+      ><a name="2216" href="#" class="Record"
+      >Free</a
+      ><a name="2220"
+      > </a
+      ><a name="2221" href="#" class="Bound"
+      >c</a
+      ><a name="2222"
+      > </a
+      ><a name="2223" class="Symbol"
+      >(</a
+      ><a name="2224" href="#" class="Field"
+      >Position</a
+      ><a name="2232"
+      > </a
+      ><a name="2233" href="#" class="Bound"
+      >c</a
+      ><a name="2234"
+      > </a
+      ><a name="2235" href="#" class="Bound"
+      >v</a
+      ><a name="2236" class="Symbol"
+      >)</a
+      ><a name="2237"
+      >
+    </a
+      ><a name="2242" href="#" class="Bound"
+      >m</a
+      ><a name="2243"
+      > </a
+      ><a name="2244" class="Symbol"
+      >=</a
+      ><a name="2245"
+      > </a
+      ><a name="2246" class="Keyword"
+      >record</a
+      ><a name="2252"
+      > </a
+      ><a name="2253" class="Symbol"
+      >{</a
+      ><a name="2254"
+      > </a
+      ><a name="2255" class="Field"
+      >free</a
+      ><a name="2259"
+      > </a
+      ><a name="2260" class="Symbol"
+      >=</a
+      ><a name="2261"
+      > </a
+      ><a name="2262" href="#" class="InductiveConstructor"
+      >sup</a
+      ><a name="2265"
+      > </a
+      ><a name="2266" class="Symbol"
+      >(</a
+      ><a name="2267" href="#" class="InductiveConstructor"
+      >inj&#8322;</a
+      ><a name="2271"
+      > </a
+      ><a name="2272" class="Symbol"
+      >(</a
+      ><a name="2273" href="#" class="InductiveConstructor"
+      >lift</a
+      ><a name="2277"
+      > </a
+      ><a name="2278" href="#" class="Bound"
+      >v</a
+      ><a name="2279" class="Symbol"
+      >))</a
+      ><a name="2281"
+      > </a
+      ><a name="2282" class="Symbol"
+      >(&#955;</a
+      ><a name="2284"
+      > </a
+      ><a name="2285" href="#" class="Bound"
+      >x</a
+      ><a name="2286"
+      > </a
+      ><a name="2287" class="Symbol"
+      >&#8594;</a
+      ><a name="2288"
+      > </a
+      ><a name="2289" href="#" class="InductiveConstructor"
+      >sup</a
+      ><a name="2292"
+      > </a
+      ><a name="2293" class="Symbol"
+      >(</a
+      ><a name="2294" href="#" class="InductiveConstructor"
+      >inj&#8321;</a
+      ><a name="2298"
+      > </a
+      ><a name="2299" class="Symbol"
+      >(</a
+      ><a name="2300" href="#" class="InductiveConstructor"
+      >lift</a
+      ><a name="2304"
+      > </a
+      ><a name="2305" class="Symbol"
+      >(</a
+      ><a name="2306" href="#" class="Field"
+      >Lift.lower</a
+      ><a name="2316"
+      > </a
+      ><a name="2317" href="#" class="Bound"
+      >x</a
+      ><a name="2318" class="Symbol"
+      >)))</a
+      ><a name="2321"
+      > </a
+      ><a name="2322" class="Symbol"
+      >(</a
+      ><a name="2323" href="#" class="Function"
+      >&#8869;-elim</a
+      ><a name="2329"
+      > </a
+      ><a name="2330" href="#" class="Function Operator"
+      >&#8728;</a
+      ><a name="2331"
+      > </a
+      ><a name="2332" href="#" class="Field"
+      >lower</a
+      ><a name="2337" class="Symbol"
+      >))</a
+      ><a name="2339"
+      > </a
+      ><a name="2340" class="Symbol"
+      >}</a
+      ><a name="2341"
+      >
+  </a
+      ><a name="2344" class="Keyword"
+      >in</a
+      ><a name="2346"
+      >
+  </a
+      ><a name="2349" href="#" class="InductiveConstructor"
+      >MkInterpreter</a
+      ><a name="2362"
+      > </a
+      ><a name="2363" class="Symbol"
+      >(&#955;</a
+      ><a name="2365"
+      > </a
+      ><a name="2366" href="#" class="Bound"
+      >r</a
+      ><a name="2367"
+      > </a
+      ><a name="2368" class="Symbol"
+      >&#8594;</a
+      ><a name="2369"
+      > </a
+      ><a name="2370" href="#" class="Bound"
+      >r</a
+      ><a name="2371"
+      > </a
+      ><a name="2372" href="#" class="Bound"
+      >m</a
+      ><a name="2373" class="Symbol"
+      >)</a
+      ><a name="2374"
+      >
+
+</a
+      ><a name="2376" class="Comment"
+      >-- and we can define our ops</a
+      ><a name="2404"
+      >
+</a
+      ><a name="2405" href="#" class="Function"
+      >pure</a
+      ><a name="2409"
+      > </a
+      ><a name="2410" class="Symbol"
+      >:</a
+      ><a name="2411"
+      > </a
+      ><a name="2412" class="Symbol"
+      >&#8704;</a
+      ><a name="2413"
+      > </a
+      ><a name="2414" class="Symbol"
+      >{</a
+      ><a name="2415" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="2416" class="Symbol"
+      >}</a
+      ><a name="2417"
+      > </a
+      ><a name="2418" class="Symbol"
+      >{</a
+      ><a name="2419" href="#" class="Bound"
+      >t</a
+      ><a name="2420"
+      > </a
+      ><a name="2421" class="Symbol"
+      >:</a
+      ><a name="2422"
+      > </a
+      ><a name="2423" class="PrimitiveType"
+      >Set</a
+      ><a name="2426"
+      > </a
+      ><a name="2427" href="#" class="Bound"
+      >&#8467;</a
+      ><a name="2428" class="Symbol"
+      >}</a
+      ><a name="2429"
+      > </a
+      ><a name="2430" class="Symbol"
+      >{</a
+      ><a name="2431" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="2433" class="Symbol"
+      >}</a
+      ><a name="2434"
+      > </a
+      ><a name="2435" class="Symbol"
+      >{</a
+      ><a name="2436" href="#" class="Bound"
+      >c</a
+      ><a name="2437"
+      > </a
+      ><a name="2438" class="Symbol"
+      >:</a
+      ><a name="2439"
+      > </a
+      ><a name="2440" href="#" class="Record"
+      >Container</a
+      ><a name="2449"
+      > </a
+      ><a name="2450" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="2452" class="Symbol"
+      >}</a
+      ><a name="2453"
+      > </a
+      ><a name="2454" class="Symbol"
+      >&#8594;</a
+      ><a name="2455"
+      > </a
+      ><a name="2456" href="#" class="Bound"
+      >t</a
+      ><a name="2457"
+      > </a
+      ><a name="2458" class="Symbol"
+      >&#8594;</a
+      ><a name="2459"
+      > </a
+      ><a name="2460" href="#" class="Datatype"
+      >Interpreter</a
+      ><a name="2471"
+      > </a
+      ><a name="2472" href="#" class="Bound"
+      >c</a
+      ><a name="2473"
+      > </a
+      ><a name="2474" href="#" class="Bound"
+      >t</a
+      ><a name="2475"
+      >
+</a
+      ><a name="2476" href="#" class="Function"
+      >pure</a
+      ><a name="2480"
+      > </a
+      ><a name="2481" href="#" class="Bound"
+      >x</a
+      ><a name="2482"
+      > </a
+      ><a name="2483" class="Symbol"
+      >=</a
+      ><a name="2484"
+      > </a
+      ><a name="2485" href="#" class="InductiveConstructor"
+      >MkInterpreter</a
+      ><a name="2498"
+      > </a
+      ><a name="2499" class="Symbol"
+      >&#955;</a
+      ><a name="2500"
+      > </a
+      ><a name="2501" href="#" class="Bound"
+      >r</a
+      ><a name="2502"
+      > </a
+      ><a name="2503" class="Symbol"
+      >&#8594;</a
+      ><a name="2504"
+      > </a
+      ><a name="2505" href="#" class="Bound"
+      >r</a
+      ><a name="2506"
+      > </a
+      ><a name="2507" class="Keyword"
+      >record</a
+      ><a name="2513"
+      > </a
+      ><a name="2514" class="Symbol"
+      >{</a
+      ><a name="2515"
+      > </a
+      ><a name="2516" class="Field"
+      >free</a
+      ><a name="2520"
+      > </a
+      ><a name="2521" class="Symbol"
+      >=</a
+      ><a name="2522"
+      > </a
+      ><a name="2523" href="#" class="InductiveConstructor"
+      >sup</a
+      ><a name="2526"
+      > </a
+      ><a name="2527" class="Symbol"
+      >(</a
+      ><a name="2528" href="#" class="InductiveConstructor"
+      >inj&#8321;</a
+      ><a name="2532"
+      > </a
+      ><a name="2533" class="Symbol"
+      >(</a
+      ><a name="2534" href="#" class="InductiveConstructor"
+      >lift</a
+      ><a name="2538"
+      > </a
+      ><a name="2539" href="#" class="Bound"
+      >x</a
+      ><a name="2540" class="Symbol"
+      >))</a
+      ><a name="2542"
+      > </a
+      ><a name="2543" class="Symbol"
+      >(</a
+      ><a name="2544" href="#" class="Function"
+      >&#8869;-elim</a
+      ><a name="2550"
+      > </a
+      ><a name="2551" href="#" class="Function Operator"
+      >&#8728;</a
+      ><a name="2552"
+      > </a
+      ><a name="2553" href="#" class="Field"
+      >lower</a
+      ><a name="2558" class="Symbol"
+      >)</a
+      ><a name="2559"
+      > </a
+      ><a name="2560" class="Symbol"
+      >}</a
+      ><a name="2561"
+      >
+
+</a
+      ><a name="2563" href="#" class="Function Operator"
+      >_&lt;**&gt;_</a
+      ><a name="2569"
+      > </a
+      ><a name="2570" class="Symbol"
+      >:</a
+      ><a name="2571"
+      > </a
+      ><a name="2572" class="Symbol"
+      >&#8704;</a
+      ><a name="2573"
+      > </a
+      ><a name="2574" class="Symbol"
+      >{</a
+      ><a name="2575" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="2577"
+      > </a
+      ><a name="2578" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="2580" class="Symbol"
+      >}</a
+      ><a name="2581"
+      > </a
+      ><a name="2582" class="Symbol"
+      >{</a
+      ><a name="2583" href="#" class="Bound"
+      >t&#8321;</a
+      ><a name="2585"
+      > </a
+      ><a name="2586" class="Symbol"
+      >:</a
+      ><a name="2587"
+      > </a
+      ><a name="2588" class="PrimitiveType"
+      >Set</a
+      ><a name="2591"
+      > </a
+      ><a name="2592" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="2594" class="Symbol"
+      >}</a
+      ><a name="2595"
+      > </a
+      ><a name="2596" class="Symbol"
+      >{</a
+      ><a name="2597" href="#" class="Bound"
+      >t&#8322;</a
+      ><a name="2599"
+      > </a
+      ><a name="2600" class="Symbol"
+      >:</a
+      ><a name="2601"
+      > </a
+      ><a name="2602" class="PrimitiveType"
+      >Set</a
+      ><a name="2605"
+      > </a
+      ><a name="2606" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="2608" class="Symbol"
+      >}</a
+      ><a name="2609"
+      > </a
+      ><a name="2610" class="Symbol"
+      >{</a
+      ><a name="2611" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="2613" class="Symbol"
+      >}</a
+      ><a name="2614"
+      > </a
+      ><a name="2615" class="Symbol"
+      >{</a
+      ><a name="2616" href="#" class="Bound"
+      >c</a
+      ><a name="2617"
+      > </a
+      ><a name="2618" class="Symbol"
+      >:</a
+      ><a name="2619"
+      > </a
+      ><a name="2620" href="#" class="Record"
+      >Container</a
+      ><a name="2629"
+      > </a
+      ><a name="2630" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="2632" class="Symbol"
+      >}</a
+      ><a name="2633"
+      > </a
+      ><a name="2634" class="Symbol"
+      >&#8594;</a
+      ><a name="2635"
+      >
+         </a
+      ><a name="2645" href="#" class="Datatype"
+      >Interpreter</a
+      ><a name="2656"
+      > </a
+      ><a name="2657" href="#" class="Bound"
+      >c</a
+      ><a name="2658"
+      > </a
+      ><a name="2659" class="Symbol"
+      >(</a
+      ><a name="2660" href="#" class="Bound"
+      >t&#8321;</a
+      ><a name="2662"
+      > </a
+      ><a name="2663" class="Symbol"
+      >&#8594;</a
+      ><a name="2664"
+      > </a
+      ><a name="2665" href="#" class="Bound"
+      >t&#8322;</a
+      ><a name="2667" class="Symbol"
+      >)</a
+      ><a name="2668"
+      > </a
+      ><a name="2669" class="Symbol"
+      >&#8594;</a
+      ><a name="2670"
+      > </a
+      ><a name="2671" href="#" class="Datatype"
+      >Interpreter</a
+      ><a name="2682"
+      > </a
+      ><a name="2683" href="#" class="Bound"
+      >c</a
+      ><a name="2684"
+      > </a
+      ><a name="2685" href="#" class="Bound"
+      >t&#8321;</a
+      ><a name="2687"
+      > </a
+      ><a name="2688" class="Symbol"
+      >&#8594;</a
+      ><a name="2689"
+      > </a
+      ><a name="2690" href="#" class="Datatype"
+      >Interpreter</a
+      ><a name="2701"
+      > </a
+      ><a name="2702" href="#" class="Bound"
+      >c</a
+      ><a name="2703"
+      > </a
+      ><a name="2704" href="#" class="Bound"
+      >t&#8322;</a
+      ><a name="2706"
+      >
+</a
+      ><a name="2707" href="#" class="Function Operator"
+      >_&lt;**&gt;_</a
+      ><a name="2713"
+      > </a
+      ><a name="2714" class="Symbol"
+      >(</a
+      ><a name="2715" href="#" class="InductiveConstructor"
+      >MkInterpreter</a
+      ><a name="2728"
+      > </a
+      ><a name="2729" href="#" class="Bound"
+      >f</a
+      ><a name="2730" class="Symbol"
+      >)</a
+      ><a name="2731"
+      > </a
+      ><a name="2732" class="Symbol"
+      >(</a
+      ><a name="2733" href="#" class="InductiveConstructor"
+      >MkInterpreter</a
+      ><a name="2746"
+      > </a
+      ><a name="2747" href="#" class="Bound"
+      >i</a
+      ><a name="2748" class="Symbol"
+      >)</a
+      ><a name="2749"
+      > </a
+      ><a name="2750" class="Symbol"
+      >=</a
+      ><a name="2751"
+      > </a
+      ><a name="2752" href="#" class="InductiveConstructor"
+      >MkInterpreter</a
+      ><a name="2765"
+      > </a
+      ><a name="2766" class="Symbol"
+      >(&#955;</a
+      ><a name="2768"
+      > </a
+      ><a name="2769" class="Symbol"
+      >{{</a
+      ><a name="2771" href="#" class="Bound"
+      >w</a
+      ><a name="2772" class="Symbol"
+      >}}</a
+      ><a name="2774"
+      > </a
+      ><a name="2775" href="#" class="Bound"
+      >r</a
+      ><a name="2776"
+      > </a
+      ><a name="2777" class="Symbol"
+      >&#8594;</a
+      ><a name="2778"
+      > </a
+      ><a name="2779" href="#" class="Bound"
+      >f</a
+      ><a name="2780"
+      > </a
+      ><a name="2781" href="#" class="Bound"
+      >r</a
+      ><a name="2782"
+      > </a
+      ><a name="2783" href="#" class="Field Operator"
+      >&lt;*&gt;</a
+      ><a name="2786"
+      > </a
+      ><a name="2787" href="#" class="Bound"
+      >i</a
+      ><a name="2788"
+      > </a
+      ><a name="2789" href="#" class="Bound"
+      >r</a
+      ><a name="2790" class="Symbol"
+      >)</a
+      ><a name="2791"
+      >
+
+</a
+      ><a name="2793" href="#" class="Function Operator"
+      >_&gt;&gt;-_</a
+      ><a name="2798"
+      > </a
+      ><a name="2799" class="Symbol"
+      >:</a
+      ><a name="2800"
+      > </a
+      ><a name="2801" class="Symbol"
+      >&#8704;</a
+      ><a name="2802"
+      > </a
+      ><a name="2803" class="Symbol"
+      >{</a
+      ><a name="2804" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="2806"
+      > </a
+      ><a name="2807" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="2809" class="Symbol"
+      >}</a
+      ><a name="2810"
+      > </a
+      ><a name="2811" class="Symbol"
+      >{</a
+      ><a name="2812" href="#" class="Bound"
+      >t&#8321;</a
+      ><a name="2814"
+      > </a
+      ><a name="2815" class="Symbol"
+      >:</a
+      ><a name="2816"
+      > </a
+      ><a name="2817" class="PrimitiveType"
+      >Set</a
+      ><a name="2820"
+      > </a
+      ><a name="2821" href="#" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="2823" class="Symbol"
+      >}</a
+      ><a name="2824"
+      > </a
+      ><a name="2825" class="Symbol"
+      >{</a
+      ><a name="2826" href="#" class="Bound"
+      >t&#8322;</a
+      ><a name="2828"
+      > </a
+      ><a name="2829" class="Symbol"
+      >:</a
+      ><a name="2830"
+      > </a
+      ><a name="2831" class="PrimitiveType"
+      >Set</a
+      ><a name="2834"
+      > </a
+      ><a name="2835" href="#" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="2837" class="Symbol"
+      >}</a
+      ><a name="2838"
+      > </a
+      ><a name="2839" class="Symbol"
+      >{</a
+      ><a name="2840" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="2842" class="Symbol"
+      >}</a
+      ><a name="2843"
+      > </a
+      ><a name="2844" class="Symbol"
+      >{</a
+      ><a name="2845" href="#" class="Bound"
+      >c</a
+      ><a name="2846"
+      > </a
+      ><a name="2847" class="Symbol"
+      >:</a
+      ><a name="2848"
+      > </a
+      ><a name="2849" href="#" class="Record"
+      >Container</a
+      ><a name="2858"
+      > </a
+      ><a name="2859" href="#" class="Bound"
+      >&#8467;c</a
+      ><a name="2861" class="Symbol"
+      >}</a
+      ><a name="2862"
+      > </a
+      ><a name="2863" class="Symbol"
+      >&#8594;</a
+      ><a name="2864"
+      >
+         </a
+      ><a name="2874" href="#" class="Datatype"
+      >Interpreter</a
+      ><a name="2885"
+      > </a
+      ><a name="2886" href="#" class="Bound"
+      >c</a
+      ><a name="2887"
+      > </a
+      ><a name="2888" href="#" class="Bound"
+      >t&#8321;</a
+      ><a name="2890"
+      > </a
+      ><a name="2891" class="Symbol"
+      >&#8594;</a
+      ><a name="2892"
+      > </a
+      ><a name="2893" class="Symbol"
+      >(</a
+      ><a name="2894" href="#" class="Bound"
+      >t&#8321;</a
+      ><a name="2896"
+      > </a
+      ><a name="2897" class="Symbol"
+      >&#8594;</a
+      ><a name="2898"
+      > </a
+      ><a name="2899" href="#" class="Datatype"
+      >Interpreter</a
+      ><a name="2910"
+      > </a
+      ><a name="2911" href="#" class="Bound"
+      >c</a
+      ><a name="2912"
+      > </a
+      ><a name="2913" href="#" class="Bound"
+      >t&#8322;</a
+      ><a name="2915" class="Symbol"
+      >)</a
+      ><a name="2916"
+      > </a
+      ><a name="2917" class="Symbol"
+      >&#8594;</a
+      ><a name="2918"
+      > </a
+      ><a name="2919" href="#" class="Datatype"
+      >Interpreter</a
+      ><a name="2930"
+      > </a
+      ><a name="2931" href="#" class="Bound"
+      >c</a
+      ><a name="2932"
+      > </a
+      ><a name="2933" href="#" class="Bound"
+      >t&#8322;</a
+      ><a name="2935"
+      >
+</a
+      ><a name="2936" href="#" class="Function Operator"
+      >_&gt;&gt;-_</a
+      ><a name="2941"
+      > </a
+      ><a name="2942" class="Symbol"
+      >(</a
+      ><a name="2943" href="#" class="InductiveConstructor"
+      >MkInterpreter</a
+      ><a name="2956"
+      > </a
+      ><a name="2957" href="#" class="Bound"
+      >i</a
+      ><a name="2958" class="Symbol"
+      >)</a
+      ><a name="2959"
+      > </a
+      ><a name="2960" href="#" class="Bound"
+      >f</a
+      ><a name="2961"
+      > </a
+      ><a name="2962" class="Symbol"
+      >=</a
+      ><a name="2963"
+      > </a
+      ><a name="2964" href="#" class="InductiveConstructor"
+      >MkInterpreter</a
+      ><a name="2977"
+      > </a
+      ><a name="2978" class="Symbol"
+      >(&#955;</a
+      ><a name="2980"
+      > </a
+      ><a name="2981" href="#" class="Bound"
+      >r</a
+      ><a name="2982"
+      > </a
+      ><a name="2983" class="Symbol"
+      >&#8594;</a
+      ><a name="2984"
+      > </a
+      ><a name="2985" href="#" class="Bound"
+      >i</a
+      ><a name="2986"
+      > </a
+      ><a name="2987" href="#" class="Bound"
+      >r</a
+      ><a name="2988"
+      > </a
+      ><a name="2989" href="#" class="Field Operator"
+      >&gt;&gt;=</a
+      ><a name="2992"
+      > </a
+      ><a name="2993" class="Symbol"
+      >&#955;</a
+      ><a name="2994"
+      > </a
+      ><a name="2995" href="#" class="Bound"
+      >x</a
+      ><a name="2996"
+      > </a
+      ><a name="2997" class="Symbol"
+      >&#8594;</a
+      ><a name="2998"
+      > </a
+      ><a name="2999" href="#" class="Function"
+      >extract</a
+      ><a name="3006"
+      > </a
+      ><a name="3007" class="Symbol"
+      >(</a
+      ><a name="3008" href="#" class="Bound"
+      >f</a
+      ><a name="3009"
+      > </a
+      ><a name="3010" href="#" class="Bound"
+      >x</a
+      ><a name="3011" class="Symbol"
+      >)</a
+      ><a name="3012"
+      > </a
+      ><a name="3013" href="#" class="Bound"
+      >r</a
+      ><a name="3014" class="Symbol"
+      >)</a
+      ><a name="3015"
+      >
+
+</a
+      ><a name="3017" class="Comment"
+      >-- but if you try to make these instances of our typeclass... ohno!</a
+      ><a name="3084"
+      >
+
+</a
+      ><a name="3086" class="Comment"
+      >-- instance</a
+      ><a name="3097"
+      >
+</a
+      ><a name="3098" class="Comment"
+      >--   interpreterCanBind : &#8704; {&#8467;c} {c : Container &#8467;c} {&#8467;&#8321; &#8467;&#8322;} &#8594; Bind (Interpreter c) &#8467;&#8321; &#8467;&#8322;</a
+      ><a name="3186"
+      >
+</a
+      ><a name="3187" class="Comment"
+      >--   interpreterCanBind = ?</a
+      ><a name="3214"
+      >
+
+</a
+      ></pre
+    ></body
+  ></html
+>
