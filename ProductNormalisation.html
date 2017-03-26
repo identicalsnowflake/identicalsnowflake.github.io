@@ -1,0 +1,1919 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Product normalisation via instance search</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="https://fonts.googleapis.com/css?family=Droid+Sans+Mono" rel="stylesheet"><style>
+body {
+  background-color:#2d3335;
+}
+body * {
+  font-family:"Droid Sans Mono" !important;
+}
+*:focus {
+    outline: 0;
+}
+/* Aspects. */
+.Comment       { color: #62cd19 }
+.Keyword       { color: #a9a9a9 }
+.String        { color: #B22222 }
+.Number        { color: #da70d6 }
+.Symbol        { color: #bfbfbf }
+.PrimitiveType { color: #00bfff }
+.Operator      { }
+/* NameKinds. */
+.Bound                  { color: #ffa500   }
+.InductiveConstructor   { color: #da70d6 }
+.CoinductiveConstructor { color: #8B7500 }
+.Datatype               { color: #00bfff }
+.Field                  { color: #EE1289 }
+.Function               { color: #90ee90 }
+.Module                 { color: #66cdaa }
+.Postulate              { color: #ff1493 }
+.Primitive              { color: #90ee90 }
+.Record                 { color: #00ffff }
+/* OtherAspects. */
+.DottedPattern      {}
+.UnsolvedMeta       { color: black; background: yellow         }
+.UnsolvedConstraint { color: black; background: yellow         }
+.TerminationProblem { color: black; background: #FFA07A        }
+.IncompletePattern  { color: black; background: #F5DEB3        }
+.Error              { color: red;   text-decoration: underline }
+.TypeChecks         { color: black; background: #ADD8E6        }
+/* Standard attributes. */
+a { text-decoration: none }
+a[href]:hover { background-color: #3d4345 }
+     </style></head
+  ><body
+  ><pre
+    ><a name="37" class="Keyword"
+      >open</a
+      ><a name="41"
+      > </a
+      ><a name="42" class="Keyword"
+      >import</a
+      ><a name="48"
+      > </a
+      ><a name="49" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="54"
+      >
+</a
+      ><a name="55" class="Keyword"
+      >open</a
+      ><a name="59"
+      > </a
+      ><a name="60" class="Keyword"
+      >import</a
+      ><a name="66"
+      > </a
+      ><a name="67" href="Data.List.html#1" class="Module"
+      >Data.List</a
+      ><a name="76"
+      >
+</a
+      ><a name="77" class="Keyword"
+      >open</a
+      ><a name="81"
+      > </a
+      ><a name="82" class="Keyword"
+      >import</a
+      ><a name="88"
+      > </a
+      ><a name="89" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="110"
+      >
+</a
+      ><a name="111" class="Keyword"
+      >open</a
+      ><a name="115"
+      > </a
+      ><a name="116" class="Keyword"
+      >import</a
+      ><a name="122"
+      > </a
+      ><a name="123" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="135"
+      >
+</a
+      ><a name="136" class="Keyword"
+      >open</a
+      ><a name="140"
+      > </a
+      ><a name="141" class="Keyword"
+      >import</a
+      ><a name="147"
+      > </a
+      ><a name="148" href="Data.Unit.html#1" class="Module"
+      >Data.Unit</a
+      ><a name="157"
+      >
+
+</a
+      ><a name="159" class="Keyword"
+      >module</a
+      ><a name="165"
+      > </a
+      ><a name="166" href="Play.NoramliseProduct.html#166" class="Module"
+      >Normalise</a
+      ><a name="175"
+      > </a
+      ><a name="176" class="Keyword"
+      >where</a
+      ><a name="181"
+      >
+
+  </a
+      ><a name="185" class="Keyword"
+      >private</a
+      ><a name="192"
+      >
+    </a
+      ><a name="197" class="Keyword"
+      >record</a
+      ><a name="203"
+      > </a
+      ><a name="204" href="Play.NoramliseProduct.html#204" class="Record"
+      >Aggregate</a
+      ><a name="213"
+      > </a
+      ><a name="214" class="Symbol"
+      >{</a
+      ><a name="215" href="Play.NoramliseProduct.html#215" class="Bound"
+      >&#8467;</a
+      ><a name="216" class="Symbol"
+      >}</a
+      ><a name="217"
+      > </a
+      ><a name="218" class="Symbol"
+      >{</a
+      ><a name="219" href="Play.NoramliseProduct.html#219" class="Bound"
+      >t</a
+      ><a name="220"
+      > </a
+      ><a name="221" class="Symbol"
+      >:</a
+      ><a name="222"
+      > </a
+      ><a name="223" class="PrimitiveType"
+      >Set</a
+      ><a name="226"
+      > </a
+      ><a name="227" href="Play.NoramliseProduct.html#215" class="Bound"
+      >&#8467;</a
+      ><a name="228" class="Symbol"
+      >}</a
+      ><a name="229"
+      > </a
+      ><a name="230" class="Symbol"
+      >(</a
+      ><a name="231" href="Play.NoramliseProduct.html#231" class="Bound"
+      >_</a
+      ><a name="232"
+      > </a
+      ><a name="233" class="Symbol"
+      >:</a
+      ><a name="234"
+      > </a
+      ><a name="235" href="Play.NoramliseProduct.html#219" class="Bound"
+      >t</a
+      ><a name="236" class="Symbol"
+      >)</a
+      ><a name="237"
+      > </a
+      ><a name="238" class="Symbol"
+      >:</a
+      ><a name="239"
+      > </a
+      ><a name="240" class="PrimitiveType"
+      >Set</a
+      ><a name="243"
+      > </a
+      ><a name="244" class="Symbol"
+      >(</a
+      ><a name="245" href="Agda.Primitive.html#627" class="Primitive"
+      >Level.suc</a
+      ><a name="254"
+      > </a
+      ><a name="255" href="Play.NoramliseProduct.html#215" class="Bound"
+      >&#8467;</a
+      ><a name="256" class="Symbol"
+      >)</a
+      ><a name="257"
+      > </a
+      ><a name="258" class="Keyword"
+      >where</a
+      ><a name="263"
+      >
+      </a
+      ><a name="270" class="Keyword"
+      >field</a
+      ><a name="275"
+      >
+        </a
+      ><a name="284" href="Play.NoramliseProduct.html#284" class="Field"
+      >items</a
+      ><a name="289"
+      > </a
+      ><a name="290" class="Symbol"
+      >:</a
+      ><a name="291"
+      > </a
+      ><a name="292" href="Agda.Builtin.List.html#80" class="Datatype"
+      >List</a
+      ><a name="296"
+      > </a
+      ><a name="297" class="Symbol"
+      >(</a
+      ><a name="298" href="Data.Product.html#823" class="Function"
+      >&#8707;</a
+      ><a name="299"
+      > </a
+      ><a name="300" class="Symbol"
+      >&#955;</a
+      ><a name="301"
+      > </a
+      ><a name="302" class="Symbol"
+      >(</a
+      ><a name="303" href="Play.NoramliseProduct.html#303" class="Bound"
+      >t'</a
+      ><a name="305"
+      > </a
+      ><a name="306" class="Symbol"
+      >:</a
+      ><a name="307"
+      > </a
+      ><a name="308" class="PrimitiveType"
+      >Set</a
+      ><a name="311"
+      > </a
+      ><a name="312" href="Play.NoramliseProduct.html#215" class="Bound"
+      >&#8467;</a
+      ><a name="313" class="Symbol"
+      >)</a
+      ><a name="314"
+      > </a
+      ><a name="315" class="Symbol"
+      >&#8594;</a
+      ><a name="316"
+      > </a
+      ><a name="317" href="Play.NoramliseProduct.html#303" class="Bound"
+      >t'</a
+      ><a name="319" class="Symbol"
+      >)</a
+      ><a name="320"
+      >
+
+    </a
+      ><a name="326" class="Keyword"
+      >open</a
+      ><a name="330"
+      > </a
+      ><a name="331" href="Play.NoramliseProduct.html#204" class="Module"
+      >Aggregate</a
+      ><a name="340"
+      >
+
+    </a
+      ><a name="346" href="Play.NoramliseProduct.html#346" class="Function"
+      >unAggregateTypes</a
+      ><a name="362"
+      > </a
+      ><a name="363" class="Symbol"
+      >:</a
+      ><a name="364"
+      > </a
+      ><a name="365" class="Symbol"
+      >&#8704;</a
+      ><a name="366"
+      > </a
+      ><a name="367" class="Symbol"
+      >{</a
+      ><a name="368" href="Play.NoramliseProduct.html#368" class="Bound"
+      >&#8467;</a
+      ><a name="369" class="Symbol"
+      >}</a
+      ><a name="370"
+      > </a
+      ><a name="371" class="Symbol"
+      >&#8594;</a
+      ><a name="372"
+      > </a
+      ><a name="373" href="Agda.Builtin.List.html#80" class="Datatype"
+      >List</a
+      ><a name="377"
+      > </a
+      ><a name="378" class="Symbol"
+      >(</a
+      ><a name="379" href="Data.Product.html#823" class="Function"
+      >&#8707;</a
+      ><a name="380"
+      > </a
+      ><a name="381" class="Symbol"
+      >(&#955;</a
+      ><a name="383"
+      > </a
+      ><a name="384" class="Symbol"
+      >(</a
+      ><a name="385" href="Play.NoramliseProduct.html#385" class="Bound"
+      >t'</a
+      ><a name="387"
+      > </a
+      ><a name="388" class="Symbol"
+      >:</a
+      ><a name="389"
+      > </a
+      ><a name="390" class="PrimitiveType"
+      >Set</a
+      ><a name="393"
+      > </a
+      ><a name="394" href="Play.NoramliseProduct.html#368" class="Bound"
+      >&#8467;</a
+      ><a name="395" class="Symbol"
+      >)</a
+      ><a name="396"
+      > </a
+      ><a name="397" class="Symbol"
+      >&#8594;</a
+      ><a name="398"
+      > </a
+      ><a name="399" href="Play.NoramliseProduct.html#385" class="Bound"
+      >t'</a
+      ><a name="401" class="Symbol"
+      >))</a
+      ><a name="403"
+      > </a
+      ><a name="404" class="Symbol"
+      >&#8594;</a
+      ><a name="405"
+      > </a
+      ><a name="406" class="Symbol"
+      >_</a
+      ><a name="407"
+      >
+    </a
+      ><a name="412" href="Play.NoramliseProduct.html#346" class="Function"
+      >unAggregateTypes</a
+      ><a name="428"
+      > </a
+      ><a name="429" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      >[]</a
+      ><a name="431"
+      > </a
+      ><a name="432" class="Symbol"
+      >=</a
+      ><a name="433"
+      > </a
+      ><a name="434" href="Level.html#350" class="Record"
+      >Lift</a
+      ><a name="438"
+      > </a
+      ><a name="439" href="Agda.Builtin.Unit.html#69" class="Record"
+      >&#8868;</a
+      ><a name="440"
+      >
+    </a
+      ><a name="445" href="Play.NoramliseProduct.html#346" class="Function"
+      >unAggregateTypes</a
+      ><a name="461"
+      > </a
+      ><a name="462" class="Symbol"
+      >((</a
+      ><a name="464" href="Play.NoramliseProduct.html#464" class="Bound"
+      >t</a
+      ><a name="465"
+      > </a
+      ><a name="466" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="467"
+      > </a
+      ><a name="468" class="Symbol"
+      >_)</a
+      ><a name="470"
+      > </a
+      ><a name="471" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="472"
+      > </a
+      ><a name="473" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      >[]</a
+      ><a name="475" class="Symbol"
+      >)</a
+      ><a name="476"
+      > </a
+      ><a name="477" class="Symbol"
+      >=</a
+      ><a name="478"
+      > </a
+      ><a name="479" href="Play.NoramliseProduct.html#464" class="Bound"
+      >t</a
+      ><a name="480"
+      >
+    </a
+      ><a name="485" href="Play.NoramliseProduct.html#346" class="Function"
+      >unAggregateTypes</a
+      ><a name="501"
+      > </a
+      ><a name="502" class="Symbol"
+      >((</a
+      ><a name="504" href="Play.NoramliseProduct.html#504" class="Bound"
+      >t</a
+      ><a name="505"
+      > </a
+      ><a name="506" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="507"
+      > </a
+      ><a name="508" class="Symbol"
+      >_)</a
+      ><a name="510"
+      > </a
+      ><a name="511" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="512"
+      > </a
+      ><a name="513" href="Play.NoramliseProduct.html#513" class="Bound"
+      >xs</a
+      ><a name="515" class="Symbol"
+      >)</a
+      ><a name="516"
+      > </a
+      ><a name="517" class="Symbol"
+      >=</a
+      ><a name="518"
+      > </a
+      ><a name="519" href="Play.NoramliseProduct.html#504" class="Bound"
+      >t</a
+      ><a name="520"
+      > </a
+      ><a name="521" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="522"
+      > </a
+      ><a name="523" href="Play.NoramliseProduct.html#346" class="Function"
+      >unAggregateTypes</a
+      ><a name="539"
+      > </a
+      ><a name="540" href="Play.NoramliseProduct.html#513" class="Bound"
+      >xs</a
+      ><a name="542"
+      >
+
+    </a
+      ><a name="548" href="Play.NoramliseProduct.html#548" class="Function"
+      >unAggregate</a
+      ><a name="559"
+      > </a
+      ><a name="560" class="Symbol"
+      >:</a
+      ><a name="561"
+      > </a
+      ><a name="562" class="Symbol"
+      >&#8704;</a
+      ><a name="563"
+      > </a
+      ><a name="564" class="Symbol"
+      >{</a
+      ><a name="565" href="Play.NoramliseProduct.html#565" class="Bound"
+      >&#8467;</a
+      ><a name="566" class="Symbol"
+      >}</a
+      ><a name="567"
+      > </a
+      ><a name="568" class="Symbol"
+      >{</a
+      ><a name="569" href="Play.NoramliseProduct.html#569" class="Bound"
+      >t</a
+      ><a name="570"
+      > </a
+      ><a name="571" class="Symbol"
+      >:</a
+      ><a name="572"
+      > </a
+      ><a name="573" class="PrimitiveType"
+      >Set</a
+      ><a name="576"
+      > </a
+      ><a name="577" href="Play.NoramliseProduct.html#565" class="Bound"
+      >&#8467;</a
+      ><a name="578" class="Symbol"
+      >}</a
+      ><a name="579"
+      > </a
+      ><a name="580" class="Symbol"
+      >{</a
+      ><a name="581" href="Play.NoramliseProduct.html#581" class="Bound"
+      >x</a
+      ><a name="582"
+      > </a
+      ><a name="583" class="Symbol"
+      >:</a
+      ><a name="584"
+      > </a
+      ><a name="585" href="Play.NoramliseProduct.html#569" class="Bound"
+      >t</a
+      ><a name="586" class="Symbol"
+      >}</a
+      ><a name="587"
+      > </a
+      ><a name="588" class="Symbol"
+      >&#8594;</a
+      ><a name="589"
+      > </a
+      ><a name="590" class="Symbol"
+      >(</a
+      ><a name="591" href="Play.NoramliseProduct.html#591" class="Bound"
+      >c</a
+      ><a name="592"
+      > </a
+      ><a name="593" class="Symbol"
+      >:</a
+      ><a name="594"
+      > </a
+      ><a name="595" href="Play.NoramliseProduct.html#204" class="Record"
+      >Aggregate</a
+      ><a name="604"
+      > </a
+      ><a name="605" href="Play.NoramliseProduct.html#581" class="Bound"
+      >x</a
+      ><a name="606" class="Symbol"
+      >)</a
+      ><a name="607"
+      > </a
+      ><a name="608" class="Symbol"
+      >&#8594;</a
+      ><a name="609"
+      > </a
+      ><a name="610" href="Play.NoramliseProduct.html#346" class="Function"
+      >unAggregateTypes</a
+      ><a name="626"
+      > </a
+      ><a name="627" class="Symbol"
+      >(</a
+      ><a name="628" href="Play.NoramliseProduct.html#284" class="Field"
+      >items</a
+      ><a name="633"
+      > </a
+      ><a name="634" href="Play.NoramliseProduct.html#591" class="Bound"
+      >c</a
+      ><a name="635" class="Symbol"
+      >)</a
+      ><a name="636"
+      >
+    </a
+      ><a name="641" href="Play.NoramliseProduct.html#548" class="Function"
+      >unAggregate</a
+      ><a name="652"
+      > </a
+      ><a name="653" class="Keyword"
+      >record</a
+      ><a name="659"
+      > </a
+      ><a name="660" class="Symbol"
+      >{</a
+      ><a name="661"
+      > </a
+      ><a name="662" class="Field"
+      >items</a
+      ><a name="667"
+      > </a
+      ><a name="668" class="Symbol"
+      >=</a
+      ><a name="669"
+      > </a
+      ><a name="670" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      >[]</a
+      ><a name="672"
+      > </a
+      ><a name="673" class="Symbol"
+      >}</a
+      ><a name="674"
+      > </a
+      ><a name="675" class="Symbol"
+      >=</a
+      ><a name="676"
+      > </a
+      ><a name="677" href="Level.html#407" class="InductiveConstructor"
+      >lift</a
+      ><a name="681"
+      > </a
+      ><a name="682" href="Agda.Builtin.Unit.html#106" class="InductiveConstructor"
+      >tt</a
+      ><a name="684"
+      >
+    </a
+      ><a name="689" href="Play.NoramliseProduct.html#548" class="Function"
+      >unAggregate</a
+      ><a name="700"
+      > </a
+      ><a name="701" class="Keyword"
+      >record</a
+      ><a name="707"
+      > </a
+      ><a name="708" class="Symbol"
+      >{</a
+      ><a name="709"
+      > </a
+      ><a name="710" class="Field"
+      >items</a
+      ><a name="715"
+      > </a
+      ><a name="716" class="Symbol"
+      >=</a
+      ><a name="717"
+      > </a
+      ><a name="718" href="Play.NoramliseProduct.html#718" class="Bound"
+      >items</a
+      ><a name="723"
+      > </a
+      ><a name="724" class="Symbol"
+      >}</a
+      ><a name="725"
+      > </a
+      ><a name="726" class="Symbol"
+      >=</a
+      ><a name="727"
+      > </a
+      ><a name="728" href="Play.NoramliseProduct.html#756" class="Function"
+      >f</a
+      ><a name="729"
+      > </a
+      ><a name="730" href="Play.NoramliseProduct.html#718" class="Bound"
+      >items</a
+      ><a name="735"
+      >
+      </a
+      ><a name="742" class="Keyword"
+      >where</a
+      ><a name="747"
+      >
+        </a
+      ><a name="756" href="Play.NoramliseProduct.html#756" class="Function"
+      >f</a
+      ><a name="757"
+      > </a
+      ><a name="758" class="Symbol"
+      >:</a
+      ><a name="759"
+      > </a
+      ><a name="760" class="Symbol"
+      >(</a
+      ><a name="761" href="Play.NoramliseProduct.html#761" class="Bound"
+      >zs</a
+      ><a name="763"
+      > </a
+      ><a name="764" class="Symbol"
+      >:</a
+      ><a name="765"
+      > </a
+      ><a name="766" class="Symbol"
+      >_)</a
+      ><a name="768"
+      > </a
+      ><a name="769" class="Symbol"
+      >&#8594;</a
+      ><a name="770"
+      > </a
+      ><a name="771" href="Play.NoramliseProduct.html#346" class="Function"
+      >unAggregateTypes</a
+      ><a name="787"
+      > </a
+      ><a name="788" href="Play.NoramliseProduct.html#761" class="Bound"
+      >zs</a
+      ><a name="790"
+      >
+        </a
+      ><a name="799" href="Play.NoramliseProduct.html#756" class="Function"
+      >f</a
+      ><a name="800"
+      > </a
+      ><a name="801" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      >[]</a
+      ><a name="803"
+      > </a
+      ><a name="804" class="Symbol"
+      >=</a
+      ><a name="805"
+      > </a
+      ><a name="806" href="Level.html#407" class="InductiveConstructor"
+      >lift</a
+      ><a name="810"
+      > </a
+      ><a name="811" href="Agda.Builtin.Unit.html#106" class="InductiveConstructor"
+      >tt</a
+      ><a name="813"
+      >
+        </a
+      ><a name="822" href="Play.NoramliseProduct.html#756" class="Function"
+      >f</a
+      ><a name="823"
+      > </a
+      ><a name="824" class="Symbol"
+      >((_</a
+      ><a name="827"
+      > </a
+      ><a name="828" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="829"
+      > </a
+      ><a name="830" href="Play.NoramliseProduct.html#830" class="Bound"
+      >i</a
+      ><a name="831" class="Symbol"
+      >)</a
+      ><a name="832"
+      > </a
+      ><a name="833" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="834"
+      > </a
+      ><a name="835" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      >[]</a
+      ><a name="837" class="Symbol"
+      >)</a
+      ><a name="838"
+      > </a
+      ><a name="839" class="Symbol"
+      >=</a
+      ><a name="840"
+      > </a
+      ><a name="841" href="Play.NoramliseProduct.html#830" class="Bound"
+      >i</a
+      ><a name="842"
+      >
+        </a
+      ><a name="851" href="Play.NoramliseProduct.html#756" class="Function"
+      >f</a
+      ><a name="852"
+      > </a
+      ><a name="853" class="Symbol"
+      >((_</a
+      ><a name="856"
+      > </a
+      ><a name="857" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="858"
+      > </a
+      ><a name="859" href="Play.NoramliseProduct.html#859" class="Bound"
+      >i</a
+      ><a name="860" class="Symbol"
+      >)</a
+      ><a name="861"
+      > </a
+      ><a name="862" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="863"
+      > </a
+      ><a name="864" href="Play.NoramliseProduct.html#864" class="Bound"
+      >x</a
+      ><a name="865"
+      > </a
+      ><a name="866" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="867"
+      > </a
+      ><a name="868" href="Play.NoramliseProduct.html#868" class="Bound"
+      >xs</a
+      ><a name="870" class="Symbol"
+      >)</a
+      ><a name="871"
+      > </a
+      ><a name="872" class="Symbol"
+      >=</a
+      ><a name="873"
+      > </a
+      ><a name="874" href="Play.NoramliseProduct.html#859" class="Bound"
+      >i</a
+      ><a name="875"
+      > </a
+      ><a name="876" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="877"
+      > </a
+      ><a name="878" href="Play.NoramliseProduct.html#756" class="Function"
+      >f</a
+      ><a name="879"
+      > </a
+      ><a name="880" class="Symbol"
+      >(</a
+      ><a name="881" href="Play.NoramliseProduct.html#864" class="Bound"
+      >x</a
+      ><a name="882"
+      > </a
+      ><a name="883" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="884"
+      > </a
+      ><a name="885" href="Play.NoramliseProduct.html#868" class="Bound"
+      >xs</a
+      ><a name="887" class="Symbol"
+      >)</a
+      ><a name="888"
+      >
+
+  </a
+      ><a name="892" class="Keyword"
+      >instance</a
+      ><a name="900"
+      >
+    </a
+      ><a name="905" href="Play.NoramliseProduct.html#905" class="Function"
+      >&#215;-instance</a
+      ><a name="915"
+      > </a
+      ><a name="916" class="Symbol"
+      >:</a
+      ><a name="917"
+      > </a
+      ><a name="918" class="Symbol"
+      >&#8704;</a
+      ><a name="919"
+      > </a
+      ><a name="920" class="Symbol"
+      >{</a
+      ><a name="921" href="Play.NoramliseProduct.html#921" class="Bound"
+      >&#8467;</a
+      ><a name="922" class="Symbol"
+      >}</a
+      ><a name="923"
+      > </a
+      ><a name="924" class="Symbol"
+      >{</a
+      ><a name="925" href="Play.NoramliseProduct.html#925" class="Bound"
+      >t&#8321;</a
+      ><a name="927"
+      > </a
+      ><a name="928" class="Symbol"
+      >:</a
+      ><a name="929"
+      > </a
+      ><a name="930" class="PrimitiveType"
+      >Set</a
+      ><a name="933"
+      > </a
+      ><a name="934" href="Play.NoramliseProduct.html#921" class="Bound"
+      >&#8467;</a
+      ><a name="935" class="Symbol"
+      >}</a
+      ><a name="936"
+      > </a
+      ><a name="937" class="Symbol"
+      >{</a
+      ><a name="938" href="Play.NoramliseProduct.html#938" class="Bound"
+      >t&#8322;</a
+      ><a name="940"
+      > </a
+      ><a name="941" class="Symbol"
+      >:</a
+      ><a name="942"
+      > </a
+      ><a name="943" class="PrimitiveType"
+      >Set</a
+      ><a name="946"
+      > </a
+      ><a name="947" href="Play.NoramliseProduct.html#921" class="Bound"
+      >&#8467;</a
+      ><a name="948" class="Symbol"
+      >}</a
+      ><a name="949"
+      > </a
+      ><a name="950" class="Symbol"
+      >{</a
+      ><a name="951" href="Play.NoramliseProduct.html#951" class="Bound"
+      >x</a
+      ><a name="952"
+      > </a
+      ><a name="953" class="Symbol"
+      >:</a
+      ><a name="954"
+      > </a
+      ><a name="955" href="Play.NoramliseProduct.html#925" class="Bound"
+      >t&#8321;</a
+      ><a name="957" class="Symbol"
+      >}</a
+      ><a name="958"
+      > </a
+      ><a name="959" class="Symbol"
+      >{</a
+      ><a name="960" href="Play.NoramliseProduct.html#960" class="Bound"
+      >y</a
+      ><a name="961"
+      > </a
+      ><a name="962" class="Symbol"
+      >:</a
+      ><a name="963"
+      > </a
+      ><a name="964" href="Play.NoramliseProduct.html#938" class="Bound"
+      >t&#8322;</a
+      ><a name="966" class="Symbol"
+      >}</a
+      ><a name="967"
+      > </a
+      ><a name="968" class="Symbol"
+      >{{</a
+      ><a name="970" href="Play.NoramliseProduct.html#970" class="Bound"
+      >_</a
+      ><a name="971"
+      > </a
+      ><a name="972" class="Symbol"
+      >:</a
+      ><a name="973"
+      > </a
+      ><a name="974" href="Play.NoramliseProduct.html#204" class="Record"
+      >Aggregate</a
+      ><a name="983"
+      > </a
+      ><a name="984" href="Play.NoramliseProduct.html#951" class="Bound"
+      >x</a
+      ><a name="985" class="Symbol"
+      >}}</a
+      ><a name="987"
+      > </a
+      ><a name="988" class="Symbol"
+      >{{</a
+      ><a name="990" href="Play.NoramliseProduct.html#990" class="Bound"
+      >_</a
+      ><a name="991"
+      > </a
+      ><a name="992" class="Symbol"
+      >:</a
+      ><a name="993"
+      > </a
+      ><a name="994" href="Play.NoramliseProduct.html#204" class="Record"
+      >Aggregate</a
+      ><a name="1003"
+      > </a
+      ><a name="1004" href="Play.NoramliseProduct.html#960" class="Bound"
+      >y</a
+      ><a name="1005" class="Symbol"
+      >}}</a
+      ><a name="1007"
+      > </a
+      ><a name="1008" class="Symbol"
+      >&#8594;</a
+      ><a name="1009"
+      > </a
+      ><a name="1010" href="Play.NoramliseProduct.html#204" class="Record"
+      >Aggregate</a
+      ><a name="1019"
+      > </a
+      ><a name="1020" class="Symbol"
+      >(</a
+      ><a name="1021" href="Play.NoramliseProduct.html#951" class="Bound"
+      >x</a
+      ><a name="1022"
+      > </a
+      ><a name="1023" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1024"
+      > </a
+      ><a name="1025" href="Play.NoramliseProduct.html#960" class="Bound"
+      >y</a
+      ><a name="1026" class="Symbol"
+      >)</a
+      ><a name="1027"
+      >
+    </a
+      ><a name="1032" href="Play.NoramliseProduct.html#905" class="Function"
+      >&#215;-instance</a
+      ><a name="1042"
+      > </a
+      ><a name="1043" class="Symbol"
+      >{{</a
+      ><a name="1045" href="Play.NoramliseProduct.html#1045" class="Bound"
+      >i</a
+      ><a name="1046" class="Symbol"
+      >}}</a
+      ><a name="1048"
+      > </a
+      ><a name="1049" class="Symbol"
+      >{{</a
+      ><a name="1051" href="Play.NoramliseProduct.html#1051" class="Bound"
+      >j</a
+      ><a name="1052" class="Symbol"
+      >}}</a
+      ><a name="1054"
+      > </a
+      ><a name="1055" class="Symbol"
+      >=</a
+      ><a name="1056"
+      > </a
+      ><a name="1057" class="Keyword"
+      >record</a
+      ><a name="1063"
+      > </a
+      ><a name="1064" class="Symbol"
+      >{</a
+      ><a name="1065"
+      > </a
+      ><a name="1066" class="Field"
+      >items</a
+      ><a name="1071"
+      > </a
+      ><a name="1072" class="Symbol"
+      >=</a
+      ><a name="1073"
+      > </a
+      ><a name="1074" href="Play.NoramliseProduct.html#284" class="Field"
+      >items</a
+      ><a name="1079"
+      > </a
+      ><a name="1080" href="Play.NoramliseProduct.html#1045" class="Bound"
+      >i</a
+      ><a name="1081"
+      > </a
+      ><a name="1082" href="Data.List.Base.html#895" class="Function Operator"
+      >++</a
+      ><a name="1084"
+      > </a
+      ><a name="1085" href="Play.NoramliseProduct.html#284" class="Field"
+      >items</a
+      ><a name="1090"
+      > </a
+      ><a name="1091" href="Play.NoramliseProduct.html#1051" class="Bound"
+      >j</a
+      ><a name="1092"
+      > </a
+      ><a name="1093" class="Symbol"
+      >}</a
+      ><a name="1094"
+      >
+
+  </a
+      ><a name="1098" class="Keyword"
+      >module</a
+      ><a name="1104"
+      > </a
+      ><a name="1105" href="Play.NoramliseProduct.html#1105" class="Module"
+      >add</a
+      ><a name="1108"
+      > </a
+      ><a name="1109" class="Symbol"
+      >{</a
+      ><a name="1110" href="Play.NoramliseProduct.html#1110" class="Bound"
+      >&#8467;</a
+      ><a name="1111" class="Symbol"
+      >}</a
+      ><a name="1112"
+      > </a
+      ><a name="1113" class="Symbol"
+      >(</a
+      ><a name="1114" href="Play.NoramliseProduct.html#1114" class="Bound"
+      >t</a
+      ><a name="1115"
+      > </a
+      ><a name="1116" class="Symbol"
+      >:</a
+      ><a name="1117"
+      > </a
+      ><a name="1118" class="PrimitiveType"
+      >Set</a
+      ><a name="1121"
+      > </a
+      ><a name="1122" href="Play.NoramliseProduct.html#1110" class="Bound"
+      >&#8467;</a
+      ><a name="1123" class="Symbol"
+      >)</a
+      ><a name="1124"
+      > </a
+      ><a name="1125" class="Keyword"
+      >where</a
+      ><a name="1130"
+      >
+    </a
+      ><a name="1135" class="Keyword"
+      >instance</a
+      ><a name="1143"
+      >
+      </a
+      ><a name="1150" href="Play.NoramliseProduct.html#1150" class="Function"
+      >i</a
+      ><a name="1151"
+      > </a
+      ><a name="1152" class="Symbol"
+      >:</a
+      ><a name="1153"
+      > </a
+      ><a name="1154" class="Symbol"
+      >&#8704;</a
+      ><a name="1155"
+      > </a
+      ><a name="1156" class="Symbol"
+      >{</a
+      ><a name="1157" href="Play.NoramliseProduct.html#1157" class="Bound"
+      >x</a
+      ><a name="1158"
+      > </a
+      ><a name="1159" class="Symbol"
+      >:</a
+      ><a name="1160"
+      > </a
+      ><a name="1161" href="Play.NoramliseProduct.html#1114" class="Bound"
+      >t</a
+      ><a name="1162" class="Symbol"
+      >}</a
+      ><a name="1163"
+      > </a
+      ><a name="1164" class="Symbol"
+      >&#8594;</a
+      ><a name="1165"
+      > </a
+      ><a name="1166" href="Play.NoramliseProduct.html#204" class="Record"
+      >Aggregate</a
+      ><a name="1175"
+      > </a
+      ><a name="1176" href="Play.NoramliseProduct.html#1157" class="Bound"
+      >x</a
+      ><a name="1177"
+      >
+      </a
+      ><a name="1184" href="Play.NoramliseProduct.html#1150" class="Function"
+      >i</a
+      ><a name="1185"
+      > </a
+      ><a name="1186" class="Symbol"
+      >{</a
+      ><a name="1187" href="Play.NoramliseProduct.html#1187" class="Bound"
+      >x</a
+      ><a name="1188" class="Symbol"
+      >}</a
+      ><a name="1189"
+      > </a
+      ><a name="1190" class="Symbol"
+      >=</a
+      ><a name="1191"
+      > </a
+      ><a name="1192" class="Keyword"
+      >record</a
+      ><a name="1198"
+      > </a
+      ><a name="1199" class="Symbol"
+      >{</a
+      ><a name="1200"
+      > </a
+      ><a name="1201" class="Field"
+      >items</a
+      ><a name="1206"
+      > </a
+      ><a name="1207" class="Symbol"
+      >=</a
+      ><a name="1208"
+      > </a
+      ><a name="1209" class="Symbol"
+      >(_</a
+      ><a name="1211"
+      > </a
+      ><a name="1212" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1213"
+      > </a
+      ><a name="1214" href="Play.NoramliseProduct.html#1187" class="Bound"
+      >x</a
+      ><a name="1215" class="Symbol"
+      >)</a
+      ><a name="1216"
+      > </a
+      ><a name="1217" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1218"
+      > </a
+      ><a name="1219" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      >[]</a
+      ><a name="1221"
+      > </a
+      ><a name="1222" class="Symbol"
+      >}</a
+      ><a name="1223"
+      >
+
+
+  </a
+      ><a name="1228" href="Play.NoramliseProduct.html#1228" class="Function"
+      >refactor</a
+      ><a name="1236"
+      > </a
+      ><a name="1237" class="Symbol"
+      >:</a
+      ><a name="1238"
+      > </a
+      ><a name="1239" class="Symbol"
+      >&#8704;</a
+      ><a name="1240"
+      > </a
+      ><a name="1241" class="Symbol"
+      >{</a
+      ><a name="1242" href="Play.NoramliseProduct.html#1242" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1244"
+      > </a
+      ><a name="1245" href="Play.NoramliseProduct.html#1245" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1247" class="Symbol"
+      >}</a
+      ><a name="1248"
+      > </a
+      ><a name="1249" class="Symbol"
+      >{</a
+      ><a name="1250" href="Play.NoramliseProduct.html#1250" class="Bound"
+      >t&#8321;</a
+      ><a name="1252"
+      > </a
+      ><a name="1253" class="Symbol"
+      >:</a
+      ><a name="1254"
+      > </a
+      ><a name="1255" class="PrimitiveType"
+      >Set</a
+      ><a name="1258"
+      > </a
+      ><a name="1259" href="Play.NoramliseProduct.html#1242" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1261" class="Symbol"
+      >}</a
+      ><a name="1262"
+      > </a
+      ><a name="1263" class="Symbol"
+      >{</a
+      ><a name="1264" href="Play.NoramliseProduct.html#1264" class="Bound"
+      >t&#8322;</a
+      ><a name="1266"
+      > </a
+      ><a name="1267" class="Symbol"
+      >:</a
+      ><a name="1268"
+      > </a
+      ><a name="1269" class="PrimitiveType"
+      >Set</a
+      ><a name="1272"
+      > </a
+      ><a name="1273" href="Play.NoramliseProduct.html#1245" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1275" class="Symbol"
+      >}</a
+      ><a name="1276"
+      > </a
+      ><a name="1277" class="Symbol"
+      >(</a
+      ><a name="1278" href="Play.NoramliseProduct.html#1278" class="Bound"
+      >x</a
+      ><a name="1279"
+      > </a
+      ><a name="1280" class="Symbol"
+      >:</a
+      ><a name="1281"
+      > </a
+      ><a name="1282" href="Play.NoramliseProduct.html#1250" class="Bound"
+      >t&#8321;</a
+      ><a name="1284"
+      > </a
+      ><a name="1285" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1286"
+      > </a
+      ><a name="1287" href="Play.NoramliseProduct.html#1264" class="Bound"
+      >t&#8322;</a
+      ><a name="1289" class="Symbol"
+      >)</a
+      ><a name="1290"
+      > </a
+      ><a name="1291" class="Symbol"
+      >{{</a
+      ><a name="1293" href="Play.NoramliseProduct.html#1293" class="Bound"
+      >_</a
+      ><a name="1294"
+      > </a
+      ><a name="1295" class="Symbol"
+      >:</a
+      ><a name="1296"
+      > </a
+      ><a name="1297" href="Play.NoramliseProduct.html#204" class="Record"
+      >Aggregate</a
+      ><a name="1306"
+      > </a
+      ><a name="1307" href="Play.NoramliseProduct.html#1278" class="Bound"
+      >x</a
+      ><a name="1308" class="Symbol"
+      >}}</a
+      ><a name="1310"
+      > </a
+      ><a name="1311" class="Symbol"
+      >&#8594;</a
+      ><a name="1312"
+      > </a
+      ><a name="1313" class="Symbol"
+      >_</a
+      ><a name="1314"
+      >
+  </a
+      ><a name="1317" href="Play.NoramliseProduct.html#1228" class="Function"
+      >refactor</a
+      ><a name="1325"
+      > </a
+      ><a name="1326" class="Symbol"
+      >_</a
+      ><a name="1327"
+      > </a
+      ><a name="1328" class="Symbol"
+      >{{</a
+      ><a name="1330" href="Play.NoramliseProduct.html#1330" class="Bound"
+      >i</a
+      ><a name="1331" class="Symbol"
+      >}}</a
+      ><a name="1333"
+      > </a
+      ><a name="1334" class="Symbol"
+      >=</a
+      ><a name="1335"
+      > </a
+      ><a name="1336" href="Play.NoramliseProduct.html#548" class="Function"
+      >unAggregate</a
+      ><a name="1347"
+      > </a
+      ><a name="1348" href="Play.NoramliseProduct.html#1330" class="Bound"
+      >i</a
+      ><a name="1349"
+      >
+
+</a
+      ><a name="1351" class="Keyword"
+      >open</a
+      ><a name="1355"
+      > </a
+      ><a name="1356" href="Play.NoramliseProduct.html#166" class="Module"
+      >Normalise</a
+      ><a name="1365"
+      >
+
+</a
+      ><a name="1367" class="Comment"
+      >-- example</a
+      ><a name="1377"
+      >
+</a
+      ><a name="1378" href="Play.NoramliseProduct.html#1378" class="Function"
+      >mess</a
+      ><a name="1382"
+      > </a
+      ><a name="1383" class="Symbol"
+      >:</a
+      ><a name="1384"
+      > </a
+      ><a name="1385" class="Symbol"
+      >((((</a
+      ><a name="1389" href="Agda.Builtin.Unit.html#69" class="Record"
+      >&#8868;</a
+      ><a name="1390"
+      > </a
+      ><a name="1391" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1392"
+      > </a
+      ><a name="1393" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >&#8469;</a
+      ><a name="1394" class="Symbol"
+      >)</a
+      ><a name="1395"
+      > </a
+      ><a name="1396" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1397"
+      > </a
+      ><a name="1398" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >&#8469;</a
+      ><a name="1399" class="Symbol"
+      >)</a
+      ><a name="1400"
+      > </a
+      ><a name="1401" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1402"
+      > </a
+      ><a name="1403" class="Symbol"
+      >(</a
+      ><a name="1404" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >&#8469;</a
+      ><a name="1405"
+      > </a
+      ><a name="1406" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1407"
+      > </a
+      ><a name="1408" href="Agda.Builtin.Unit.html#69" class="Record"
+      >&#8868;</a
+      ><a name="1409" class="Symbol"
+      >))</a
+      ><a name="1411"
+      > </a
+      ><a name="1412" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1413"
+      > </a
+      ><a name="1414" class="Symbol"
+      >(</a
+      ><a name="1415" href="Agda.Builtin.Unit.html#69" class="Record"
+      >&#8868;</a
+      ><a name="1416"
+      > </a
+      ><a name="1417" class="Symbol"
+      >&#8594;</a
+      ><a name="1418"
+      > </a
+      ><a name="1419" href="Agda.Builtin.Unit.html#69" class="Record"
+      >&#8868;</a
+      ><a name="1420" class="Symbol"
+      >))</a
+      ><a name="1422"
+      >
+</a
+      ><a name="1423" href="Play.NoramliseProduct.html#1378" class="Function"
+      >mess</a
+      ><a name="1427"
+      > </a
+      ><a name="1428" class="Symbol"
+      >=</a
+      ><a name="1429"
+      > </a
+      ><a name="1430" class="Symbol"
+      >(((</a
+      ><a name="1433" href="Agda.Builtin.Unit.html#106" class="InductiveConstructor"
+      >tt</a
+      ><a name="1435"
+      > </a
+      ><a name="1436" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1437"
+      > </a
+      ><a name="1438" class="Number"
+      >3</a
+      ><a name="1439" class="Symbol"
+      >)</a
+      ><a name="1440"
+      > </a
+      ><a name="1441" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1442"
+      > </a
+      ><a name="1443" class="Number"
+      >7</a
+      ><a name="1444" class="Symbol"
+      >)</a
+      ><a name="1445"
+      > </a
+      ><a name="1446" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1447"
+      > </a
+      ><a name="1448" class="Symbol"
+      >(</a
+      ><a name="1449" class="Number"
+      >5</a
+      ><a name="1450"
+      > </a
+      ><a name="1451" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1452"
+      > </a
+      ><a name="1453" href="Agda.Builtin.Unit.html#106" class="InductiveConstructor"
+      >tt</a
+      ><a name="1455" class="Symbol"
+      >))</a
+      ><a name="1457"
+      > </a
+      ><a name="1458" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1459"
+      > </a
+      ><a name="1460" class="Symbol"
+      >&#955;</a
+      ><a name="1461"
+      > </a
+      ><a name="1462" href="Play.NoramliseProduct.html#1462" class="Bound"
+      >x</a
+      ><a name="1463"
+      > </a
+      ><a name="1464" class="Symbol"
+      >&#8594;</a
+      ><a name="1465"
+      > </a
+      ><a name="1466" href="Play.NoramliseProduct.html#1462" class="Bound"
+      >x</a
+      ><a name="1467"
+      >
+
+</a
+      ><a name="1469" href="Play.NoramliseProduct.html#1469" class="Function"
+      >clean</a
+      ><a name="1474"
+      > </a
+      ><a name="1475" class="Symbol"
+      >:</a
+      ><a name="1476"
+      > </a
+      ><a name="1477" href="Agda.Builtin.Unit.html#69" class="Record"
+      >&#8868;</a
+      ><a name="1478"
+      > </a
+      ><a name="1479" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1480"
+      > </a
+      ><a name="1481" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >&#8469;</a
+      ><a name="1482"
+      > </a
+      ><a name="1483" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1484"
+      > </a
+      ><a name="1485" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >&#8469;</a
+      ><a name="1486"
+      > </a
+      ><a name="1487" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1488"
+      > </a
+      ><a name="1489" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >&#8469;</a
+      ><a name="1490"
+      > </a
+      ><a name="1491" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1492"
+      > </a
+      ><a name="1493" href="Agda.Builtin.Unit.html#69" class="Record"
+      >&#8868;</a
+      ><a name="1494"
+      > </a
+      ><a name="1495" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1496"
+      > </a
+      ><a name="1497" class="Symbol"
+      >(</a
+      ><a name="1498" href="Agda.Builtin.Unit.html#69" class="Record"
+      >&#8868;</a
+      ><a name="1499"
+      > </a
+      ><a name="1500" class="Symbol"
+      >&#8594;</a
+      ><a name="1501"
+      > </a
+      ><a name="1502" href="Agda.Builtin.Unit.html#69" class="Record"
+      >&#8868;</a
+      ><a name="1503" class="Symbol"
+      >)</a
+      ><a name="1504"
+      >
+</a
+      ><a name="1505" href="Play.NoramliseProduct.html#1469" class="Function"
+      >clean</a
+      ><a name="1510"
+      > </a
+      ><a name="1511" class="Symbol"
+      >=</a
+      ><a name="1512"
+      > </a
+      ><a name="1513" href="Play.NoramliseProduct.html#1228" class="Function"
+      >refactor</a
+      ><a name="1521"
+      > </a
+      ><a name="1522" href="Play.NoramliseProduct.html#1378" class="Function"
+      >mess</a
+      ><a name="1526"
+      >
+  </a
+      ><a name="1529" class="Keyword"
+      >where</a
+      ><a name="1534"
+      >
+    </a
+      ><a name="1539" class="Keyword"
+      >open</a
+      ><a name="1543"
+      > </a
+      ><a name="1544" href="Play.NoramliseProduct.html#1105" class="Module"
+      >add</a
+      ><a name="1547"
+      > </a
+      ><a name="1548" class="Symbol"
+      >(</a
+      ><a name="1549" href="Agda.Builtin.Unit.html#69" class="Record"
+      >&#8868;</a
+      ><a name="1550"
+      > </a
+      ><a name="1551" class="Symbol"
+      >&#8594;</a
+      ><a name="1552"
+      > </a
+      ><a name="1553" href="Agda.Builtin.Unit.html#69" class="Record"
+      >&#8868;</a
+      ><a name="1554" class="Symbol"
+      >)</a
+      ><a name="1555"
+      >
+    </a
+      ><a name="1560" class="Keyword"
+      >open</a
+      ><a name="1564"
+      > </a
+      ><a name="1565" href="Play.NoramliseProduct.html#1105" class="Module"
+      >add</a
+      ><a name="1568"
+      > </a
+      ><a name="1569" href="Agda.Builtin.Unit.html#69" class="Record"
+      >&#8868;</a
+      ><a name="1570"
+      >
+    </a
+      ><a name="1575" class="Keyword"
+      >open</a
+      ><a name="1579"
+      > </a
+      ><a name="1580" href="Play.NoramliseProduct.html#1105" class="Module"
+      >add</a
+      ><a name="1583"
+      > </a
+      ><a name="1584" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >&#8469;</a
+      ><a name="1585"
+      >
+
+</a
+      ><a name="1587" class="Comment"
+      >-- example 2</a
+      ><a name="1599"
+      >
+</a
+      ><a name="1600" href="Play.NoramliseProduct.html#1600" class="Function"
+      >poly</a
+      ><a name="1604"
+      > </a
+      ><a name="1605" class="Symbol"
+      >:</a
+      ><a name="1606"
+      > </a
+      ><a name="1607" class="Symbol"
+      >&#8704;</a
+      ><a name="1608"
+      > </a
+      ><a name="1609" class="Symbol"
+      >{</a
+      ><a name="1610" href="Play.NoramliseProduct.html#1610" class="Bound"
+      >a</a
+      ><a name="1611"
+      > </a
+      ><a name="1612" href="Play.NoramliseProduct.html#1612" class="Bound"
+      >b</a
+      ><a name="1613"
+      > </a
+      ><a name="1614" href="Play.NoramliseProduct.html#1614" class="Bound"
+      >c</a
+      ><a name="1615"
+      > </a
+      ><a name="1616" href="Play.NoramliseProduct.html#1616" class="Bound"
+      >d</a
+      ><a name="1617"
+      > </a
+      ><a name="1618" href="Play.NoramliseProduct.html#1618" class="Bound"
+      >e</a
+      ><a name="1619"
+      > </a
+      ><a name="1620" class="Symbol"
+      >:</a
+      ><a name="1621"
+      > </a
+      ><a name="1622" class="PrimitiveType"
+      >Set</a
+      ><a name="1625" class="Symbol"
+      >}</a
+      ><a name="1626"
+      > </a
+      ><a name="1627" class="Symbol"
+      >&#8594;</a
+      ><a name="1628"
+      > </a
+      ><a name="1629" class="Symbol"
+      >(((</a
+      ><a name="1632" href="Play.NoramliseProduct.html#1610" class="Bound"
+      >a</a
+      ><a name="1633"
+      > </a
+      ><a name="1634" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1635"
+      > </a
+      ><a name="1636" href="Play.NoramliseProduct.html#1612" class="Bound"
+      >b</a
+      ><a name="1637"
+      > </a
+      ><a name="1638" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1639"
+      > </a
+      ><a name="1640" href="Play.NoramliseProduct.html#1614" class="Bound"
+      >c</a
+      ><a name="1641" class="Symbol"
+      >)</a
+      ><a name="1642"
+      > </a
+      ><a name="1643" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1644"
+      > </a
+      ><a name="1645" href="Play.NoramliseProduct.html#1616" class="Bound"
+      >d</a
+      ><a name="1646" class="Symbol"
+      >)</a
+      ><a name="1647"
+      > </a
+      ><a name="1648" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1649"
+      > </a
+      ><a name="1650" href="Play.NoramliseProduct.html#1618" class="Bound"
+      >e</a
+      ><a name="1651" class="Symbol"
+      >)</a
+      ><a name="1652"
+      > </a
+      ><a name="1653" class="Symbol"
+      >&#8594;</a
+      ><a name="1654"
+      > </a
+      ><a name="1655" href="Play.NoramliseProduct.html#1610" class="Bound"
+      >a</a
+      ><a name="1656"
+      > </a
+      ><a name="1657" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1658"
+      > </a
+      ><a name="1659" href="Play.NoramliseProduct.html#1612" class="Bound"
+      >b</a
+      ><a name="1660"
+      > </a
+      ><a name="1661" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1662"
+      > </a
+      ><a name="1663" href="Play.NoramliseProduct.html#1614" class="Bound"
+      >c</a
+      ><a name="1664"
+      > </a
+      ><a name="1665" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1666"
+      > </a
+      ><a name="1667" href="Play.NoramliseProduct.html#1616" class="Bound"
+      >d</a
+      ><a name="1668"
+      > </a
+      ><a name="1669" href="Data.Product.html#1295" class="Function Operator"
+      >&#215;</a
+      ><a name="1670"
+      > </a
+      ><a name="1671" href="Play.NoramliseProduct.html#1618" class="Bound"
+      >e</a
+      ><a name="1672"
+      >
+</a
+      ><a name="1673" href="Play.NoramliseProduct.html#1600" class="Function"
+      >poly</a
+      ><a name="1677"
+      > </a
+      ><a name="1678" class="Symbol"
+      >{</a
+      ><a name="1679" href="Play.NoramliseProduct.html#1679" class="Bound"
+      >a</a
+      ><a name="1680" class="Symbol"
+      >}</a
+      ><a name="1681"
+      > </a
+      ><a name="1682" class="Symbol"
+      >{</a
+      ><a name="1683" href="Play.NoramliseProduct.html#1683" class="Bound"
+      >b</a
+      ><a name="1684" class="Symbol"
+      >}</a
+      ><a name="1685"
+      > </a
+      ><a name="1686" class="Symbol"
+      >{</a
+      ><a name="1687" href="Play.NoramliseProduct.html#1687" class="Bound"
+      >c</a
+      ><a name="1688" class="Symbol"
+      >}</a
+      ><a name="1689"
+      > </a
+      ><a name="1690" class="Symbol"
+      >{</a
+      ><a name="1691" href="Play.NoramliseProduct.html#1691" class="Bound"
+      >d</a
+      ><a name="1692" class="Symbol"
+      >}</a
+      ><a name="1693"
+      > </a
+      ><a name="1694" class="Symbol"
+      >{</a
+      ><a name="1695" href="Play.NoramliseProduct.html#1695" class="Bound"
+      >e</a
+      ><a name="1696" class="Symbol"
+      >}</a
+      ><a name="1697"
+      > </a
+      ><a name="1698" href="Play.NoramliseProduct.html#1698" class="Bound"
+      >mess</a
+      ><a name="1702"
+      > </a
+      ><a name="1703" class="Symbol"
+      >=</a
+      ><a name="1704"
+      > </a
+      ><a name="1705" href="Play.NoramliseProduct.html#1228" class="Function"
+      >refactor</a
+      ><a name="1713"
+      > </a
+      ><a name="1714" href="Play.NoramliseProduct.html#1698" class="Bound"
+      >mess</a
+      ><a name="1718"
+      >
+  </a
+      ><a name="1721" class="Keyword"
+      >where</a
+      ><a name="1726"
+      >
+    </a
+      ><a name="1731" class="Keyword"
+      >open</a
+      ><a name="1735"
+      > </a
+      ><a name="1736" href="Play.NoramliseProduct.html#1105" class="Module"
+      >add</a
+      ><a name="1739"
+      > </a
+      ><a name="1740" href="Play.NoramliseProduct.html#1679" class="Bound"
+      >a</a
+      ><a name="1741"
+      >
+    </a
+      ><a name="1746" class="Keyword"
+      >open</a
+      ><a name="1750"
+      > </a
+      ><a name="1751" href="Play.NoramliseProduct.html#1105" class="Module"
+      >add</a
+      ><a name="1754"
+      > </a
+      ><a name="1755" href="Play.NoramliseProduct.html#1683" class="Bound"
+      >b</a
+      ><a name="1756"
+      >
+    </a
+      ><a name="1761" class="Keyword"
+      >open</a
+      ><a name="1765"
+      > </a
+      ><a name="1766" href="Play.NoramliseProduct.html#1105" class="Module"
+      >add</a
+      ><a name="1769"
+      > </a
+      ><a name="1770" href="Play.NoramliseProduct.html#1687" class="Bound"
+      >c</a
+      ><a name="1771"
+      >
+    </a
+      ><a name="1776" class="Keyword"
+      >open</a
+      ><a name="1780"
+      > </a
+      ><a name="1781" href="Play.NoramliseProduct.html#1105" class="Module"
+      >add</a
+      ><a name="1784"
+      > </a
+      ><a name="1785" href="Play.NoramliseProduct.html#1691" class="Bound"
+      >d</a
+      ><a name="1786"
+      >
+    </a
+      ><a name="1791" class="Keyword"
+      >open</a
+      ><a name="1795"
+      > </a
+      ><a name="1796" href="Play.NoramliseProduct.html#1105" class="Module"
+      >add</a
+      ><a name="1799"
+      > </a
+      ><a name="1800" href="Play.NoramliseProduct.html#1695" class="Bound"
+      >e</a
+      ><a name="1801"
+      >
+
+</a
+      ></pre
+    ></body
+  ></html
+>
