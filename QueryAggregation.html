@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+  <title>Independent Redis Query Aggregation</title>
+  <style type="text/css">
+
+    @font-face {
+      font-family: 'Droid Sans Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Droid Sans Mono Regular'),local('Droid Sans Mono'), local('DroidSansMono-Regular'), url(https://fonts.gstatic.com/s/droidsansmono/v9/ns-m2xQYezAtqh7ai59hJYdJ2JT0J65PSe7wdxAnx_I.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+    }
+
+
+      /* cyrillic-ext */
+    @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v18/ek4gzZ-GeXAPcSbHtCeQI_esZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+    unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+    }
+    /* cyrillic */
+    @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v18/mErvLBYg_cXG3rLvUsKT_fesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    }
+    /* greek-ext */
+    @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v18/-2n2p-_Y08sg57CNWQfKNvesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+    unicode-range: U+1F00-1FFF;
+    }
+    /* greek */
+    @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v18/u0TOpm082MNkS5K0Q4rhqvesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+    unicode-range: U+0370-03FF;
+    }
+    /* vietnamese */
+    @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v18/NdF9MtnOpLzo-noMoG0miPesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+    unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+    }
+    /* latin-ext */
+    @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v18/Fcx7Wwv8OzT71A3E1XOAjvesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+    unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+    }
+    /* latin */
+    @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v18/CWB0XYA8bzo0kSThX0UTuA.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+    }
+
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      div.line-block{white-space: pre-line;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+      code {
+        font-family:"Droid sans mono";
+      }
+
+      body {
+        font-family: Roboto;
+        background: #fcfcfc;
+        color: #444;
+        max-width: 680px;
+        margin: 60px auto;
+        line-height: 26px;
+        margin-bottom:200px;
+      }
+
+      .midblock {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      h1 {
+        margin-bottom:40px;
+        line-height: 1.3em;
+      }
+
+      h3 {
+        margin-top:40px;
+        margin-bottom: 0px;
+      }
+
+      pre.sourceCode {
+        padding:8px 12px;
+        background-color: #2d3335;
+        border-radius: 2px;
+        color:#888;
+      }
+
+      code.sourceCode {
+        display: block;
+      }
+
+      code {
+        color:#888;
+        background-color: #2d3335;
+        padding-left:3px;
+        padding-right:3px;
+        border-radius: 2px;
+        font-size:16px;
+      }
+
+      ::-moz-selection {
+          background: #badbff;
+      }
+
+      ::selection {
+          background: lightblue;
+      }
+
+      code ::-moz-selection {
+          background: #566;
+      }
+
+      code ::selection {
+          background: #566;
+      }
+
+  </style>
+  <style type="text/css">
+    a, a:visited {
+      color:#60ae60;
+    }
+    div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }
+    a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+    .sourceCode { overflow: auto; }
+    code.sourceCode { white-space: pre; }
+    @media print {
+    code.sourceCode { white-space: pre-wrap; }
+    div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }
+    }
+    pre.numberSource div.sourceLine, .numberSource a.sourceLine
+      { position: relative; }
+    pre.numberSource div.sourceLine::before, .numberSource a.sourceLine::before
+      { content: attr(data-line-number);
+        position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+        border: none; pointer-events: all;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em; }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; color: #aaaaaa;  padding-left: 4px; }
+    @media screen {
+    a.sourceLine::before { text-decoration: underline; color: initial; }
+    }
+    code span.or { color: #ffa500 }
+    code span.tc { color: #da70d6 }
+    code span.wt { color: #fcfcfc }
+    code span.kw { color: #888} /* Keyword */
+    code span.dt { color: #00bfff; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.fl { color: #40a070; } /* Float */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.st { color: #4070a0; } /* String */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.ot { color: #90de90; } /* Other */
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.fu { color: #888; } /* Function */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    code span.cn { color: #880000; } /* Constant */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.im { } /* Import */
+    code span.va { color: #19177c; } /* Variable */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.op { color: #666666; } /* Operator */
+    code span.bu { } /* BuiltIn */
+    code span.ex { } /* Extension */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+</head>
+<body>
+<div class="midblock">
+<h1 id="independent-redis-query-aggregation">Independent Redis Query Aggregation</h1>
+<h3 id="preface">Preface</h3>
+<p>This is an article about aggregating independent queries into a single query, so I've elided definitions for how typed primitive data paths are defined in the first place and how to connect them to a Redis monad. For information on this, see <a href="https://identicalsnowflake.github.io/Redis.html">my previous article on how to approach this problem</a>.</p>
+<h3 id="motivating-example">Motivating example</h3>
+<p>Imagine a simple data model for Reddit's comment system in Redis:</p>
+<pre class="sourceCode haskell" id="cb1"><code class="sourceCode haskell"><div class="sourceLine" id="cb1-1" data-line-number="1"><span class="ot">threadIdToComments</span> :: <span class="dt">ThreadId</span> <span class="or">⟿</span> <span class="or">RoseTree</span> <span class="dt">CommentId</span></div>
+<div class="sourceLine" id="cb1-2" data-line-number="2"><span class="ot">commentIdToComment</span> :: <span class="dt">CommentId</span> <span class="or">⟿</span> <span class="dt">Comment</span></div>
+<div class="sourceLine" id="cb1-3" data-line-number="3"><span class="ot">commentIdToScore</span> :: <span class="dt">CommentId</span> <span class="or">⟿</span> <span class="dt">Integer</span></div></code></pre>
+<p>The definition of <code><span class="or">⟿</span></code> isn't important for now; just read <code><span class="wt">a</span> <span class="or">⟿</span> <span class="wt">b</span></code> as &quot;a primitive mapping from as to bs in Redis.&quot; In other words, there is a <code><span class="ot">runQuery</span> :: <span class="wt">a</span> <span class="or">⟿</span> <span class="wt">b</span> -&gt; <span class="wt">a</span> -&gt; <span class="or">Redis</span> <span class="wt">b</span></code> and it should entail only one <code><span class="ot">get</span></code> command.</p>
+<p>Using the above model, I can use a Redis monad to retrieve comment data:</p>
+<pre class="sourceCode haskell" id="cb2"><code class="sourceCode haskell"><div class="sourceLine" id="cb2-1" data-line-number="1"></div>
+<div class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">newtype</span> <span class="dt">CommentView</span> <span class="fu">=</span> <span class="dt">CommentView</span> {</div>
+<div class="sourceLine" id="cb2-3" data-line-number="3"><span class="ot">    comment</span> :: <span class="dt">Comment</span></div>
+<div class="sourceLine" id="cb2-4" data-line-number="4">  ,<span class="ot"> votes</span> :: <span class="dt">Integer</span></div>
+<div class="sourceLine" id="cb2-5" data-line-number="5">  }</div>
+<div class="sourceLine" id="cb2-6" data-line-number="6"></div>
+<div class="sourceLine" id="cb2-7" data-line-number="7"><span class="ot">getComments</span> :: <span class="dt">ThreadId</span> -&gt; <span class="or">Redis</span> (<span class="or">RoseTree</span> <span class="dt">CommentView</span>)</div>
+<div class="sourceLine" id="cb2-8" data-line-number="8"><span class="ot">getComments</span> <span class="wt">tid</span> <span class="fu">=</span> <span class="kw">do</span></div>
+<div class="sourceLine" id="cb2-9" data-line-number="9">  <span class="wt">cids</span> &lt;- <span class="ot">runQuery threadIdToComments</span> <span class="wt">tid</span></div>
+<div class="sourceLine" id="cb2-10" data-line-number="10">  <span class="ot">flip traverse</span> <span class="wt">cids</span> <span class="fu">$</span> \<span class="wt">i</span> -&gt;</div>
+<div class="sourceLine" id="cb2-11" data-line-number="11">        <span class="dt">CommentView</span></div>
+<div class="sourceLine" id="cb2-12" data-line-number="12">    <span class="tc">&lt;$&gt;</span> <span class="ot">runQuery commentIdToComment</span> <span class="wt">i</span></div>
+<div class="sourceLine" id="cb2-13" data-line-number="13">    <span class="tc">&lt;*&gt;</span> <span class="ot">runQuery commentIdToScore</span> <span class="wt">i</span></div>
+<div class="sourceLine" id="cb2-14" data-line-number="14"></div></code></pre>
+<p>The above paradigm can model business architecture quite well. All the primitive mappings (and hence, queries) are well-typed.</p>
+<p>The problem is the monadic implementation is inefficient. In the above, the first query retrieves a <code><span class="dt"><span class="or">RoseTree</span> CommentId</span></code>, but then for every <code><span class="dt">CommentId</span></code> in the tree an additional two queries are constructed! (In practice, it's typically much worse, as other data like &quot;has the user already voted on this post&quot; is also included.) If there are 100 comments in a thread, then a total of 201 queries would be executed here! At best (<code><span class="tc">&lt;*&gt;</span></code> operates in parallel), there is unnecessary verbosity in our command pipeline, and at worst (<code><span class="tc">&lt;*&gt;</span></code> is given in terms of <code><span class="tc">&gt;&gt;=</span></code>) it's performing 199 consecutive operations with each one unnecessarily awaiting the result of the previous!</p>
+<p>Fortunately, Redis itself has a solution to this problem: instead of executing many independent <code><span class="ot">get</span></code> commands, Redis provides <code><span class="ot">mget</span> <span class="wt">key1 key2</span>...</code>, which will perform all the lookups at once in a single command. Which brings me to the topic of this post: is there a way to systematically construct <code><span class="ot">mget</span></code> queries in a type-safe way?</p>
+<h3 id="fantasies-of-a-perfect-structure">Fantasies of a perfect structure</h3>
+<p>Imagine a definition for <code><span class="or">⟿</span></code> that will enable using <code><span class="ot">mget</span></code> instead of <code><span class="ot">get</span></code> so that we can aggregate independent queries together. The structure should provide as much functionality as possible without enabling the possibility to introduce computational dependency (i.e., &quot;and then&quot;).</p>
+<p>Ideally, there are a bunch of combinators I'd like to have on this structure:</p>
+<pre class="sourceCode haskell" id="cb3"><code class="sourceCode haskell"><div class="sourceLine" id="cb3-1" data-line-number="1"><span class="ot">aggregatePair</span> :: <span class="wt">a</span> <span class="or">⟿</span> <span class="wt">b</span> -&gt; <span class="wt">c</span> <span class="or">⟿</span> <span class="wt">d</span> -&gt; (<span class="wt">a</span> , <span class="wt">c</span>) <span class="or">⟿</span> (<span class="wt">b</span> , <span class="wt">d</span>)</div></code></pre>
+<p>Similarly, it would be nice to perform multiple lookups given a single identifier:</p>
+<pre class="sourceCode haskell" id="cb4"><code class="sourceCode haskell"><div class="sourceLine" id="cb4-1" data-line-number="1"><span class="ot">aggregate2 </span>:: <span class="wt">a</span> <span class="or">⟿</span> <span class="wt">b</span> -&gt; <span class="wt">a</span> <span class="or">⟿</span> <span class="wt">c</span> -&gt; <span class="wt">a</span> <span class="or">⟿</span> (<span class="wt">b</span>,<span class="wt">c</span>)</div>
+<div class="sourceLine" id="cb4-2" data-line-number="2"><span class="ot">aggregate3 </span>:: <span class="wt">a</span> <span class="or">⟿</span> <span class="wt">b</span> -&gt; <span class="wt">a</span> <span class="or">⟿</span> <span class="wt">c</span> -&gt; <span class="wt">a</span> <span class="or">⟿</span> <span class="wt">d</span> -&gt; <span class="wt">a</span> <span class="or">⟿</span> (<span class="wt">b</span>,<span class="wt">c</span>,<span class="wt">d</span>)</div>
+<div class="sourceLine" id="cb4-3" data-line-number="3"><span class="fu">...</span></div></code></pre>
+<p>But in fact, this is a red herring: with an <code><span class="tc">Applicative</span></code>, we could do the same thing by <code>(,...,) <span class="tc">&lt;$&gt;</span> <span class="wt">a1</span> <span class="tc">&lt;*&gt;</span> <span class="wt">...</span> <span class="tc">&lt;*&gt;</span> <span class="wt">aN</span></code>, allowing us to scale to arbitrary tuple sizes rather than hardcoding each one.</p>
+<p>Next, I want to execute a lookup path many independent times across different inputs:</p>
+<pre class="sourceCode haskell" id="cb5"><code class="sourceCode haskell"><div class="sourceLine" id="cb5-1" data-line-number="1"><span class="ot">aggregateList </span>:: <span class="wt">a</span> <span class="or">⟿</span> <span class="wt">b</span> -&gt; [ <span class="wt">a</span> ] <span class="or">⟿</span> [ <span class="wt">b</span> ]</div></code></pre>
+<p>But yet again, this feels unprincipled. Why hardcode a <code><span class="or">List</span></code> here? Shouldn't any other <code><span class="tc">Traversable</span></code> do just as well? So ideally, it should be:</p>
+<pre class="sourceCode haskell" id="cb6"><code class="sourceCode haskell"><div class="sourceLine" id="cb6-1" data-line-number="1"><span class="ot">aggregateTraversable </span>:: (<span class="tc">Traversable</span> t) =&gt; <span class="wt">a</span> <span class="or">⟿</span> <span class="wt">b</span> -&gt; t <span class="wt">a</span> <span class="or">⟿</span> t <span class="wt">b</span></div></code></pre>
+<p>Finally, if <code><span class="or">⟿</span></code> is an <code><span class="tc">Applicative</span></code> in the second (covariant) parameter, it must also be a <code><span class="tc">Functor</span></code>. It seems intuitive that the first parameter should be contravariant, as this wouldn't affect our structure. A <code><span class="tc">Contravariant</span></code> first parameter and a <code><span class="tc">Covariant</span></code> second parameter gives a <code><span class="tc">Profunctor</span></code>.</p>
+<p>But in the covariant parameter we have more than just a <code><span class="tc">Functor</span></code>: we have an <code><span class="tc">Applicative</span></code>! Perhaps <a href="https://hackage.haskell.org/package/contravariant-1.4/docs/Data-Functor-Contravariant-Divisible.html">something similar should exist in the contravariant parameter</a>? Well, look at what would be required:</p>
+<pre class="sourceCode haskell" id="cb7"><code class="sourceCode haskell"><div class="sourceLine" id="cb7-1" data-line-number="1"><span class="co">-- Contravariant applicative</span></div>
+<div class="sourceLine" id="cb7-2" data-line-number="2"><span class="ot">divide </span>:: (<span class="wt">a</span> -&gt; (<span class="wt">b</span>, <span class="wt">c</span>)) -&gt; <span class="wt">b</span> <span class="or">⟿</span> <span class="wt">z</span> -&gt; <span class="wt">c</span> <span class="or">⟿</span> <span class="wt">z</span> -&gt; <span class="wt">a</span> <span class="or">⟿</span> <span class="wt">z</span></div>
+<div class="sourceLine" id="cb7-3" data-line-number="3"><span class="ot">conquer </span>:: <span class="wt">a</span> <span class="or">⟿</span> <span class="wt">z</span></div></code></pre>
+<p>This doesn't really make sense here. For <code><span class="ot">divide</span></code>, it should take two queries which both yield a <code><span class="wt">z</span></code> and produce a query which yields a <code><span class="wt">z</span></code>. While possible, it doesn't seem like there's any principled way to choose which query should execute and which one should be thrown away. But even more problematic is <code><span class="ot">conquer</span> :: <span class="wt">a</span> <span class="or">⟿</span> <span class="wt">z</span></code>: it means that there should always be a query which yields a <code><span class="wt">z</span></code> given an <code><span class="wt">a</span></code>! That doesn't sound right, so the definition of <code><span class="or">⟿</span></code> need not entail a contravariant analog of <code><span class="tc">Applicative</span></code>. (Perhaps there is something similar if we allow more liberty in the second parameter, e.g., with <code><span class="ot">aggregatePair</span></code> above and <code><span class="tc">conquer</span> :: <span class="wt">a</span> <span class="or">⟿</span> ()</code>)</p>
+<p>But <code><span class="tc">Profunctor</span></code> is still on the table, and as it turns out, there is a typeclass of <code><span class="tc">Profunctor</span></code>s which <a href="https://hackage.haskell.org/package/profunctors-5.2.1/docs/Data-Profunctor-Traversing.html">respects Traversable as stated above</a>. Conveniently, there's even a <a href="https://hackage.haskell.org/package/profunctors-5.2.1/docs/Data-Profunctor-Traversing.html#t:FreeTraversing">FreeTraversing definition</a> available!</p>
+<p>Unfortunately, I can't figure out how to get the <code><span class="or">FreeTraversing</span></code> structure to respect the <code><span class="ot">aggregatePair</span></code> above. If someone knows a way to do this, I'd like to see it!</p>
+<h3 id="a-general-structure-with-the-desired-properties">A general structure with the desired properties</h3>
+<p>Fortunately, there is still a general construction which will yield all of the above properties. First, I'll define it and demonstrate how it conforms to the above criteria, and then I'll show how to instantiate it for use in the original problem domain - aggregating Redis queries. The definition is inspired by an alternate notion of <code><span class="tc">Traversable</span></code>: that <code><span class="tc">Traversable</span></code> entails (1) a <code><span class="ot">toList</span> :: t <span class="wt">a</span> -&gt; [<span class="wt">a</span>]</code> and (2) <code><span class="ot">fromList</span> :: t <span class="wt">a</span> -&gt; [<span class="wt">b</span>] -&gt; t <span class="wt">b</span></code> with the law that <code><span class="wt">x</span> = <span class="ot">fromList</span> <span class="wt">x</span> (<span class="ot">toList</span> <span class="wt">x</span>)</code>.</p>
+<pre class="sourceCode haskell" id="cb8"><code class="sourceCode haskell"><div class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">data</span> <span class="or">T</span> <span class="wt">x y a b</span> <span class="fu">=</span> <span class="or">T</span> (<span class="wt">a</span> -&gt; ([<span class="wt">x</span>],[<span class="wt">y</span>] -&gt; <span class="wt">b</span>)) <span class="kw">deriving</span> (<span class="tc">Functor</span>)</div></code></pre>
+<p>There is an additional unspecified constraint here that <code>[<span class="wt">x</span>]</code> and <code>[<span class="wt">y</span>]</code> are the same size, which could be formally specified in a dependently-typed context, but I've opted to simply use <code><span class="or">List</span></code> here for simplicity.</p>
+<p><code>deriving (<span class="tc">Functor</span>)</code> gives the <code><span class="tc">Functor</span></code> instance for free. The rest of the work must be done by hand. First, <code><span class="or">T</span></code> is a <code><span class="tc">Profunctor</span></code>:</p>
+<pre class="sourceCode haskell" id="cb9"><code class="sourceCode haskell"><div class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">instance</span> <span class="dt"><span class="tc">Profunctor</span></span> (<span class="or">T</span> <span class="wt">x</span> <span class="wt">y</span>) <span class="kw">where</span></div>
+<div class="sourceLine" id="cb9-2" data-line-number="2">  <span class="tc">dimap</span> <span class="wt">f</span> <span class="wt">g</span> (<span class="or">T</span> <span class="wt">a</span>) <span class="fu">=</span> <span class="or">T</span> <span class="fu">$</span> \<span class="wt">v</span> -&gt;</div>
+<div class="sourceLine" id="cb9-3" data-line-number="3">    <span class="kw">let</span> (<span class="wt">bs</span>,<span class="wt">g&#39;</span>) <span class="fu">=</span> <span class="wt">a</span> (<span class="wt">f</span> <span class="wt">v</span>) <span class="kw">in</span> (<span class="wt">bs</span>, <span class="wt">g</span> <span class="ot">.</span> <span class="wt">g&#39;</span>)</div></code></pre>
+<p>It's a <code><span class="tc">Traversing</span></code> (and consequently, a <code><span class="tc">Strong</span></code> and <code><span class="tc">Choice</span></code>):</p>
+<pre class="sourceCode haskell" id="cb10"><code class="sourceCode haskell"><div class="sourceLine" id="cb10-1" data-line-number="1"></div>
+<div class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">instance</span> <span class="tc">Traversing</span> (<span class="or">T</span> <span class="wt">x y</span>) <span class="kw">where</span></div>
+<div class="sourceLine" id="cb10-3" data-line-number="3">  <span class="tc">traverse&#39;</span> (<span class="or">T</span> <span class="wt">a</span>) <span class="fu">=</span> <span class="or">T</span> <span class="fu">$</span> \<span class="wt">ts</span> -&gt;</div>
+<div class="sourceLine" id="cb10-4" data-line-number="4">    <span class="kw">let</span> <span class="wt">m</span> <span class="fu">=</span> <span class="ot">unzip</span> (<span class="wt">a</span> <span class="tc">&lt;$&gt;</span> <span class="ot">toList</span> <span class="wt">ts</span>) <span class="kw">in</span></div>
+<div class="sourceLine" id="cb10-5" data-line-number="5">    <span class="kw">let</span> (<span class="wt">i</span>,<span class="wt">bs</span>) <span class="fu">=</span> <span class="ot">pullInner</span> (<span class="wt">fst</span> <span class="wt">m</span>) <span class="kw">in</span></div>
+<div class="sourceLine" id="cb10-6" data-line-number="6">    (<span class="wt">bs</span>, <span class="ot">reifyTraversal</span> <span class="wt">ts</span> <span class="fu">.</span> <span class="ot">zipWith</span> (<span class="ot">$</span>) (<span class="ot">snd</span> <span class="wt">m</span>) <span class="ot">.</span> <span class="ot">uncross</span> <span class="wt">i</span>)</div>
+<div class="sourceLine" id="cb10-7" data-line-number="7"></div>
+<div class="sourceLine" id="cb10-8" data-line-number="8">    <span class="kw">where</span></div>
+<div class="sourceLine" id="cb10-9" data-line-number="9"><span class="ot">      pullInner </span>:: [[<span class="wt">a</span>]] -&gt; (<span class="dt">Int</span>,[<span class="wt">a</span>])</div>
+<div class="sourceLine" id="cb10-10" data-line-number="10">      <span class="ot">pullInner</span> [] <span class="fu">=</span> (<span class="dv">0</span>,[])</div>
+<div class="sourceLine" id="cb10-11" data-line-number="11">      <span class="ot">pullInner</span> <span class="wt">xs</span><span class="fu">@</span>(<span class="wt">x</span> <span class="or">:</span> _) <span class="fu">=</span> (<span class="ot">length</span> <span class="wt">x</span> , <span class="wt">xs</span> <span class="tc">&gt;&gt;=</span> <span class="ot">id</span>)</div>
+<div class="sourceLine" id="cb10-12" data-line-number="12"></div>
+<div class="sourceLine" id="cb10-13" data-line-number="13"><span class="ot">      uncross </span>:: <span class="dt">Int</span> -&gt; [<span class="wt">a</span>] -&gt; [[<span class="wt">a</span>]]</div>
+<div class="sourceLine" id="cb10-14" data-line-number="14">      <span class="ot">uncross</span> <span class="wt">n xs</span> <span class="fu">=</span></div>
+<div class="sourceLine" id="cb10-15" data-line-number="15">        <span class="kw">let</span> (<span class="wt">as</span>, <span class="wt">bs</span>) <span class="fu">=</span> <span class="ot">splitAt</span> <span class="wt">n xs</span> <span class="kw">in</span></div>
+<div class="sourceLine" id="cb10-16" data-line-number="16">        <span class="wt">as</span> <span class="or">:</span> <span class="ot">uncross</span> <span class="wt">n bs</span></div>
+<div class="sourceLine" id="cb10-17" data-line-number="17"></div>
+<div class="sourceLine" id="cb10-18" data-line-number="18"><span class="ot">      reifyTraversal </span>:: <span class="tc">Traversable</span> t =&gt; t <span class="wt">a</span> -&gt; [<span class="wt">b</span>] -&gt; t <span class="wt">b</span></div>
+<div class="sourceLine" id="cb10-19" data-line-number="19">      <span class="ot">reifyTraversal</span> <span class="wt">t bs</span> <span class="fu">=</span> <span class="ot">S.evalState</span> (<span class="tc">traverse</span> <span class="wt">g t</span>) <span class="wt">bs</span></div>
+<div class="sourceLine" id="cb10-20" data-line-number="20">        <span class="kw">where</span></div>
+<div class="sourceLine" id="cb10-21" data-line-number="21">          <span class="ot">g</span> <span class="wt">a</span> <span class="fu">=</span> <span class="kw">do</span></div>
+<div class="sourceLine" id="cb10-22" data-line-number="22">            (<span class="wt">b</span><span class="or">:</span><span class="wt">bs&#39;</span>) &lt;- <span class="ot">S.get</span></div>
+<div class="sourceLine" id="cb10-23" data-line-number="23">            <span class="ot">S.put</span> <span class="wt">bs&#39;</span></div>
+<div class="sourceLine" id="cb10-24" data-line-number="24">            return <span class="wt">b</span></div>
+<div class="sourceLine" id="cb10-25" data-line-number="25"></div>
+<div class="sourceLine" id="cb10-26" data-line-number="26"><span class="kw">instance</span> <span class="tc">Strong</span> (<span class="or">T</span> <span class="wt">x y</span>) <span class="kw">where</span></div>
+<div class="sourceLine" id="cb10-27" data-line-number="27">  <span class="tc">first&#39;</span> <span class="fu">=</span> <span class="tc">firstTraversing</span></div>
+<div class="sourceLine" id="cb10-28" data-line-number="28"></div>
+<div class="sourceLine" id="cb10-29" data-line-number="29"><span class="kw">instance</span> <span class="tc">Choice</span> (<span class="or">T</span> <span class="wt">x y</span>) <span class="kw">where</span></div>
+<div class="sourceLine" id="cb10-30" data-line-number="30">  <span class="tc">left&#39;</span> <span class="fu">=</span> <span class="tc">leftTraversing</span></div>
+<div class="sourceLine" id="cb10-31" data-line-number="31"></div></code></pre>
+<p>And it's an <code><span class="tc">Applicative</span></code>:</p>
+<pre class="sourceCode haskell" id="cb11"><code class="sourceCode haskell"><div class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">instance</span> <span class="tc">Applicative</span> (<span class="or">T</span> <span class="wt">x y a</span>) <span class="kw">where</span></div>
+<div class="sourceLine" id="cb11-2" data-line-number="2">  <span class="tc">pure</span> <span class="wt">x</span> <span class="fu">=</span> <span class="or">T</span> (\_ -&gt; (<span class="or">[]</span>, <span class="tc">pure</span> x))</div>
+<div class="sourceLine" id="cb11-3" data-line-number="3">  (<span class="tc">&lt;*&gt;</span>) (<span class="or">T</span> <span class="wt">f</span>) (<span class="or">T</span> x) <span class="fu">=</span> <span class="or">T</span> <span class="fu">$</span> \<span class="wt">a</span> -&gt;</div>
+<div class="sourceLine" id="cb11-4" data-line-number="4">    <span class="kw">let</span> (<span class="wt">bs1</span>,<span class="wt">ds1</span>) <span class="fu">=</span> <span class="wt">f a</span> <span class="kw">in</span></div>
+<div class="sourceLine" id="cb11-5" data-line-number="5">    <span class="kw">let</span> (<span class="wt">bs2</span>,<span class="wt">ds2</span>) <span class="fu">=</span> <span class="wt">x a</span> <span class="kw">in</span></div>
+<div class="sourceLine" id="cb11-6" data-line-number="6">    (<span class="wt">bs1</span> <span class="tc">&lt;&gt;</span> <span class="wt">bs2</span>, \<span class="wt">mbs</span> -&gt;</div>
+<div class="sourceLine" id="cb11-7" data-line-number="7">      <span class="kw">let</span> (<span class="wt">xs</span>,<span class="wt">ys</span>) <span class="fu">=</span> <span class="ot">splitAt</span> (<span class="ot">length</span> <span class="wt">bs1</span>) <span class="wt">mbs</span> <span class="kw">in</span></div>
+<div class="sourceLine" id="cb11-8" data-line-number="8">      <span class="wt">ds1 xs</span> (<span class="wt">ds2 ys</span>))</div></code></pre>
+<p>And independent objects with matching <code><span class="wt">x</span></code> and <code><span class="wt">y</span></code> can be merged:</p>
+<pre class="sourceCode haskell" id="cb12"><code class="sourceCode haskell"><div class="sourceLine" id="cb12-1" data-line-number="1"><span class="ot">aggregatePair </span>:: <span class="dt">T</span> <span class="wt">x y a b</span> -&gt; <span class="dt">T</span> <span class="wt">x y c d</span> -&gt; <span class="dt">T</span> <span class="wt">x y</span> (<span class="wt">a</span>,<span class="wt">c</span>) (<span class="wt">b</span>,<span class="wt">d</span>)</div>
+<div class="sourceLine" id="cb12-2" data-line-number="2"><span class="ot">aggregatePair</span> (<span class="or">T</span> <span class="wt">f</span>) (<span class="or">T</span> <span class="wt">g</span>) <span class="fu">=</span> <span class="or">T</span> <span class="fu">$</span> \(<span class="wt">a</span>,<span class="wt">c</span>) -&gt;</div>
+<div class="sourceLine" id="cb12-3" data-line-number="3">  <span class="kw">let</span> (<span class="wt">m</span>,<span class="wt">n</span>) <span class="fu">=</span> <span class="wt">f a</span></div>
+<div class="sourceLine" id="cb12-4" data-line-number="4">      (<span class="wt">o</span>,<span class="wt">p</span>) <span class="fu">=</span> <span class="wt">g c</span></div>
+<div class="sourceLine" id="cb12-5" data-line-number="5">  <span class="kw">in</span></div>
+<div class="sourceLine" id="cb12-6" data-line-number="6">  (<span class="wt">m</span> <span class="tc">&lt;&gt;</span> <span class="wt">o</span> , \<span class="wt">bs</span> -&gt;</div>
+<div class="sourceLine" id="cb12-7" data-line-number="7">    <span class="kw">let</span> (<span class="wt">xs</span>,<span class="wt">ys</span>) <span class="fu">=</span> <span class="ot">splitAt</span> (<span class="ot">length</span> <span class="wt">m</span>) <span class="wt">bs</span> <span class="kw">in</span></div>
+<div class="sourceLine" id="cb12-8" data-line-number="8">    (<span class="wt">n xs</span> , <span class="wt">p ys</span>))</div></code></pre>
+<p>Finally, it reifies into a target <code><span class="tc">Functor</span></code> (à la <a href="https://hackage.haskell.org/package/profunctors-5.2.1/docs/Data-Profunctor-Sieve.html">Sieve</a>):</p>
+<pre class="sourceCode haskell" id="cb13"><code class="sourceCode haskell"><div class="sourceLine" id="cb13-1" data-line-number="1"><span class="ot">runT </span>:: (<span class="tc">Functor</span> f) =&gt; ([<span class="wt">x</span>] -&gt; f [<span class="wt">y</span>]) -&gt; <span class="dt">T</span> <span class="wt">x y a b</span> -&gt; <span class="wt">a</span> -&gt; f <span class="wt">b</span></div>
+<div class="sourceLine" id="cb13-2" data-line-number="2"><span class="ot">runT</span> <span class="wt">i</span> (<span class="or">T</span> <span class="wt">f</span>) <span class="wt">a</span> <span class="fu">=</span> <span class="kw">let</span> (<span class="wt">xs</span>,<span class="wt">ds</span>) <span class="fu">=</span> <span class="wt">f a</span> <span class="kw">in</span> <span class="wt">ds</span> <span class="tc">&lt;$&gt;</span> <span class="wt">i xs</span></div></code></pre>
+<h3 id="reification-in-redis">Reification in Redis</h3>
+<p>Time to move this <code><span class="or">T</span></code> out of the abstract and into the original problem domain! <code><span class="ot">mget</span></code> takes <code>[ <span class="dt">ByteString</span> ]</code> and yields <code>[ <span class="or">Maybe</span> <span class="dt">ByteString</span> ]</code> (modulo exceptions), so plug in <code><span class="dt">ByteString</span></code> and <code><span class="or">Maybe</span> <span class="dt">ByteString</span></code> to define <code><span class="or">⟿</span></code>:</p>
+<pre class="sourceCode haskell" id="cb14"><code class="sourceCode haskell"><div class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">type</span> (<span class="or">⟿</span>) <span class="wt">a b</span> <span class="fu">=</span> <span class="or">T</span> <span class="dt">ByteString</span> (<span class="or">Maybe</span> <span class="dt">ByteString</span>) <span class="wt">a b</span></div></code></pre>
+<p>Given this, it's trivial to reify into a <code><span class="or">Redis</span></code> monad with <code><span class="ot">mget</span></code>!</p>
+<pre class="sourceCode haskell" id="cb15"><code class="sourceCode haskell"><div class="sourceLine" id="cb15-1" data-line-number="1"><span class="ot">runQuery </span>:: <span class="wt">a</span> <span class="or">⟿</span> <span class="wt">b</span> -&gt; <span class="wt">a</span> -&gt; <span class="or">Redis</span> <span class="wt">b</span></div>
+<div class="sourceLine" id="cb15-2" data-line-number="2"><span class="ot">runQuery</span> <span class="fu">=</span> <span class="ot">runT mget&#39;</span></div></code></pre>
+<h3 id="solving-the-original-problem">Solving the original problem</h3>
+<p>Using the new definition of <code><span class="or">⟿</span></code> and its available combinators, the original example can now be constructed efficiently!</p>
+<pre class="sourceCode haskell" id="cb16"><code class="sourceCode haskell"><div class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">data</span> <span class="dt">ThreadId</span></div>
+<div class="sourceLine" id="cb16-2" data-line-number="2"></div>
+<div class="sourceLine" id="cb16-3" data-line-number="3"><span class="kw">data</span> <span class="dt">CommentView</span> <span class="fu">=</span> <span class="dt">CommentView</span> <span class="dt">Comment</span> <span class="dt">Integer</span></div>
+<div class="sourceLine" id="cb16-4" data-line-number="4"></div>
+<div class="sourceLine" id="cb16-5" data-line-number="5"><span class="ot">threadIdToComments </span>:: <span class="dt">ThreadId</span> <span class="or">⟿</span> <span class="or">RoseTree</span> <span class="dt">CommentId</span></div>
+<div class="sourceLine" id="cb16-6" data-line-number="6"><span class="ot">threadIdToComments</span> <span class="fu">=</span> undefined</div>
+<div class="sourceLine" id="cb16-7" data-line-number="7"></div>
+<div class="sourceLine" id="cb16-8" data-line-number="8"><span class="ot">commentIdToScore </span>:: <span class="dt">CommentId</span> <span class="or">⟿</span> <span class="dt">Integer</span></div>
+<div class="sourceLine" id="cb16-9" data-line-number="9"><span class="ot">commentIdToScore</span> <span class="fu">=</span> undefined</div>
+<div class="sourceLine" id="cb16-10" data-line-number="10"></div>
+<div class="sourceLine" id="cb16-11" data-line-number="11"><span class="ot">getComments </span>:: <span class="dt">ThreadId</span> -&gt; <span class="or">Redis</span> (<span class="or">RoseTree</span> <span class="dt">CommentView</span>)</div>
+<div class="sourceLine" id="cb16-12" data-line-number="12"><span class="ot">getComments</span> <span class="fu">=</span> <span class="ot">runQuery threadIdToComments</span></div>
+<div class="sourceLine" id="cb16-13" data-line-number="13">  <span class="tc">&gt;=&gt;</span> (<span class="ot">runQuery</span> <span class="ot">.</span> <span class="tc">traverse&#39;</span> <span class="fu">$</span></div>
+<div class="sourceLine" id="cb16-14" data-line-number="14">         <span class="dt">CommentView</span> <span class="tc">&lt;$&gt;</span> <span class="ot">commentIdToComment</span> <span class="tc">&lt;*&gt;</span> <span class="ot">commentIdToScore</span>)</div>
+<div class="sourceLine" id="cb16-15" data-line-number="15"></div></code></pre>
+<p>Now, no matter how many comments are in the thread, all the necessary data will be retrieved in exactly two queries!</p>
+</div>
+</body>
+</html>
