@@ -7,7 +7,6 @@
 
   <title>Independent Redis Query Aggregation</title>
   <style type="text/css">
-
     @font-face {
       font-family: 'Droid Sans Mono';
       font-style: normal;
@@ -15,15 +14,12 @@
       src: local('Droid Sans Mono Regular'),local('Droid Sans Mono'), local('DroidSansMono-Regular'), url(https://fonts.gstatic.com/s/droidsansmono/v9/ns-m2xQYezAtqh7ai59hJYdJ2JT0J65PSe7wdxAnx_I.woff2) format('woff2');
       unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
     }
-
     @font-face {
       font-family: 'Noto Sans';
       font-style: normal;
       font-weight: 400;
       src: local('Noto Sans'), local('NotoSans'), url(https://fonts.gstatic.com/s/notosans/v7/LeFlHvsZjXu2c3ZRgBq9nD8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
     }
-
-
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
       div.line-block{white-space: pre-line;}
@@ -31,7 +27,6 @@
       code {
         font-family:"Droid sans mono";
       }
-
       body {
         font-family: 'Noto Sans', 'Roboto', sans-serif;
         background: #fcfcfc;
@@ -41,33 +36,27 @@
         line-height: 26px;
         margin-bottom:100px;
       }
-
       .midblock {
         padding-left: 15px;
         padding-right: 15px;
       }
-
       h1 {
         margin-bottom:40px;
         line-height: 1.3em;
       }
-
       h3 {
         margin-top:40px;
         margin-bottom: 0px;
       }
-
       pre.sourceCode {
         padding:8px 12px;
         background-color: #2d3335;
         border-radius: 2px;
         color:#888;
       }
-
       code.sourceCode {
         display: block;
       }
-
       code {
         color:#888;
         background-color: #2d3335;
@@ -76,29 +65,24 @@
         border-radius: 2px;
         font-size:16px !important;
       }
-
       ::-moz-selection {
           background: #badbff;
       }
-
       ::selection {
           background: lightblue;
       }
-
       code ::-moz-selection {
           background: #566;
       }
-
       code ::selection {
           background: #566;
       }
-
   </style>
   <style type="text/css">
     a, a:visited {
       color:#60ae60;
     }
-    
+
     div.sourceLine, a.sourceLine { display: inline; min-height: 1.25em; }
     a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
     .sourceCode { overflow: auto; }
@@ -153,7 +137,6 @@
     code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
     code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
     code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-
   </style>
 </head>
 <body>
@@ -291,6 +274,34 @@
 <div class="sourceLine" id="cb16-14" data-line-number="14">         <span class="dt">CommentView</span> <span class="tc">&lt;$&gt;</span> <span class="ot">commentIdToComment</span> <span class="tc">&lt;*&gt;</span> <span class="ot">commentIdToScore</span>)</div>
 <div class="sourceLine" id="cb16-15" data-line-number="15"></div></code></pre>
 <p>Now, no matter how many comments are in the thread, all the necessary data will be retrieved in exactly two queries!</p>
+<h3 id="update">Update!</h3>
+<p>Thanks to /u/benjaminhodgson, it turns out there is a much cleaner way to make this <code><span class="or">T</span></code> structure and still maintain all the original functionality! The above <code><span class="or">T</span> <span class="wt">x y a b</span></code> is isomorphic to <code><span class="or">Traversal</span> <span class="wt">a b x y</span></code>, and if we define <code><span class="or">T</span></code> in terms of <code><span class="or">Traversal</span></code> from the start, everything comes out much cleaner with no need to slice-and-dice lists internally:</p>
+<pre class="sourceCode haskell" id="cb17"><code class="sourceCode haskell"><div class="sourceLine" id="cb17-1" data-line-number="1"></div>
+<div class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw">newtype</span> <span class="or">T&#39;</span> <span class="wt">x y a b</span> <span class="fu">=</span> <span class="or">T&#39;</span> (<span class="or">Traversal</span> <span class="wt">a b x y</span>) <span class="kw">deriving</span> (<span class="tc">Functor</span>)</div>
+<div class="sourceLine" id="cb17-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb17-4" data-line-number="4"><span class="kw">instance</span> <span class="tc">Profunctor</span> (<span class="or">T&#39;</span> <span class="wt">x y</span>) <span class="kw">where</span></div>
+<div class="sourceLine" id="cb17-5" data-line-number="5">  <span class="tc">dimap</span> <span class="wt">f g</span> (<span class="or">T&#39;</span> <span class="wt">t</span>) <span class="fu">=</span> <span class="or">T&#39;</span> <span class="fu">$</span> \<span class="wt">m</span> -&gt; <span class="tc">fmap</span> <span class="wt">g</span> <span class="ot">.</span> (<span class="wt">t m</span> <span class="ot">.</span> <span class="wt">f</span>)</div>
+<div class="sourceLine" id="cb17-6" data-line-number="6"></div>
+<div class="sourceLine" id="cb17-7" data-line-number="7"><span class="kw">instance</span> <span class="tc">Traversing</span> (<span class="or">T&#39;</span> <span class="wt">x y</span>) <span class="kw">where</span></div>
+<div class="sourceLine" id="cb17-8" data-line-number="8">  <span class="tc">traverse&#39;</span> (<span class="or">T&#39;</span> <span class="wt">t</span>) <span class="fu">=</span> <span class="or">T&#39;</span> (<span class="tc">traverse</span> <span class="ot">.</span> <span class="wt">t</span>)</div>
+<div class="sourceLine" id="cb17-9" data-line-number="9"></div>
+<div class="sourceLine" id="cb17-10" data-line-number="10"><span class="kw">instance</span> <span class="tc">Applicative</span> (<span class="or">T&#39;</span> <span class="wt">x y a</span>) <span class="kw">where</span></div>
+<div class="sourceLine" id="cb17-11" data-line-number="11">  <span class="tc">pure</span> <span class="wt">x</span> <span class="fu">=</span> <span class="or">T&#39;</span> (\_ _ -&gt; <span class="tc">pure</span> <span class="wt">x</span>)</div>
+<div class="sourceLine" id="cb17-12" data-line-number="12">  (<span class="tc">&lt;*&gt;</span>) (<span class="or">T&#39;</span> <span class="wt">f</span>) (<span class="or">T&#39;</span> <span class="wt">x</span>) <span class="fu">=</span> <span class="or">T&#39;</span> <span class="fu">$</span> \<span class="wt">g a</span> -&gt; <span class="wt">f g a</span> <span class="tc">&lt;*&gt;</span> <span class="wt">x g a</span></div>
+<div class="sourceLine" id="cb17-13" data-line-number="13"></div>
+<div class="sourceLine" id="cb17-14" data-line-number="14"><span class="ot">aggregatePair</span> :: <span class="or">T&#39;</span> <span class="wt">x y a b</span> -&gt; <span class="or">T&#39;</span> <span class="wt">x y c d</span> -&gt; <span class="or">T&#39;</span> <span class="wt">x y</span> (<span class="wt">a</span>,<span class="wt">c</span>) (<span class="wt">b</span>,<span class="wt">d</span>)</div>
+<div class="sourceLine" id="cb17-15" data-line-number="15"><span class="ot">aggregatePair</span> (<span class="or">T&#39;</span> <span class="wt">f</span>) (<span class="or">T&#39;</span> <span class="wt">g</span>) <span class="fu">=</span> <span class="or">T&#39;</span> <span class="fu">$</span> \<span class="wt">h</span> (<span class="wt">a</span>,<span class="wt">c</span>) -&gt;</div>
+<div class="sourceLine" id="cb17-16" data-line-number="16">  (,) <span class="tc">&lt;$&gt;</span> <span class="wt">f h a</span> <span class="tc">&lt;*&gt;</span> <span class="wt">g h c</span></div>
+<div class="sourceLine" id="cb17-17" data-line-number="17"></div>
+<div class="sourceLine" id="cb17-18" data-line-number="18"><span class="kw">instance</span> <span class="tc">Strong</span> (<span class="or">T&#39;</span> <span class="wt">x y</span>) <span class="kw">where</span></div>
+<div class="sourceLine" id="cb17-19" data-line-number="19">  <span class="tc">first&#39;</span> <span class="fu">=</span> <span class="tc">firstTraversing</span></div>
+<div class="sourceLine" id="cb17-20" data-line-number="20"></div>
+<div class="sourceLine" id="cb17-21" data-line-number="21"><span class="kw">instance</span> <span class="tc">Choice</span> (<span class="or">T&#39;</span> <span class="wt">x y</span>) <span class="kw">where</span></div>
+<div class="sourceLine" id="cb17-22" data-line-number="22">  <span class="tc">left&#39;</span> <span class="fu">=</span> <span class="tc">leftTraversing</span></div>
+<div class="sourceLine" id="cb17-23" data-line-number="23"></div>
+<div class="sourceLine" id="cb17-24" data-line-number="24"><span class="ot">runQuery&#39;</span> :: <span class="or">T&#39;</span> <span class="dt">ByteString</span> (<span class="or">Maybe</span> <span class="dt">ByteString</span>) <span class="wt">a b</span> -&gt; <span class="wt">a</span> -&gt; <span class="or">Redis</span> <span class="wt">b</span></div>
+<div class="sourceLine" id="cb17-25" data-line-number="25"><span class="ot">runQuery&#39;</span> (<span class="or">T&#39;</span> <span class="wt">f</span>) <span class="fu">=</span> <span class="ot">unsafePartsOf</span> <span class="wt">f</span> <span class="ot">mget&#39;</span></div>
+<div class="sourceLine" id="cb17-26" data-line-number="26"></div></code></pre>
 </div>
 </body>
 </html>
