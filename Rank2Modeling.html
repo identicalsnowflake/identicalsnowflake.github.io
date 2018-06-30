@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+  <title>Redis Data Modeling with Rank 2 Types</title>
+  <style type="text/css">
+    @font-face {
+      font-family: 'Droid Sans Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Droid Sans Mono Regular'),local('Droid Sans Mono'), local('DroidSansMono-Regular'), url(https://fonts.gstatic.com/s/droidsansmono/v9/ns-m2xQYezAtqh7ai59hJYdJ2JT0J65PSe7wdxAnx_I.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+    }
+    @font-face {
+      font-family: 'Noto Sans';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Noto Sans'), local('NotoSans'), url(https://fonts.gstatic.com/s/notosans/v7/LeFlHvsZjXu2c3ZRgBq9nD8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+    }
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      div.line-block{white-space: pre-line;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+      code {
+        font-family:"Droid sans mono";
+        padding-bottom: 3px;
+        padding-top: 3px;
+      }
+      body {
+        font-family: 'Noto Sans', 'Roboto', sans-serif;
+        background: #fcfcfc;
+        color: #444;
+        max-width: 680px;
+        margin: 60px auto;
+        line-height: 26px;
+        margin-bottom:100px;
+      }
+      .midblock {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+      h1 {
+        margin-bottom:40px;
+        line-height: 1.3em;
+      }
+      h3 {
+        margin-top:40px;
+        margin-bottom: 0px;
+      }
+      pre.sourceCode {
+        padding:8px 12px;
+        background-color: #2d3335;
+        border-radius: 2px;
+        color:#888;
+      }
+      code.sourceCode {
+        display: block;
+      }
+      code {
+        color:#999;
+        background-color: #272C2E;
+        padding-left:4px;
+        padding-right:4px;
+        border-radius: 2px;
+        font-size:16px !important;
+      }
+      ::-moz-selection {
+          background: #badbff;
+      }
+      ::selection {
+          background: lightblue;
+      }
+      code ::-moz-selection {
+          background: #566;
+      }
+      code ::selection {
+          background: #566;
+      }
+  </style>
+  <style type="text/css">
+    a, a:visited {
+      color:#60ae60;
+    }
+
+    div.sourceLine, a.sourceLine { display: inline; min-height: 1.25em; }
+    a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+    .sourceCode { overflow: auto; }
+    code.sourceCode { white-space: pre; }
+    @media print {
+    code.sourceCode { white-space: pre-wrap; }
+    div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }
+    }
+    pre.numberSource div.sourceLine, .numberSource a.sourceLine
+      { position: relative; }
+    pre.numberSource div.sourceLine::before, .numberSource a.sourceLine::before
+      { content: attr(data-line-number);
+        position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+        border: none; pointer-events: all;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em; }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; color: #aaaaaa;  padding-left: 4px; }
+    @media screen {
+    a.sourceLine::before { text-decoration: underline; color: initial; }
+    }
+    code span.rd { color: #7FA4F7 }
+    code span.or { color: #ffa500 }
+    code span.tc { color: #da70d6 }
+    code span.wt { color: #f8f8f8 }
+    code span.kw { color: #888} /* Keyword */
+    code span.dt { color: #00bfff; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.fl { color: #40a070; } /* Float */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.st { color: #4070a0; } /* String */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.ot { color: #90de90; } /* Other */
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.fu { color: #888; } /* Function */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    code span.cn { color: #880000; } /* Constant */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.im { } /* Import */
+    code span.va { color: #19177c; } /* Variable */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.op { color: #666666; } /* Operator */
+    code span.bu { } /* BuiltIn */
+    code span.ex { } /* Extension */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+</head>
+<body>
+<div class="midblock">
+<h1 id="data-modeling-with-rank2-types">Redis Data Modeling with Rank2 Types</h1>
+<p>Usually when we discuss polymorphism in programming, what we mean is that a structure or function is universally quantified over a type variable. For example, it makes sense to talk about <code><span class="or">List</span> <span class="wt">a</span></code> as a concept without any concern for what <code><span class="wt">a</span></code> may be chosen. From here, we can talk about various properties of polymorphic structures, like is it a <code><span class="tc">Functor</span></code> or a <code><span class="tc">Traversable</span></code>. But polymorphism over a single type variable is not the only kind of polymorphism! In this article, I want to demonstrate a simple use of Rank 2 polymorphism to construct interesting Redis queries.</p>
+<p>Consider the following polymorphic data type:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">-- rank 2 polymorphic type
+<span class="kw">data</span> <span class="rd">User</span> <span class="wt">f</span> <span class="fu">=</span> <span class="rd">User</span> {
+<span class="ot">    weight</span> :: <span class="wt">f</span> <span class="dt">Mass</span>
+  ,<span class="ot"> height</span> :: <span class="wt">f</span> <span class="dt">Length</span>
+  ,<span class="ot"> firstName</span> :: <span class="wt">f</span> <span class="dt">String</span>
+  ,<span class="ot"> lastName</span> :: <span class="wt">f</span> <span class="dt">String</span>
+  ,<span class="ot"> birthday</span> :: <span class="wt">f</span> <span class="dt">UTCTime</span>
+  }</code></pre></div>
+<p>It looks almost the same as any normal record structure, except that it has that strange quantified <code><span class="wt">f</span></code> which is simply applied to every field. What does that even mean? Well, first consider the simplest example, <code><span class="wt">f</span> = <span class="or">Identity</span></code>: this would mean every field is simply wrapped in the <code><span class="or">Identity</span></code> functor, which means it conceptually would just be a standard record type. How about <code><span class="wt">f</span> = <span class="or">Maybe</span></code>? This is already more interesting: it means that each field of the record is individually optional.</p>
+<p>This is actually all the understanding you need to use the resulting API from this article! The final API will be two queries: <code><span class="ot">setUser</span> :: <span class="dt">UserId</span> -&gt; <span class="rd">User</span> <span class="or">Maybe</span> -&gt; <span class="or">Redis</span> ()</code> and <code><span class="ot">getUsers</span> :: [ <span class="dt">UserId</span> ] -&gt; <span class="or">Redis</span> [ <span class="rd">User</span> <span class="or">Maybe</span> ]</code>, with some interesting semantics - you can provide as many or as few fields as you want when setting the data, empty fields will be ignored (they will <em>not</em> overwrite existing data!) and provided fields will be stored.</p>
+<p>Now to actually implement this simple API, things are going to be a bit trickier. The underlying algebraic structure is fairly elegant in my opinion, but working with it in Haskell is unfortunately a bit obtuse, and is pretty annoying to be honest. First, our general concepts like functors, traversables, applicatives, sums, products, etc., all carry over into rank 2 polymorphism: for example, if you give me a <code><span class="rd">User</span> <span class="or">Maybe</span></code> and a <code><span class="rd">User</span> []</code>, I can give you a <code><span class="rd">User</span> (<span class="or">Maybe</span> <span class="rd">:*:</span> [])</code>. Already this is becoming slightly awkward, as we're now using <code><span class="rd">:*:</span></code> to talk about products instead of <code><span class="wt">,</span></code> like we usually do, and unfortunately, this is how everything will be: we need a new <code><span class="tc">Functor</span></code> which is conceptually basically the same thing as the normal <code><span class="tc">Functor</span></code> but instead of <code><span class="tc">fmap</span> :: (<span class="wt">a</span> -&gt; <span class="wt">b</span>) -&gt; <span class="wt">f a</span> -&gt; <span class="wt">f b</span></code> it will now operate on Rank 2 types and natural transformations (well...), e.g., <code><span class="tc">fmap</span> :: (forall <span class="wt">a</span>. <span class="wt">p a</span> -&gt; <span class="wt">q a</span>) -&gt; <span class="wt">f p</span> -&gt; <span class="wt">f q</span></code>, which in our <code><span class="rd">User</span></code> example, would mean you give me a natural transformation from <code><span class="wt">f</span></code> to <code><span class="wt">g</span></code> and I'll give you a function from <code><span class="rd">User</span> <span class="wt">f</span></code> to <code><span class="rd">User</span> <span class="wt">g</span></code>. So does this mean we have to have magical duplicate vocabulary for dealing with the same ideas in a Rank 2 space? Well... yes. However, the good news is there is a <a href="https://hackage.haskell.org/package/rank2classes">package on hackage</a> which declares all of these and even provides template Haskell utilities for deriving them automatically!</p>
+<p>So let's bring in that package and check out what that product example I mentioned would look like:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">$</span>(Rank2.TH.deriveAll &#39;&#39;<span class="rd">User</span>)
+
+<span class="ot">productExample</span> :: <span class="rd">User</span> <span class="or">Maybe</span> -&gt; <span class="rd">User</span> [] -&gt; <span class="rd">User</span> (<span class="or">Maybe</span> <span class="rd">:*:</span> [])
+<span class="ot">productExample</span> <span class="wt">x y</span> <span class="fu">=</span>
+  (<span class="rd">Rank2.Arrow</span> . (<span class="rd">:*:</span>)) <span class="tc">Rank2</span><span class="tc">.&lt;$&gt;</span> <span class="wt">x</span> <span class="tc">Rank2</span><span class="tc">.&lt;*&gt;</span> <span class="wt">y</span></code></pre></div>
+<p>This is essentially <code>(<span class="wt">,</span>) <span class="tc">&lt;$&gt;</span> <span class="wt">x</span> <span class="tc">&lt;*&gt;</span> <span class="wt">y</span></code> in normall Rank 1 Haskell speak. So what can we actually do with this? Well, let's try point-wise data storage! Using my <a href="https://hackage.haskell.org/package/hlrdb">high-level Redis library</a>, we should be able to declare a <code><span class="or">RedisBasic</span> <span class="dt">UserId</span></code> for each field by simply plugging it in: <code><span class="rd">User</span> (<span class="or">RedisBasic</span> <span class="dt">UserId</span>)</code>. Unfortunately, for reasons I don't understand but I'm sure are very sensible, this type is not accepted by GHC, but for some reason is accepted if we use a newtype. So, with that in mind, the following is accepted:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">newtype</span> <span class="or">RBasic</span> <span class="wt">a</span> <span class="fu">=</span>
+  <span class="or">RBasic</span> {<span class="ot"> runRBasic</span> :: <span class="or">RedisBasic</span> <span class="dt">UserId</span> (<span class="or">Maybe</span> <span class="wt">a</span>) }
+
+<span class="ot">userStorage</span> :: <span class="rd">User</span> <span class="or">RBasic</span>
+<span class="ot">userStorage</span> <span class="fu">=</span>  <span class="rd">User</span> {
+    <span class="ot">weight</span> <span class="fu">=</span> <span class="or">RBasic</span> <span class="fu">.</span> <span class="ot">declareBasic</span> <span class="fu">.</span> <span class="ot">fromString</span> <span class="fu">$</span> <span class="st">&quot;user-weight&quot;</span>
+  , <span class="ot">height</span> <span class="fu">=</span> <span class="or">RBasic</span> <span class="fu">.</span> <span class="ot">declareBasic</span> <span class="fu">.</span> <span class="ot">fromString</span> <span class="fu">$</span> <span class="st">&quot;user-height&quot;</span>
+  , <span class="ot">firstName</span> <span class="fu">=</span> <span class="or">RBasic</span> <span class="fu">.</span> <span class="ot">declareBasic</span> <span class="fu">.</span> <span class="ot">fromString</span> <span class="fu">$</span> <span class="st">&quot;user-firstName&quot;</span>
+  , <span class="ot">lastName</span> <span class="fu">=</span> <span class="or">RBasic</span> <span class="fu">.</span> <span class="ot">declareBasic</span> <span class="fu">.</span> <span class="ot">fromString</span> <span class="fu">$</span> <span class="st">&quot;user-lastName&quot;</span>
+  , <span class="ot">birthday</span> <span class="fu">=</span> <span class="or">RBasic</span> <span class="fu">.</span> <span class="ot">declareBasic</span> <span class="fu">.</span> <span class="ot">fromString</span> <span class="fu">$</span> <span class="st">&quot;user-birthday&quot;</span>
+  }</code></pre></div>
+<p>Great! Actually, I don't quite like this, but making it conceptually cleaner is, again, a bit obtuse. Obviously we want to factor out the repeated part, so it seems like we could just have <code><span class="rd">User</span> (<span class="or">Const</span> <span class="dt">String</span>)</code> for the name declarations and then map over them. But actually, there's a hidden piece of information above: there's also a <code><span class="tc">Store</span></code> instance being resolved for each field, and if we try to just map over <code><span class="rd">User</span> (<span class="or">Const</span> <span class="dt">String</span>)</code>, that <code><span class="tc">Store</span></code> instance won't be visible, so the compiler will complain. So what we really need is something like <code><span class="rd">User</span> (<span class="tc">Store</span> <span class="rd">:*: Const</span> <span class="dt">String</span>)</code>, but obviously that's not even a valid type. But it almost is! And there's <a href="https://hackage.haskell.org/package/constraints">another package</a> to help us make it happen:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">storageMeta</span> :: <span class="rd">User</span> ((<span class="or">Dict</span> <span class="rd">:.:</span> <span class="tc">Store</span>) <span class="rd">:*:</span> <span class="or">Const</span> <span class="dt">String</span>)
+<span class="ot">storageMeta</span> <span class="fu">=</span> <span class="rd">User</span> {
+    <span class="ot">weight</span> <span class="fu">=</span> <span class="rd">Comp1</span> <span class="or">Dict</span> <span class="rd">:*:</span> <span class="or">Const</span> <span class="st">&quot;weight&quot;</span>
+  , <span class="ot">height</span> <span class="fu">=</span> <span class="rd">Comp1</span> <span class="or">Dict</span> <span class="rd">:*:</span> <span class="or">Const</span> <span class="st">&quot;height&quot;</span>
+  , <span class="ot">firstName</span> <span class="fu">=</span> <span class="rd">Comp1</span> <span class="or">Dict</span> <span class="rd">:*:</span> <span class="or">Const</span> <span class="st">&quot;firstName&quot;</span>
+  , <span class="ot">lastName</span> <span class="fu">=</span> <span class="rd">Comp1</span> <span class="or">Dict</span> <span class="rd">:*:</span> <span class="or">Const</span> <span class="st">&quot;lastName&quot;</span>
+  , <span class="ot">birthday</span> <span class="fu">=</span> <span class="rd">Comp1</span> <span class="or">Dict</span> <span class="rd">:*:</span> <span class="or">Const</span> <span class="st">&quot;birthday&quot;</span>
+  }</code></pre></div>
+<p>Now that's actually quite minimal, and in fact, it looks like something that could trivially be automated with template Haskell - especially if you split them up into <code><span class="rd">User</span> (<span class="or">Dict</span> <span class="rd">:.:</span> <span class="tc">Store</span>)</code> and <code><span class="rd">User</span> (<span class="or">Const</span> <span class="dt">String</span>)</code> and simply combined them using the Rank 2 version of <code>(<span class="wt">,</span>) <span class="tc">&lt;$&gt;</span> <span class="wt">x</span> <span class="tc">&lt;*&gt;</span> <span class="wt">y</span></code>. I have not done this, but if this were an approach I started taking more in the future, it might be something worth pursuing, as it would completely remove all copy-paste boilerplate. Anyway, so given this <code><span class="ot">storageMeta</span> :: <span class="rd">User</span> ((<span class="or">Dict</span> <span class="rd">:.:</span> <span class="tc">Store</span>) <span class="rd">:*:</span> <span class="or">Const</span> <span class="dt">String</span>)</code>, how do we get back to where we want to be with <code><span class="rd">User</span> <span class="or">RBasic</span></code>? A simple Rank 2 <code><span class="tc">fmap</span></code> will suffice:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">userStorage</span> :: <span class="rd">User</span> <span class="or">RBasic</span>
+<span class="ot">userStorage</span> <span class="fu">=</span> <span class="tc">Rank2.fmap</span> <span class="ot">f</span> <span class="ot">storageMeta</span>
+  <span class="kw">where</span>
+<span class="ot">    f</span> :: ((<span class="or">Dict</span> <span class="rd">:.:</span> <span class="tc">Store</span>) <span class="rd">:*:</span> <span class="or">Const</span> <span class="dt">String</span>) <span class="wt">a</span> -&gt; <span class="or">RBasic</span> <span class="wt">a</span>
+    <span class="ot">f</span> ((<span class="rd">Comp1</span> <span class="or">Dict</span>) <span class="rd">:*:</span> <span class="or">Const</span> <span class="wt">name</span>) <span class="fu">=</span>
+      <span class="or">RBasic</span> <span class="fu">.</span> <span class="ot">declareBasic</span> <span class="fu">.</span> <span class="ot">fromString</span> <span class="fu">$</span> <span class="st">&quot;user-&quot;</span> <span class="ot">++</span> <span class="wt">name</span></code></pre></div>
+<p>Ok! So now we just need to construct our public API. First, let's do data retrieval. Despite the fact that we're storing each of these fields pointwise-distinctly in Redis, we can actually still query them all at the same time in a single command (see <a href="https://identicalsnowflake.github.io/QueryAggregation.html">my previous article for how this is done</a>) because <code><span class="or">~~&gt;</span></code> is <code><span class="tc">Applicative</span></code>:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">userQuery</span> :: <span class="dt">UserId</span> <span class="or">~~&gt;</span> <span class="rd">User</span> <span class="or">Maybe</span>
+<span class="ot">userQuery</span> <span class="fu">=</span> <span class="tc">Rank2.traverse</span> <span class="ot">f userStorage</span>
+  <span class="kw">where</span>
+<span class="ot">    f</span> :: <span class="or">RBasic</span> <span class="wt">a</span> -&gt; <span class="dt">UserId</span> <span class="or">~~&gt;</span> <span class="or">Maybe</span> <span class="wt">a</span>
+    <span class="ot">f</span> (<span class="or">RBasic</span> <span class="wt">x</span>) <span class="fu">=</span> <span class="ot">liftq</span> <span class="wt">x</span></code></pre></div>
+<p>Almost elegant! In fact, I would export this in the public API, too, as this query can be further combined with whatever others you may wish to make later, but in the interest of exporting a completely trivial API that anyone can use, we'll go ahead and reify to Redis using the <a href="https://hackage.haskell.org/package/profunctors-5.2.1/docs/Data-Profunctor-Traversing.html#v:traverse-39-">profunctor traversal</a>:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">getUsers</span> :: [ <span class="dt">UserId</span> ] -&gt; <span class="or">Redis</span> [ <span class="rd">User</span> <span class="or">Maybe</span> ]
+<span class="ot">getUsers</span> <span class="fu">=</span> <span class="ot">mget</span> <span class="fu">$</span> <span class="tc">traverse&#39;</span> <span class="ot">userQuery</span></code></pre></div>
+<p>For <code><span class="ot">setUser</span> :: <span class="dt">UserId</span> -&gt; <span class="rd">User</span> <span class="or">Maybe</span> -&gt; <span class="or">Redis</span> ()</code>, I actually don't have any fancy story for <code><span class="ot">mset</span></code> yet, although I hope to someday, as there's no reason this shouldn't be possible. Anyway, for now, we just need to do a traversal in the Redis monad and set each field:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">setUser</span> :: <span class="dt">UserId</span> -&gt; <span class="rd">User</span> <span class="or">Maybe</span> -&gt; <span class="or">Redis</span> ()
+<span class="ot">setUser</span> <span class="wt">i u</span> <span class="fu">=</span>
+  <span class="ot">const</span> () <span class="tc">&lt;$&gt;</span>
+  <span class="tc">Rank2.traverse</span> <span class="ot">f</span>
+    ((<span class="rd">Rank2.Arrow</span> <span class="fu">.</span> (<span class="rd">:*:</span>)) <span class="tc">Rank2</span><span class="tc">.&lt;$&gt;</span> <span class="wt">u</span> <span class="tc">Rank2</span><span class="tc">.&lt;*&gt;</span> <span class="ot">userStorage</span>)
+  <span class="kw">where</span>
+<span class="ot">    f</span> :: (<span class="or">Maybe</span> <span class="rd">:*:</span> <span class="or">RBasic</span>) <span class="wt">a</span> -&gt; <span class="or">Redis</span> (<span class="or">Const</span> () <span class="wt">a</span>)
+    <span class="ot">f</span> (<span class="or">Nothing</span> <span class="rd">:*:</span> _) <span class="fu">=</span> <span class="tc">pure</span> <span class="fu">$</span> <span class="or">Const</span> ()
+    <span class="ot">f</span> (<span class="or">Just</span> <span class="wt">x</span> <span class="rd">:*:</span> <span class="or">RBasic</span> <span class="wt">s</span>) <span class="fu">=</span> <span class="kw">do</span>
+      <span class="ot">set&#39;</span><span class="wt"> s i x</span>
+      <span class="tc">pure</span> <span class="fu">$</span> <span class="or">Const</span> ()</code></pre></div>
+<p>You can see by the pattern match, the <code><span class="or">Nothing</span></code> case performs no actions, so it does give the desired fancy behavior of taking no action with respect to empty fields.</p>
+<p>Anyway, that gives us our simple public API with the fancy behavior as described! As I said at the start, I do quite like this approach conceptually, and it actually has one other benefit that I didn't mention: because paths are declared at field-level granularity, this approach is resilient to changes like adding or removing fields to the overall structure. In contrast, with the traditional naive approach, adding or removing fields would cause old data in the database to be incompatible with the new type, requiring a data migration. So conceptually, it's very clean and it has a lot of advantages; the downside is that actually hammering out this code is extremely painful compared to working with the same ideas in Rank 1 polymorphic space.</p>
+</div>
+</body>
+</html>
