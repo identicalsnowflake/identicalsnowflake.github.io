@@ -215,6 +215,7 @@
       <span class="tc">pure</span> <span class="fu">$</span> <span class="or">Const</span> ()</code></pre></div>
 <p>You can see by the pattern match, the <code><span class="or">Nothing</span></code> case performs no actions, so it does give the desired fancy behavior of taking no action with respect to empty fields.</p>
 <p>Anyway, that gives us our simple public API with the fancy behavior as described! As I said at the start, I do quite like this approach conceptually, and it actually has one other benefit that I didn't mention: because paths are declared at field-level granularity, this approach is resilient to changes like adding or removing fields to the overall structure. In contrast, with the traditional naive approach, adding or removing fields would cause old data in the database to be incompatible with the new type, requiring a data migration. So conceptually, it's very clean and it has a lot of advantages; the downside is that hammering out this rank 2 code is fairly painful compared to working with the same typeclasses in rank 1 polymorphic space.</p>
+<p>A repository containing compilable code for this article <a href="https://github.com/identicalsnowflake/rank2-model">can be found here</a>.</p>
 </div>
 </body>
 </html>
