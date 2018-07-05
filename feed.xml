@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+	<title>Identical Snowflake - Haskell Posts</title>
+	<link href="https://identicalsnowflake.github.io/feed.xml/" rel="self" />
+	<id>urn:uuid:aa1b32e1-07d6-4ed0-a843-5f2c7250343a</id>
+	<updated>2018-7-3T18:30:02Z</updated>
+
+
+	<entry>
+		<title>Redis Data Modeling with Rank 2 Types</title>
+		<link href="https://identicalsnowflake.github.io/Rank2Modeling.html" />
+		<id>urn:uuid:552ff6cd-a33e-444a-a626-31df7351c33a</id>
+		<updated>2018-7-3T18:30:02Z</updated>
+		<summary>What if instead of quantifying a type, we instead quantified over things quantifying over a type? This is rank 2 polymorphism. In this article, I want to demonstrate a simple use of rank 2 polymorphism to construct interesting Redis queries.</summary>
+		<author>
+			<name>Identical Snowflake</name>
+			<email>identicalsnowflake@protonmail.com</email>
+		</author>
+	</entry>
+
+	<entry>
+		<title>Independent Redis Query Aggregation</title>
+		<link href="https://identicalsnowflake.github.io/QueryAggregation.html" />
+		<id>urn:uuid:afe54578-b269-4b6a-a19b-069407dac1b8</id>
+		<updated>2017-12-13T18:30:02Z</updated>
+		<summary>Instead of executing many independent get commands, Redis provides mget key1 key2 ..., which will perform all the lookups at once in a single command. Which brings me to the topic of this post: is there a way to systematically construct mget queries in a type-safe way?</summary>
+		<author>
+			<name>Identical Snowflake</name>
+			<email>identicalsnowflake@protonmail.com</email>
+		</author>
+	</entry>
+
+</feed>
