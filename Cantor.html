@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+  <title>Cantor Pairing</title>
+  <style type="text/css">
+    @font-face {
+      font-family: 'Droid Sans Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Droid Sans Mono Regular'),local('Droid Sans Mono'), local('DroidSansMono-Regular'), url(https://fonts.gstatic.com/s/droidsansmono/v9/ns-m2xQYezAtqh7ai59hJYdJ2JT0J65PSe7wdxAnx_I.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+    }
+    @font-face {
+      font-family: 'Noto Sans';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Noto Sans'), local('NotoSans'), url(https://fonts.gstatic.com/s/notosans/v7/LeFlHvsZjXu2c3ZRgBq9nD8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+    }
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      div.line-block{white-space: pre-line;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+      code {
+        font-family:"Droid sans mono", monospace;
+        padding-bottom: 3px;
+        padding-top: 3px;
+      }
+      body {
+        font-family: 'Noto Sans', 'Roboto', sans-serif;
+        background: #fcfcfc;
+        color: #444;
+        max-width: 680px;
+        margin: 60px auto;
+        line-height: 26px;
+        margin-bottom:100px;
+      }
+      .midblock {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+      h1 {
+        margin-bottom:40px;
+        line-height: 1.3em;
+      }
+      h3 {
+        margin-top:40px;
+        margin-bottom: 0px;
+      }
+      pre {
+        padding:8px 12px;
+        background-color: #272C2E;
+        border-radius: 2px;
+        color:#aaa;
+      }
+
+      code.sourceCode {
+        display: block;
+      }
+
+      pre.haskell > code {
+        display:block;
+      }
+
+      code {
+        color:#ddd;
+        background-color: #272C2E;
+        padding-left:4px;
+        padding-right:4px;
+        border-radius: 2px;
+        font-size:16px !important;
+      }
+      ::-moz-selection {
+          background: #badbff;
+      }
+      ::selection {
+          background: lightblue;
+      }
+      code ::-moz-selection {
+          background: #566;
+      }
+      code ::selection {
+          background: #566;
+      }
+  </style>
+  <style type="text/css">
+    a, a:visited {
+      color:#60ae60;
+    }
+
+    div.sourceLine, a.sourceLine { display: inline; min-height: 1.25em; }
+    a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+    .sourceCode { overflow: auto; }
+    code.sourceCode { white-space: pre; }
+    @media print {
+    code.sourceCode { white-space: pre-wrap; }
+    div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }
+    }
+    pre.numberSource div.sourceLine, .numberSource a.sourceLine
+      { position: relative; }
+    pre.numberSource div.sourceLine::before, .numberSource a.sourceLine::before
+      { content: attr(data-line-number);
+        position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+        border: none; pointer-events: all;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em; }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; color: #aaaaaa;  padding-left: 4px; }
+    @media screen {
+    a.sourceLine::before { text-decoration: underline; color: initial; }
+    }
+    code span.rd { color: #7FA4F7 }
+    code span.or { color: #ffa500 }
+    code span.tc { color: #da70d6 }
+    code span.wt { color: #f8f8f8 }
+    code span.kw { color: #ddd} /* Keyword */
+    code span.dt { color: #00cfff; } /* DataType */
+    code span.dv { color: #ddd; } /* DecVal */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.fl { color: #40a070; } /* Float */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.st { color: #4070a0; } /* String */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.ot { color: #ddd; } /* Other */
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.fu { color: #ddd; } /* Function */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    code span.cn { color: #880000; } /* Constant */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.im { } /* Import */
+    code span.va { color: #19177c; } /* Variable */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.op { color: #666666; } /* Operator */
+    code span.bu { } /* BuiltIn */
+    code span.ex { } /* Extension */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+</head>
+<body>
+<div class="midblock">
+<h1 id="cantor-pairing">Cantor Pairing</h1>
+<p><em>The ideas discussed in this post are implemented using GHC generics in the package <a href="https://hackage.haskell.org/package/cantor-pairing">cantor-pairing</a></em></p>
+<p>Consider the following data type:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt"><span class="dt">TrafficLight</span></span> <span class="fu">=</span> <span class="dt">Red</span> <span class="fu">|</span> <span class="dt">Yellow</span> <span class="fu">|</span> <span class="dt">Green</span></code></pre></div>
+<p>It's straightforward enough to see that if I have a value of type <code><span class="dt">TrafficLight</span></code>, there's only 3 (moral) possibilities. But what if I had something like <code>(<span class="dt">TrafficLight</span> , <span class="dt">TrafficLight</span>)</code>? Or <code><span class="or">Either</span> <span class="dt">TrafficLight</span> <span class="dt">Bool</span></code>? Or <code><span class="dt">TrafficLight</span> -&gt; <span class="dt">Bool</span></code>? How many possibilities are there for each of these? Can we enumerate them? What if instead of having types like <code><span class="dt">TrafficLight</span></code> or <code><span class="dt">Bool</span></code>, we have something like <code><span class="dt">Natural</span></code>? In this article, I want to use Cantor's arguments to demonstrate when and how we can construct isomorphisms between certain types.</p>
+<p>First, the <em>cardinality</em> of a set (or, in our world, a type) is just a formal term for its size. In the simple case, we deal with finite cardinalities, and combining them using the typical primitives of algebraic data types (sums, products, the unit type, and the empty type) is straightforward. For example, <code><span class="dt">TrafficLight</span></code> above has finite cardinality 3, while <code><span class="dt">Bool</span></code> has finite cardinality 2, and unsurprisingly, their product <code>(<span class="dt">TrafficLight</span> , <span class="dt">Bool</span>)</code> has finite cardinality <code>3 * 2 = 6</code>. We can think about it like this:</p>
+<pre><code>       R       Y       G
+ T  (R , T) (Y , T) (G , T)
+ F  (R , F) (Y , F) (G , F)</code></pre>
+<p>We can put an ordering on the pairs easily enough: you can just read the values off from left to right and top to bottom just like you normally would with text on a page, so the first value is <code>(R , T)</code>, then <code>(Y , T)</code>, then <code>(G , T)</code>, then <code>(R , F)</code>, then <code>(Y , F)</code>, and finally <code>(G , F)</code>. Simple!</p>
+<p>With sums like <code><span class="or">Either</span> <span class="dt">TrafficLight</span> <span class="dt">Bool</span></code>, again our intuition holds: we could be in the <code>Left</code> with a value of type <code><span class="dt">TrafficLight</span></code>, yielding 3 possibilities, or we could be in the <code>Right</code> with a value of type <code><span class="dt">Bool</span></code>, yielding 2 possibilities for a total of <code>3 + 2 = 5</code>. Enumeration is simple: enumerate all the values on the left, and when you finish, go through all the values on the right.</p>
+<p>The remaining types, unit (<code>()</code> in Haskell) and empty (<code><span class="dt">Void</span></code> in Haskell, but usually called &quot;bottom&quot; in type theory) behave as expected, with <code>()</code> having finite cardinality 1 and <code><span class="dt">Void</span></code> having finite cardinality 0.</p>
+<p>But what about types like <code><span class="dt">Natural</span></code>? Well, clearly it doesn't have a finite cardinality, so why don't we just say it has infinite cardinality? But that brings up some trickier questions: first, can we still enumerate all the values of sums and products? And second, is there only one infinity?</p>
+<p>Let's start with considering the naturals in this context. We can say the cardinality is infinite, and we can also enumerate them reasonably -- <code>0</code> is the first <span class="dt">Natural</span>, <code>1</code> is the next, and so on. But what if we take the product of <code><span class="dt">Natural</span></code> and <code><span class="dt">Natural</span></code>, i.e., <code>(<span class="dt">Natural</span> , <span class="dt">Natural</span>)</code>?</p>
+<pre><code>    0     1     2   ...
+0 (0,0) (1,0) (2,0) ...
+1 (0,1) (1,1) (2,1) ...
+2 (0,2) (1,2) (2,2) ...
+.   .     .     .
+.   .     .     .
+.   .     .     .</code></pre>
+<p>Here we have a discrete grid with pairs of <code><span class="dt">Natural</span></code>s at each point. Obviously there's still an infinite number of them, but can we still enumerate them? Our previous strategy for enumerating finite values no longer seems to work properly. If you start reading left-to-right from <code>(0,0)</code>, you never even finish the first line because, well, it's infinite, and so you never actually touch the <code>(0,1)</code> or any of the lower points. That seems problematic. With the naturals, I could choose <em>any</em> <code><span class="dt">Natural</span></code> like <code>9283749823</code>, and eventually, our enumeration would in fact find that number, given enough time. But here, it doesn't matter how long we search for a point like <code>(1,1)</code>, we'll never find it because our search never makes it to the second row.</p>
+<p>So wait, is this &quot;grid&quot; infinity somehow a &quot;larger&quot; infinity than our natural number&quot; infinity? Because at least with our natural number infinity we could hit all the possibilities, but with this grid structure, we seem to be be having trouble with that.</p>
+<p>This is the question Cantor pondered, and in doing so, came up with several interesting ideas which remain important to this day. The first is that no, the &quot;grid&quot; infinity here is actually the same &quot;level&quot; of infinity as the naturals, and in fact, we <em>can</em> enumerate all the possibilities on the grid, we just have to be a bit clever: what if instead of going left-to-right or top-to-bottom, what if we went <em>diagonally</em>?</p>
+<p>If you start at the top left corner, you get <code>(0,0)</code> as the first value, then along our next diagonal, we have two values, <code>(0,1)</code> and <code>(1,0)</code>, then along the next diagonal, we have three values, <code>(0,2)</code>, <code>(1,1)</code>, and <code>(2,0)</code>, etc.. If we traverse the grid in this fashion, it seems like we should properly hit all the points without missing any! So now it seems there is no &quot;second level of infinity&quot; here, we just had to be smarter in how we made our traversal, but ultimately, <code><span class="dt">Natural</span></code> and <code>(<span class="dt">Natural</span> , <span class="dt">Natural</span>)</code> are completely isomorphic.</p>
+<p>In the spirit of not being overly revisionist, this is not quite the question Cantor was addressing: Cantor was specifically interested in demonstrating that the rationals had the same cardinality as the naturals. You can see how this line of reasoning does lead us to an enumeration on the rationals, but not in a very nice way - if you just take pairs of <code><span class="dt">Natural</span></code>s, you will end up enumerating all the rationals, but there's substantial redundancy in this encoding in that <code>(1,1) -&gt; 1/1 = 1</code> is the same rational as <code>(2,2) -&gt; 2/2 = 1</code>. For that reason, it's a touch ironic that despite this library being inspired by and named after Cantor, I've opted not to include instances for the rationals (bonus question: how <em>do</em> you enumerate, without redundancy, the rationals? bonus question 2: how does this apply to types?)</p>
+<p>Anyway, for sums like <code><span class="or">Either</span> <span class="dt">Natural</span> <span class="dt">Natural</span></code>, it's hopefully fairly obvious how we can enumerate them - just alternate back and forth between left and right as we go deeper. So while this is useful, we yet again have failed to discover a new level of infinity.</p>
+<p>But we're functional programmers, and if there's one thing we're good at besides annoying dysfunctional programmers, it's functions! So how does this apply to function types? Well, function types are really just a flavor of exponentiation, so it shouldn't surprise us if there's a connection. Let's start with finite cardinality, how many values are there of type <code><span class="dt">TrafficLight</span> -&gt; <span class="dt">Bool</span></code>? If you said <code>3 ^ 2</code>, you are sloppy and should feel bad. To find the correct answer, let's think about it this way:</p>
+<pre class="haskell"><code>f :: <span class="dt">TrafficLight</span> -&gt; <span class="dt">Bool</span>
+f Red = _
+f Yellow = _
+f Green = _</code></pre>
+<p>So we have 3 holes, each with 2 possibilities, so that's <code>2 * 2 * 2 = 2 ^ 3 = 8</code> possibilities. Put another way, it's the number of ways we could generate <code>(<span class="dt">Bool</span> , <span class="dt">Bool</span> , <span class="dt">Bool</span>)</code>, and our function is defined on three cases, with each case mapping to its respective part of the tuple. But what if the types aren't finite?</p>
+<p>Let's start with <code><span class="dt">TrafficLight</span> -&gt; <span class="dt">Natural</span></code>:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">f ::</span> <span class="dt"><span class="dt">TrafficLight</span></span> <span class="ot">-&gt;</span> <span class="dt"><span class="dt">Natural</span></span>
+f <span class="dt">Red</span> <span class="fu">=</span> _
+f <span class="dt">Yellow</span> <span class="fu">=</span> _
+f <span class="dt">Green</span> <span class="fu">=</span> _</code></pre></div>
+<p>By the same reasoning above, this is really just an enumeration of <code>(<span class="dt">Natural</span> , <span class="dt">Natural</span> , <span class="dt">Natural</span>)</code>, and we already know how to handle arbitrary products above, so this is straightforward. Even functions like <code><span class="dt">TrafficLight</span> -&gt; <span class="dt">Natural</span></code> are enumerable.</p>
+<p>But what about the other way? What about functions like <code><span class="dt">Natural</span> -&gt; <span class="dt">Bool</span></code>?</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">f ::</span> <span class="dt"><span class="dt">Natural</span></span> <span class="ot">-&gt;</span> <span class="dt"><span class="dt">Bool</span></span>
+f <span class="dv">0</span> <span class="fu">=</span> _
+f <span class="dv">1</span> <span class="fu">=</span> _
+f <span class="dv">2</span> <span class="fu">=</span> _
+f <span class="dv">3</span> <span class="fu">=</span> _
+<span class="fu">...</span></code></pre></div>
+<p>This... seems problematic. We now have an infinite number of holes, and while we can easily generalize a binary product to an n-ary product, there doesn't intuitively feel like a way to generalize this to an infinity-ary product. But maybe we're just not being clever enough. Maybe we just need to &quot;read the page diagonally&quot; like before and we'll come to a clever resolution! Let's give it a shot.</p>
+<p>Suppose there is a way to enumerate all <code><span class="dt">Natural</span> -&gt; <span class="dt">Bool</span></code>. That means we have a function <code>e :: <span class="dt">Natural</span> -&gt; (<span class="dt">Natural</span> -&gt; <span class="dt">Bool</span>)</code>. But consider this function:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">f ::</span> <span class="dt"><span class="dt">Natural</span></span> <span class="ot">-&gt;</span> <span class="dt"><span class="dt">Bool</span></span>
+f i <span class="fu">=</span> not <span class="fu">$</span> e i i</code></pre></div>
+<p>Since your enumeration by definition contains all <code><span class="dt">Natural</span> -&gt; <span class="dt">Bool</span></code>, then it must contain this <code>f</code>, so let's find it. Let's start at the beginning - <code>f</code> is clearly not the first function since <code>f 0 = not $ e 0 0</code>, and if they differ at the point <code>0</code>, obviously they're not the same function. Let's try the next one: but <code>f 1 = not $ e 1 1</code>, so clearly it can't be this function either, since they differ at the value <code>1</code>, and if they differ there, they can't be the same function. In fact, this reasoning holds for any <code><span class="dt">Natural</span></code>, so... my function <code>f</code> is clearly <em>not</em> in your enumeration after all. Which means <code>e</code> is not an enumeration.</p>
+<p>I hope you didn't blink, because that was a proof by contradiction. There is no possible way to enumerate <code><span class="dt">Natural</span> -&gt; <span class="dt">Bool</span></code>. It hasn't merely not been discovered yet; it is mathematically impossible. Which means yes, this is, in some sense, a &quot;higher&quot; infinity than what we had with <code><span class="dt">Natural</span></code>s or grids of <code><span class="dt">Natural</span></code>s. The most common name for this larger kind of infinity is &quot;uncountably infinite&quot;, while the kind isomorphic to the <code><span class="dt">Natural</span></code>s is called &quot;countably infinite.&quot; Yet with similar logic, there are higher levels of infinity still.</p>
+<p>This is the culmination of Cantor's work in this area, famously known as his <a href="https://en.wikipedia.org/wiki/Cantor%27s_diagonal_argument">diagonal argument</a>. Countably infinite spaces are the most tame kind of infinite. When searching a countably infinite space, we can at least have the knowledge that if a solution exists, we will eventually (heh) find it. But with these higher infinities, that guarantee is fundamentally broken: no matter how hard you search and no matter how clever you are with your navigation, even if a solution exists, you are not guaranteed to ever discover it.</p>
+</div>
+</body>
+</html>

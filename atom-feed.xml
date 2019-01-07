@@ -32,4 +32,16 @@
 		</author>
 	</entry>
 
+	<entry>
+		<title>Cantor Pairing</title>
+		<link href="https://identicalsnowflake.github.io/Cantor.html" />
+		<id>urn:uuid:70d1038f-e429-44af-94e9-cf6b4642979e</id>
+		<updated>2019-1-7T18:45:02Z</updated>
+		<summary>A discussion of how Cantor's diagonal methods and how they apply to the world of Haskell. Includes a library conveniently implementing the methods discussed with GHC generics, making application trivial.</summary>
+		<author>
+			<name>Identical Snowflake</name>
+			<email>identicalsnowflake@protonmail.com</email>
+		</author>
+	</entry>
+
 </feed>
