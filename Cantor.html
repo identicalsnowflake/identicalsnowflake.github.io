@@ -185,9 +185,9 @@ f G = _</code></pre>
 <p>So we have 3 holes, each with 2 possibilities, so that's <code>2 * 2 * 2 = 2 ^ 3 = 8</code> possibilities. Put another way, it's the number of ways we could generate <code>(<span class="dt">Bool</span> , <span class="dt">Bool</span> , <span class="dt">Bool</span>)</code>, and our function is defined on three cases, with each case mapping to its respective part of the tuple. But what if the types aren't finite?</p>
 <p>Let's start with <code><span class="dt">TrafficLight</span> -&gt; <span class="dt">Natural</span></code>:</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">f ::</span> <span class="dt"><span class="dt">TrafficLight</span></span> <span class="ot">-&gt;</span> <span class="dt"><span class="dt">Natural</span></span>
-f <span class="dt">R</span> <span class="fu">=</span> _
-f <span class="dt">Y</span> <span class="fu">=</span> _
-f <span class="dt">G</span> <span class="fu">=</span> _</code></pre></div>
+f R <span class="fu">=</span> _
+f Y <span class="fu">=</span> _
+f G <span class="fu">=</span> _</code></pre></div>
 <p>By the same reasoning above, this is really just an enumeration of <code>(<span class="dt">Natural</span> , <span class="dt">Natural</span> , <span class="dt">Natural</span>)</code>, and we already know how to handle arbitrary products above, so this is straightforward. Even functions like <code><span class="dt">TrafficLight</span> -&gt; <span class="dt">Natural</span></code> are enumerable.</p>
 <p>But what about the other way? What about functions like <code><span class="dt">Natural</span> -&gt; <span class="dt">Bool</span></code>?</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">f ::</span> <span class="dt"><span class="dt">Natural</span></span> <span class="ot">-&gt;</span> <span class="dt"><span class="dt">Bool</span></span>
